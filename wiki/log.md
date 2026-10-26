@@ -25,3 +25,4 @@ investigations goes here, never in the pages (prompt 3, step 3).
   one `Default` story each.
 - 2026-10-26 · models/ball.md · ball and house ball built; rule 4 now names the `spin` node (rotating `root` would orbit the contact point).
 - 2026-10-26 · models/lane.md, storybook/catalog.md · lane segment and pin deck built; the stage floor now sits under a model's lowest point; factories may return richer handles (`ModelFactory<Options, Handle>`).
+- 2026-10-26 · models/obstacles/rental-shoes.md · rental shoes built in two rounds; `@models/<path>` alias added to the game.
