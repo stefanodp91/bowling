@@ -1,20 +1,23 @@
 /**
  * Obstacle measures and footprints (wiki/models/obstacles/*). Metres. Pure: imports only measures.
- * A footprint is a box centred on the obstacle's position (travel-lane centre, track z), used by
- * the domain's collision test: |dx| ≤ halfWidthM, |dz| ≤ halfDepthM, height from the lane surface.
+ * A footprint is a box on the obstacle's travel-lane centre, its centre at the track z plus
+ * centreZM, used by the domain's collision test: |dx| ≤ halfWidthM, |dz − centreZM| ≤ halfDepthM,
+ * height from the lane surface.
  */
 
 export interface Footprint {
   readonly halfWidthM: number;
   readonly halfDepthM: number;
   readonly heightM: number;
+  /** From the obstacle's z to the centre of the box: 0, except for obstacles that start at z. */
+  readonly centreZM: number;
 }
 
 import { BALL_DIAMETER_M, BALL_RADIUS_M } from './ball';
-import { PLAYING_SURFACE_WIDTH_M } from './lane';
+import { PLAYING_SURFACE_WIDTH_M, TRAVEL_LANE_WIDTH_M } from './lane';
 
 /** Box containing every rotated rectangle (centre x/z, half extents, yaw) of a group. */
-function boxAround(parts: ReadonlyArray<{ x: number; z: number; halfWidth: number; halfLength: number; yawRad: number }>): Omit<Footprint, 'heightM'> {
+function boxAround(parts: ReadonlyArray<{ x: number; z: number; halfWidth: number; halfLength: number; yawRad: number }>): Omit<Footprint, 'heightM' | 'centreZM'> {
   let halfWidthM = 0;
   let halfDepthM = 0;
   for (const p of parts) {
@@ -45,6 +48,7 @@ export const RENTAL_SHOE_PLACEMENTS = [
 export const RENTAL_SHOES_FOOTPRINT: Footprint = {
   ...boxAround(RENTAL_SHOE_PLACEMENTS.map((p) => ({ x: p.x, z: p.z, halfWidth: RENTAL_SHOE_WIDTH_M / 2, halfLength: RENTAL_SHOE_LENGTH_M / 2, yawRad: p.yawRad }))),
   heightM: RENTAL_SHOE_HEIGHT_M,
+  centreZM: 0,
 };
 
 // --- Returning ball (wiki/models/obstacles/returning-ball.md) ---
@@ -54,6 +58,7 @@ export const RETURNING_BALL_FOOTPRINT: Footprint = {
   halfWidthM: BALL_RADIUS_M,
   halfDepthM: BALL_RADIUS_M,
   heightM: BALL_DIAMETER_M,
+  centreZM: 0,
 };
 
 // --- Sweep bar (wiki/models/obstacles/sweep-bar.md) ---
@@ -84,4 +89,18 @@ export const SWEEP_BAR_FOOTPRINT: Footprint = {
     SWEEP_PIVOT_HEIGHT_M -
     (SWEEP_PIVOT_HEIGHT_M - SWEEP_BAR_HEIGHT_M) * Math.cos(SWEEP_SWING_ANGLE_RAD) +
     (SWEEP_LIP_DEPTH_M / 2) * Math.sin(SWEEP_SWING_ANGLE_RAD),
+  centreZM: 0,
 };
+
+// --- Widening gutter (wiki/models/obstacles/widening-gutter.md) ---
+
+/** Length of the tapered ramp at each end, where the channel opens and closes (rule 1). */
+export const GUTTER_RAMP_M = 2;
+
+/**
+ * The widening gutter's footprint: its travel lane over [z, z + lengthM] (rule 3). It is terrain:
+ * height 0, so no jump clears it.
+ */
+export function wideningGutterFootprint(lengthM: number): Footprint {
+  return { halfWidthM: TRAVEL_LANE_WIDTH_M / 2, halfDepthM: lengthM / 2, heightM: 0, centreZM: lengthM / 2 };
+}

@@ -21,3 +21,7 @@ export { createReturningBall } from './obstacles/returning-ball/returning-ball';
 export type { ReturningBallOptions } from './obstacles/returning-ball/returning-ball';
 export { createSweepBar } from './obstacles/sweep-bar/sweep-bar';
 export type { SweepBarOptions } from './obstacles/sweep-bar/sweep-bar';
+export { createWideningGutter } from './obstacles/widening-gutter/widening-gutter';
+export type { WideningGutterOptions } from './obstacles/widening-gutter/widening-gutter';
+export { openBoardHole, MAX_BOARD_HOLES } from './lane/board-holes';
+export type { BoardHole } from './lane/board-holes';

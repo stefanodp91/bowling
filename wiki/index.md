@@ -16,7 +16,7 @@ once the script exists.
 9. [models/obstacles/rental-shoes.md](models/obstacles/rental-shoes.md) — Rental shoes — a pair of two-tone bowling shoes in one travel lane · `built`
 10. [models/obstacles/returning-ball.md](models/obstacles/returning-ball.md) — Returning ball — a house ball rolling back up the lane · `built`
 11. [models/obstacles/sweep-bar.md](models/obstacles/sweep-bar.md) — Sweep bar — the pinsetter's rake across all three travel lanes · `built`
-12. [models/obstacles/widening-gutter.md](models/obstacles/widening-gutter.md) — Widening gutter — the gutter eats one travel lane for a stretch · `planned`
+12. [models/obstacles/widening-gutter.md](models/obstacles/widening-gutter.md) — Widening gutter — the gutter eats one travel lane for a stretch · `built`
 13. [models/pins.md](models/pins.md) — Pins — the ten regulation pins · `planned`
 14. [models/obstacles/stray-pins.md](models/obstacles/stray-pins.md) — Stray pins — a group of pins left standing in one travel lane · `planned`
 15. [track/track-format.md](track/track-format.md) — Track format — the lane as a JSON file, its bake and its gate · `planned`

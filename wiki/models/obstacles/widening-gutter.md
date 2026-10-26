@@ -1,9 +1,9 @@
 ---
 title: Widening gutter — the gutter eats one travel lane for a stretch
 type: spec
-status: planned
+status: built
 depends_on: [models/lane.md]
-canonical: []
+canonical: [models/src/obstacles/widening-gutter/, models/src/lane/board-holes.ts, models/src/measures/obstacles.ts, storybook/src/stories/obstacle-widening-gutter.stories.tsx, storybook/src/scenes/widening-gutter-scene.ts]
 verified: 2026-10-26
 ---
 
@@ -36,8 +36,32 @@ the track's `lengthM`.
 
 ## References
 
-_Filled by the agent (prompt 1, step 2): gutter cross-section and dimensions._
+- Gutter section: 9.25 in wide, 1.875 in deep, a rounded channel along each side of the lane
+  (https://www.dimensions.com/element/bowling-lane).
+- Babylon material plugins inject GLSL into a PBR material; per-draw values are set in
+  `hardBindForSubMesh`, which Babylon calls only for plugins that set `registerForExtraEvents`
+  before activation (https://doc.babylonjs.com/features/featuresDeepDive/materials/using/materialPlugins;
+  `node_modules/@babylonjs/core/Materials/materialPluginManager.pure.js`).
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-26 · round 1 · Built the channel from the lanes' trough section (ramps as a depth
+  multiplier along z) and a story that composes two lane segments with an 18 m gutter in the centre
+  lane. The channel lies below y = 0, so the boards hid it: a material plugin on the boards now
+  discards fragments inside registered world-space rectangles. Two failures on the way, each a
+  shot: (a) the plugin was attached after the board shader compiled → it marks the defines dirty;
+  (b) the uniform never reached the shader → `registerForExtraEvents` must be set before enabling.
+  Then the channel showed but read as a flat grey strip: 48 mm deep over a whole lane is invisible.
+  «Same section» means the same shape, so the depth now scales with the width (≈ 0.21 m). 4 shots.
+  Now: from a chase-like close-up the centre lane turns into a rounded grey channel, ramping in and
+  out, flush with the boards on both sides, no seam. Unit tests: width = one travel lane, length =
+  18 m + two 2 m ramps, rim at y = 0, root on the requested lane.
+
+## Canonical files
+
+- `createWideningGutter(scene, { lengthM, lane })`: root on the lane's centre line at the start of
+  the full-depth channel (the factory sets x, the scene sets z); the ramps extend 2 m before and
+  after. Its footprint is `wideningGutterFootprint(lengthM)`: height 0 (terrain), `centreZM =
+  lengthM / 2` because the obstacle starts at its z.
+- `openBoardHole(scene, provider)` (`lane/board-holes.ts`) works for any model that must replace
+  boards; at most `MAX_BOARD_HOLES` (8) at once.
