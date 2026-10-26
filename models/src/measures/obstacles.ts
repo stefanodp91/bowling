@@ -10,6 +10,8 @@ export interface Footprint {
   readonly heightM: number;
 }
 
+import { BALL_DIAMETER_M, BALL_RADIUS_M } from './ball';
+
 /** Box containing every rotated rectangle (centre x/z, half extents, yaw) of a group. */
 function boxAround(parts: ReadonlyArray<{ x: number; z: number; halfWidth: number; halfLength: number; yawRad: number }>): Omit<Footprint, 'heightM'> {
   let halfWidthM = 0;
@@ -42,4 +44,13 @@ export const RENTAL_SHOE_PLACEMENTS = [
 export const RENTAL_SHOES_FOOTPRINT: Footprint = {
   ...boxAround(RENTAL_SHOE_PLACEMENTS.map((p) => ({ x: p.x, z: p.z, halfWidth: RENTAL_SHOE_WIDTH_M / 2, halfLength: RENTAL_SHOE_LENGTH_M / 2, yawRad: p.yawRad }))),
   heightM: RENTAL_SHOE_HEIGHT_M,
+};
+
+// --- Returning ball (wiki/models/obstacles/returning-ball.md) ---
+
+/** A house ball: the regulation ball's diameter, centred in its lane at its current z. */
+export const RETURNING_BALL_FOOTPRINT: Footprint = {
+  halfWidthM: BALL_RADIUS_M,
+  halfDepthM: BALL_RADIUS_M,
+  heightM: BALL_DIAMETER_M,
 };

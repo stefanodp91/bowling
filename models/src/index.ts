@@ -17,3 +17,5 @@ export * from './measures/ball';
 export { createRentalShoes } from './obstacles/rental-shoes/rental-shoes';
 export type { RentalShoesOptions } from './obstacles/rental-shoes/rental-shoes';
 export * from './measures/obstacles';
+export { createReturningBall } from './obstacles/returning-ball/returning-ball';
+export type { ReturningBallOptions } from './obstacles/returning-ball/returning-ball';

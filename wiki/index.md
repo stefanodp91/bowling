@@ -14,7 +14,7 @@ once the script exists.
 7. [models/ball.md](models/ball.md) — Ball — the bowling ball the autopilot rolls · `built`
 8. [models/lane.md](models/lane.md) — Lane — 500 m of maple, three travel lanes, gutters and pin deck · `built`
 9. [models/obstacles/rental-shoes.md](models/obstacles/rental-shoes.md) — Rental shoes — a pair of two-tone bowling shoes in one travel lane · `built`
-10. [models/obstacles/returning-ball.md](models/obstacles/returning-ball.md) — Returning ball — a house ball rolling back up the lane · `planned`
+10. [models/obstacles/returning-ball.md](models/obstacles/returning-ball.md) — Returning ball — a house ball rolling back up the lane · `built`
 11. [models/obstacles/sweep-bar.md](models/obstacles/sweep-bar.md) — Sweep bar — the pinsetter's rake across all three travel lanes · `planned`
 12. [models/obstacles/widening-gutter.md](models/obstacles/widening-gutter.md) — Widening gutter — the gutter eats one travel lane for a stretch · `planned`
 13. [models/pins.md](models/pins.md) — Pins — the ten regulation pins · `planned`

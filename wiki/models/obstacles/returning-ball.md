@@ -1,9 +1,9 @@
 ---
 title: Returning ball — a house ball rolling back up the lane
 type: spec
-status: planned
+status: built
 depends_on: [models/ball.md]
-canonical: []
+canonical: [models/src/obstacles/returning-ball/, models/src/measures/obstacles.ts, storybook/src/stories/obstacle-returning-ball.stories.tsx]
 verified: 2026-10-26
 ---
 
@@ -33,8 +33,21 @@ only where it is now.
 
 ## References
 
-_Filled by the agent (prompt 1, step 2)._
+- Rolling without slipping: angular speed ω = v / r, so a ball of radius 0.109 m at 3 m/s turns
+  ≈ 27.5 rad/s, about 4.4 turns per second
+  (https://en.wikipedia.org/wiki/Rolling#Rolling_without_slipping).
+- The [ball](../ball.md) page's references for the house ball's look.
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-26 · round 1 · Built `createReturningBall` on the house ball: `animate(t)` sets the
+  spin node's rotation about x to −v·t/r (rolling towards −z). 2 shots plus a frame comparison:
+  the story is ready, two frames 0.7 s apart differ, no console error; the close-up shows the
+  plain scuffed red ball turning. The unit test checks ω = v / r and that `animate` is a pure
+  function of elapsed time. Distinguishable from the player's ball: red, plain, satin-glossy
+  against blue-violet marble — the human judges it at game distance (criterion 2).
+
+## Canonical files
+
+- `RETURNING_BALL_FOOTPRINT` (`measures/obstacles.ts`): the ball's diameter square, height = the
+  diameter, centred on the ball's current `z` in its lane.
