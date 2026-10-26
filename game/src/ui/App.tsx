@@ -16,5 +16,5 @@ export function App() {
   if (!parsed.ok) return <ErrorScreen message={t('error.query', { field: parsed.field })} onRetry={retry} />;
   if (state.status === 'failed') return <ErrorScreen message={state.message} onRetry={retry} />;
   if (state.status === 'loading') return null;
-  return <GameCanvas session={state.session} pause={query.pause} />;
+  return <GameCanvas session={state.session} pause={query.pause} havok={state.havok} />;
 }

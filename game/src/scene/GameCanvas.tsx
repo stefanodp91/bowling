@@ -5,15 +5,17 @@ import { Scene } from 'reactylon';
 import { Engine } from 'reactylon/web';
 import type { Session } from '../app/session';
 import { createGameCamera, mountGame } from './mountGame';
+import type { HavokInstance } from './physics/havok-loader';
 
 export interface GameCanvasProps {
   readonly session: Session;
   readonly pause: boolean;
+  readonly havok: HavokInstance;
 }
 
 /** Reactylon owns engine, canvas and scene; the bridge mounts the game's imperative scene code. */
-export function GameCanvas({ session, pause }: GameCanvasProps) {
-  const mount = useCallback((scene: BabylonScene) => mountGame(scene, session, { pause }), [session, pause]);
+export function GameCanvas({ session, pause, havok }: GameCanvasProps) {
+  const mount = useCallback((scene: BabylonScene) => mountGame(scene, session, { pause, havok }), [session, pause, havok]);
   return (
     <Engine>
       <Scene onSceneReady={createGameCamera}>

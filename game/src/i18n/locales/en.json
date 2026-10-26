@@ -4,7 +4,7 @@
     "trackNotFound": "Track «{{detail}}» was not found.",
     "trackInvalid": "Track file is invalid: {{detail}}",
     "query": "The address has an invalid «{{field}}» parameter.",
-    "unexpected": "Something went wrong: {{detail}}",
+    "physics": "The physics engine could not start: {{detail}}",
     "retry": "Retry"
   },
   "loading": "Loading the lane…"

@@ -6,6 +6,7 @@ import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { Scene } from '@babylonjs/core/scene';
 import { applyAlleyEnvironment } from '@models';
 import type { Session } from '../app/session';
+import { SIM_STEP_S } from '../config/run';
 import { CHASE_FOV_RAD, FOG_END_M, FOG_HEX, FOG_START_M } from '../config/camera';
 import { AMBIENT_INTENSITY, KEY_LIGHT } from '../config/scene';
 import { cameraPose } from './camera/rig';
@@ -13,6 +14,8 @@ import { createBallView } from './views/ball-view';
 import { createLaneView } from './views/lane-view';
 import { createObstacleView } from './views/obstacle-view';
 import { createPinsView } from './views/pins-view';
+import type { HavokInstance } from './physics/havok-loader';
+import { createPhysicsWorld } from './physics/physics-world';
 
 const MS_PER_S = 1000;
 /** Near plane: close enough for the ball 3 m away, far enough to keep depth precision over 140 m. */
@@ -32,6 +35,7 @@ export function createGameCamera(scene: Scene): void {
 export interface MountOptions {
   /** Freeze after the first rendered frame (the `pause` query parameter). */
   readonly pause: boolean;
+  readonly havok: HavokInstance;
 }
 
 /** Mounts a session into the Reactylon scene: lights, lane, ball, obstacles, camera, the frame loop. */
@@ -48,6 +52,7 @@ export function mountGame(scene: Scene, session: Session, options: MountOptions)
   const key = new DirectionalLight('game-key', new Vector3(...KEY_LIGHT.direction), scene);
   key.intensity = KEY_LIGHT.intensity;
 
+  const physics = createPhysicsWorld(scene, options.havok);
   const lane = createLaneView(scene);
   const ball = createBallView(scene);
   const pins = createPinsView(scene);
@@ -56,7 +61,11 @@ export function mountGame(scene: Scene, session: Session, options: MountOptions)
 
   let frames = 0;
   const render = (frameS: number): void => {
-    const { previous, current, alpha } = session.frame(frameS);
+    const { previous, current, alpha } = session.frame(frameS, 1, (_world, events) => {
+      for (const event of events) obstacles.knock(event.obstacleIndex, event.runS, event.speedMps);
+      physics.step();
+      obstacles.age(SIM_STEP_S);
+    });
     const lerp = (a: number, b: number): number => a + (b - a) * alpha;
     const pose = { x: lerp(previous.x, current.x), y: lerp(previous.y, current.y), z: lerp(previous.z, current.z) };
     ball.update(pose, lerp(previous.rollRad, current.rollRad));
@@ -86,6 +95,7 @@ export function mountGame(scene: Scene, session: Session, options: MountOptions)
     pins.dispose();
     ball.dispose();
     lane.dispose();
+    physics.dispose();
     key.dispose();
     ambient.dispose();
     environment.dispose();

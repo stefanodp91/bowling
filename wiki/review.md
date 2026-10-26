@@ -22,7 +22,15 @@ with the date.
 Each entry: date · page · what the agent built or could not build · why it needs a human · what
 the agent recommends.
 
-_None yet._
+- 2026-10-27 · [pins physics](game/pins.md) rule 3, [impacts](game/impacts.md) · The rule says
+  physics uses «the graphic engine's Havok adapter». The published graphic engine 0.2.3 exports no
+  such adapter: its `adapters/havok` module is empty (`dist/adapters/havok/index.d.ts` is
+  `export {}`) and no package export reaches it; the engine only declares a `PhysicsBackend` port
+  (`setStepRateHz`, `dispose`). Built instead: Babylon's own `HavokPlugin` behind
+  `game/src/scene/physics/` (one module, fixed step). Needs a human because the rule names an
+  engine feature that does not exist in the pinned release. Recommend: either amend the rule to
+  «Babylon's Havok plugin behind `scene/physics/`», or publish the adapter in a new engine release
+  and pin it.
 
 ## Approved
 

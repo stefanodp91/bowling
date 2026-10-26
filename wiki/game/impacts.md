@@ -1,9 +1,9 @@
 ---
 title: Impacts — what an obstacle costs
 type: spec
-status: planned
+status: built
 depends_on: [game/run.md, models/obstacles/stray-pins.md, models/obstacles/returning-ball.md, models/obstacles/rental-shoes.md, models/obstacles/sweep-bar.md, models/obstacles/widening-gutter.md]
-canonical: []
+canonical: [game/src/config/impacts.ts, game/src/domain/impacts/, game/src/domain/simulation.ts, game/src/scene/views/knock-away.ts, game/src/scene/views/obstacle-view.ts, game/src/scene/physics/]
 verified: 2026-10-26
 ---
 
@@ -47,8 +47,34 @@ pins, because it costs speed and aim.
 
 ## References
 
-_Filled by the agent (prompt 1, step 2)._
+- One-dimensional elastic collision: a body of mass m hit by mass M at speed v leaves at
+  2M/(M + m)·v (https://en.wikipedia.org/wiki/Elastic_collision#One-dimensional_Newtonian) —
+  used only to size the show impulse.
+- Babylon physics v2: bodies on transform nodes, box shapes, `applyImpulse`
+  (https://doc.babylonjs.com/features/featuresDeepDive/physics/rigidBodies).
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-27 · round 1 · Built detection in the domain (`domain/impacts/`: footprints placed at
+  run time, a box test against the ball's square footprint, a terrain obstacle catching only a
+  ball on the lane), the cost (speed × 0.75, a seeded aim error drawn from track seed and
+  obstacle index, so the error does not depend on the order of earlier draws), the widening
+  gutter's forced lane change to a free adjacent lane, and `worldStep` (run step + impacts) used
+  by the session. For the show: Havok through Babylon's plugin, stepped by the simulation's fixed
+  steps, and a mesh-less box body carrying the hit obstacle's model. Wrong on the way: (a) the
+  floor and proxy were invisible meshes without material — the tree-shaking trap of AGENTS.md,
+  «StandardMaterial needs to be imported» — so bodies now sit on bare transform nodes; (b) the
+  first impulse (0.6 N·s per m/s) let the ball and camera overtake the shoes in half a second:
+  the impulse now follows the elastic-collision ratio and the obstacle flies ahead. Shots: 4
+  (a real impact on lane-01's shoes at 152 m: 250 ms later the shoes are high and ahead, tumbling;
+  the ball went from ≈ 7.5 to 6.1 m/s). Unit tests: one per kind (hit in lane, miss in another
+  lane), sweep bar and shoes cleared at jump apex, returning ball hit where it is at that time,
+  each obstacle once, gutter push, 12 → 9 m/s and recovery at 1.5 m/s², same aim error twice.
+
+## Canonical files
+
+- `applyImpacts(run, impacts, track)` is pure; `ImpactState` holds one hit flag per obstacle, the
+  count and the summed aim error; `ImpactEvent`s go to the scene (and to the audio, once built).
+- The scene's physics (`scene/physics/`) disables Babylon's per-frame step: `PhysicsWorld.step()`
+  runs once per simulation step. The graphic engine exports no Havok adapter; see
+  [review](../review.md).

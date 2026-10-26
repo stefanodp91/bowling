@@ -22,7 +22,7 @@ once the script exists.
 15. [track/track-format.md](track/track-format.md) — Track format — the lane as a JSON file, its bake and its gate · `built`
 16. [game/run.md](game/run.md) — Run — the ball's 500 m, from foul line to pin deck · `built`
 17. [game/camera.md](game/camera.md) — Camera — chase, impact view and slow motion · `planned`
-18. [game/impacts.md](game/impacts.md) — Impacts — what an obstacle costs · `planned`
+18. [game/impacts.md](game/impacts.md) — Impacts — what an obstacle costs · `built`
 19. [game/pins.md](game/pins.md) — Pins physics — the strike, and the score · `planned`
 20. [pilot/autopilot.md](pilot/autopilot.md) — Autopilot — the only player, and its three skill profiles · `planned`
 21. [game/hud.md](game/hud.md) — HUD — run information, skill buttons, end screen · `planned`

@@ -5,17 +5,18 @@ import type { GameQuery } from '../app/query';
 import { createSession, type Session } from '../app/session';
 import { DEFAULT_SKILL } from '../config/pilot';
 import { installTestHook } from '../dev/test-hook';
+import { loadHavok, type HavokInstance } from '../scene';
 
 export type SessionState =
   | { readonly status: 'loading' }
-  | { readonly status: 'running'; readonly session: Session }
+  | { readonly status: 'running'; readonly session: Session; readonly havok: HavokInstance }
   | { readonly status: 'failed'; readonly message: string };
 
 const fetchJson = (url: string) => fetch(url);
 
 function describe(error: unknown, t: TFunction): string {
   if (error instanceof TrackLoadError) return t(error.reason === 'not-found' ? 'error.trackNotFound' : 'error.trackInvalid', { detail: error.detail });
-  return t('error.unexpected', { detail: error instanceof Error ? error.message : String(error) });
+  return t('error.physics', { detail: error instanceof Error ? error.message : String(error) });
 }
 
 /** Loads the track named by the query and starts a session; `attempt` restarts it (Retry). */
@@ -25,8 +26,8 @@ export function useGameSession(query: GameQuery, attempt: number, t: TFunction):
     let cancelled = false;
     let uninstall = (): void => {};
     setState({ status: 'loading' });
-    loadTrack(fetchJson, query.track)
-      .then(({ track }) => {
+    Promise.all([loadTrack(fetchJson, query.track), loadHavok()])
+      .then(([{ track }, havok]) => {
         if (cancelled) return;
         const session = createSession({
           track,
@@ -35,7 +36,7 @@ export function useGameSession(query: GameQuery, attempt: number, t: TFunction):
           ...(query.speedup === undefined ? {} : { speedup: query.speedup }),
         });
         uninstall = installTestHook(session.store);
-        setState({ status: 'running', session });
+        setState({ status: 'running', session, havok });
       })
       .catch((error: unknown) => {
         console.error('track loading failed', error);
