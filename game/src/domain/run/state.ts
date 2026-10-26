@@ -37,6 +37,11 @@ export interface RunState {
   /** The travel lane the ball is in, or is moving to during a change. */
   readonly lane: LaneIndex;
   readonly laneChange: LaneChange | null;
+  /**
+   * The latest lane change, its clock still running after it ended: the chase camera follows it
+   * with a delay, as a pure function of the state (wiki/game/camera.md, rule 1).
+   */
+  readonly lastLaneChange: LaneChange | null;
   readonly jump: Jump | null;
   /** How far the ball has turned about its axle, radians (ω = v / r, rule 6). */
   readonly rollRad: number;

@@ -8,10 +8,11 @@ import { applyAlleyEnvironment } from '@models';
 import type { Session } from '../app/session';
 import { CHASE_FOV_RAD, FOG_END_M, FOG_HEX, FOG_START_M } from '../config/camera';
 import { AMBIENT_INTENSITY, KEY_LIGHT } from '../config/scene';
-import { chasePose, type BallPose } from './camera/chase-rig';
+import { cameraPose } from './camera/rig';
 import { createBallView } from './views/ball-view';
 import { createLaneView } from './views/lane-view';
 import { createObstacleView } from './views/obstacle-view';
+import { createPinsView } from './views/pins-view';
 
 const MS_PER_S = 1000;
 /** Near plane: close enough for the ball 3 m away, far enough to keep depth precision over 140 m. */
@@ -49,6 +50,7 @@ export function mountGame(scene: Scene, session: Session, options: MountOptions)
 
   const lane = createLaneView(scene);
   const ball = createBallView(scene);
+  const pins = createPinsView(scene);
   const obstacles = createObstacleView(scene, session.track);
   const camera = scene.activeCamera;
 
@@ -56,15 +58,15 @@ export function mountGame(scene: Scene, session: Session, options: MountOptions)
   const render = (frameS: number): void => {
     const { previous, current, alpha } = session.frame(frameS);
     const lerp = (a: number, b: number): number => a + (b - a) * alpha;
-    const pose: BallPose = { x: lerp(previous.x, current.x), y: lerp(previous.y, current.y), z: lerp(previous.z, current.z) };
+    const pose = { x: lerp(previous.x, current.x), y: lerp(previous.y, current.y), z: lerp(previous.z, current.z) };
     ball.update(pose, lerp(previous.rollRad, current.rollRad));
-    const { position, target } = chasePose(pose);
+    const { position, target } = cameraPose({ ...pose, lastLaneChange: current.lastLaneChange });
     if (camera instanceof FreeCamera) {
       camera.position.set(...position);
       camera.setTarget(new Vector3(...target));
     }
-    lane.update(position[2]);
-    obstacles.update(position[2], lerp(previous.runS, current.runS));
+    lane.update(Math.min(position[2], pose.z));
+    obstacles.update(Math.min(position[2], pose.z), lerp(previous.runS, current.runS));
   };
   render(0);
   const beforeRender = scene.onBeforeRenderObservable.add(() => {
@@ -81,6 +83,7 @@ export function mountGame(scene: Scene, session: Session, options: MountOptions)
     beforeRender.remove();
     afterRender.remove();
     obstacles.dispose();
+    pins.dispose();
     ball.dispose();
     lane.dispose();
     key.dispose();

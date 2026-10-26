@@ -9,6 +9,7 @@ import {
   READY_S,
   START_SPEED_MPS,
 } from '../../config/run';
+import { smoothstep } from '../math/ease';
 import { targetSpeed } from './speed';
 import type { Command, Jump, LaneChange, RunState } from './state';
 
@@ -24,6 +25,7 @@ export function initialRunState(): RunState {
     speedMps: START_SPEED_MPS,
     lane: CENTRE_LANE,
     laneChange: null,
+    lastLaneChange: null,
     jump: null,
     rollRad: 0,
   };
@@ -34,9 +36,8 @@ export function runStateAt(z: number): RunState {
   return { ...initialRunState(), phase: 'rolling', z, speedMps: targetSpeed(z) };
 }
 
-/** Smoothstep 3t² − 2t³: a lane change starts and stops with zero lateral speed. */
-const SMOOTHSTEP_SQUARE = 3;
-const ease = (t: number): number => t * t * (SMOOTHSTEP_SQUARE - 2 * t);
+/** A lane change starts and stops with zero lateral speed. */
+const ease = smoothstep;
 /** t(1 − t) peaks at 1/4: times 4 the parabola's peak is exactly the apex. */
 const PARABOLA_PEAK_SCALE = 4;
 
@@ -89,9 +90,16 @@ function stepRolling(state: RunState, command: Command, dtS: number): RunState {
   const vertical = advanceJump(commanded.jump, dtS);
   const speedMps = nextSpeed(state.speedMps, state.z, dtS);
   const z = state.z + speedMps * dtS;
+  const startedChange = commanded.laneChange !== null && state.laneChange === null;
+  const lastLaneChange = startedChange
+    ? commanded.laneChange
+    : state.lastLaneChange === null
+      ? null
+      : { ...state.lastLaneChange, elapsedS: state.lastLaneChange.elapsedS + dtS };
   const rolling: RunState = {
     ...state,
     ...commanded,
+    lastLaneChange,
     ...lateral,
     ...vertical,
     speedMps,

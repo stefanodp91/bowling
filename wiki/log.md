@@ -33,3 +33,4 @@ investigations goes here, never in the pages (prompt 3, step 3).
 - 2026-10-26 · models/obstacles/stray-pins.md, models/pins.md · stray pins built; pin coat UV seam fixed.
 - 2026-10-26 · track/track-format.md, method/gates.md · tracks: schema, generator, rules, bake, check-tracks built; gates now run under tsx to import game TypeScript.
 - 2026-10-27 · game/run.md, tools/shot.md, track/track-format.md · run built (domain, clock, session, scene, test hook); shot criterion 3 and track criterion 5 now verified.
+- 2026-10-27 · game/camera.md · camera rig and slow-motion clock built; page stays planned until the deck simulation exists (criterion 2).

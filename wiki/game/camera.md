@@ -41,8 +41,22 @@ Make a one-minute run that nobody plays watchable from a projector at the back o
 
 ## References
 
-_Filled by the agent (prompt 1, step 2)._
+- Chase cameras follow position with a lag and frame what lies ahead (e.g. «Look-ahead» and
+  damping in third-person cameras, https://www.gamedeveloper.com/design/the-theory-behind-camera-controls-for-3rd-person-games
+  — read for the idea, no code).
+- Slow motion that stays deterministic changes how much real time each fixed step covers, never
+  the step («Fix your timestep», https://gafferongames.com/post/fix_your_timestep/).
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-27 · round 1 · Built `scene/camera/rig.ts` — a pure function of the run: chase pose
+  (3 m behind, 1.2 m up, 6 m look-ahead, 35 % of a jump), lateral damping computed from the run's
+  `lastLaneChange` (its clock keeps running after the change, so damping needs no hidden state),
+  smooth blend over 4 m from 490 m to a low side view of the deck; `timeScaleAt` gives the slow
+  motion, and the frame clock already accepts a time scale. Field of view 0.9 → 0.75 rad: at 0.9
+  the ball was a 50-pixel dot. The game scene had no pins — added a static pins view (the
+  [pins physics](pins.md) page drives it). 3 shots: at 120 m the ball is larger and the lane reads
+  to the fog; at 495 m the deck is framed from the right with the ten pins standing. Unit tests:
+  same input same pose at z 0, 250, 495; chase offsets; lateral follow lags and arrives; partial
+  jump follow; impact pose from the impact zone; slow motion only for 1.5 s after contact.
+  Not closed: criterion 2 needs the deck simulation of [pins physics](pins.md).
