@@ -1,0 +1,83 @@
+---
+title: Gates — automatic checks that block a regression
+type: spec
+status: planned
+depends_on: [workspace/monorepo.md]
+canonical: []
+verified: 2026-10-26
+---
+
+# Gates
+
+> Boundary: the code gates, their common contract, and the starting set. NOT covered: wiki checks
+> ([wiki tooling](wiki-tooling.md)); gates owned by a feature page are listed here but specified
+> there (`check-tracks` in [track format](../track/track-format.md), `check-pilot` in
+> [headless runs](../pilot/headless-runs.md)).
+
+## Purpose
+
+An error that cost time once must not come back unnoticed ([prompt 5](../../prompts/5-error-to-gate.md)).
+A gate is that memory, executed on every commit.
+
+## Rules
+
+1. **Contract.** A gate is `scripts/gates/check-<name>.mjs`. Exit 0 = pass, 1 = fail, with a
+   message that names the file, the line when there is one, and what to do. Every gate supports
+   `--selftest`: it builds a wrong case (in a temporary directory or in memory), runs itself on it,
+   and exits 0 only if it rejected it.
+2. **Wiring.** `npm run check` runs every static gate; `npm run check:full` adds the headless ones.
+   `npm run gates:selftest` runs every gate's `--selftest`; `check` runs it too.
+3. **Thresholds** are imported from the code (`game/src/config/`) or derived from a measurement
+   whose record is linked in a comment. No hand-written number that depends on something else.
+4. **This page lists every gate.** Prompt 5 adds a row for each new one: what it checks, why it
+   exists (the error that paid for it), how to read its failure.
+
+## The starting set
+
+| Gate | Checks | Why |
+|---|---|---|
+| `check-engines` | the installed graphic and audio engines are exactly the versions and release URLs declared in `game/package.json` | engines are used only from verified releases |
+| `check-boundaries` | `models/` imports only Babylon.js and the graphic engine; `game/src/domain/` and `game/src/pilot/` import neither Babylon.js nor React; `ui/` does not import `scene/` internals | the layers of [AGENTS.md](../../AGENTS.md) |
+| `check-no-foreign-refs` | no tracked file, file name or commit message contains a forbidden term | open-source hygiene (AGENTS.md rule 6) |
+| `check-magic-numbers` | numeric literals other than 0, 1, -1, 2 and array indexes do not appear in `game/src/domain/`, `game/src/pilot/`, `game/src/scene/` outside `config/` and named `const` declarations | tunables live in one place |
+| `check-file-size` | no source file over 300 lines | single responsibility |
+| `check-tracks` | see [track format](../track/track-format.md) | every track is solvable |
+| `check-pilot` (full) | see [headless runs](../pilot/headless-runs.md) | the pilot really plays |
+
+### `check-no-foreign-refs` in detail
+
+The forbidden terms must not appear in the repository, not even inside the gate. The gate stores
+only their SHA-256 hashes. It normalises text by lowercasing and splitting on every
+non-alphanumeric character into tokens; it hashes every run of 1, 2 and 3 consecutive tokens joined
+without separator, and fails if a hash is in the list. It scans every file tracked by git
+(`git ls-files`, text files only), every tracked path, and every commit message
+(`git log --format=%B`). Hashes (SHA-256 of the joined lowercase string):
+
+```
+39cd17db5d5074f4aa4572ad9733a9fb4b2e5ce453d21e8c9ea07240cf55a2e8
+90e70e0dff2d7c8b1eea8a60b7fd22bc27dfd76fc286802d7df084316fa0462c
+15544ef39dac74f26587a1c3dfa7d6bff1cedaab10d9e208ef78750dead11c3e
+```
+
+Its `--selftest` adds the hash of a synthetic word to the list in memory, writes a temporary file
+containing that word, and verifies the gate rejects it. If the gate fails on real content, remove
+the term from the content; never edit the hash list.
+
+## Acceptance criteria
+
+1. [auto] `npm run check` runs every static gate in the starting set except `check-tracks`, which
+   joins when its page is built, and passes.
+2. [auto] `npm run gates:selftest` runs every gate's `--selftest` and passes; each selftest really
+   exercised a rejection (it prints the rejected case).
+3. [auto] `check-no-foreign-refs` passes on the full git history at the time this page is built.
+4. [auto] `check-boundaries --selftest` rejects a temporary file in `game/src/domain/` that imports
+   `@babylonjs/core`.
+5. [auto] The table on this page has one row per file in `scripts/gates/` (checked by a test).
+
+## References
+
+_Filled by the agent (prompt 1, step 2)._
+
+## Rounds
+
+_Filled by the agent (prompt 1, step 5)._
