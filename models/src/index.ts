@@ -28,3 +28,5 @@ export type { BoardHole } from './lane/board-holes';
 export { createPin } from './pins/pin';
 export type { PinHandle, PinOptions } from './pins/pin';
 export { radiusAt as pinRadiusAt } from './pins/pin-profile';
+export { createStrayPins, strayPinPlacements } from './obstacles/stray-pins/stray-pins';
+export type { StrayPinsOptions } from './obstacles/stray-pins/stray-pins';

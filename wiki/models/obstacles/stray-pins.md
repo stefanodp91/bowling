@@ -1,9 +1,9 @@
 ---
 title: Stray pins — a group of pins left standing in one travel lane
 type: spec
-status: planned
+status: built
 depends_on: [models/pins.md]
-canonical: []
+canonical: [models/src/obstacles/stray-pins/, models/src/measures/obstacles.ts, storybook/src/stories/obstacle-stray-pins.stories.tsx]
 verified: 2026-10-26
 ---
 
@@ -35,8 +35,21 @@ The simplest obstacle: something standing in a lane that the pilot avoids by cha
 
 ## References
 
-_Filled by the agent (prompt 1, step 2)._
+- The [pins](../pins.md) page's references (pin measures, look). Left-over pins after a first ball
+  stand apart and irregularly turned, never in the deck's tight 12 in grid with matching logos.
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-26 · round 1 · Built three instanced pins on a 0.22 m triangle, each moved by a seeded
+  ±3 cm and turned by a seeded yaw (`strayPinPlacements(seed)`). 2 shots: the group reads as pins
+  left on the lane, but one pin showed a thin red vertical line — the pin coat's UV seam (an angle
+  based u jumps from 1 to 0 across one column of triangles, squeezing the whole texture into it).
+  Fixed in the [pin](../pins.md) model: u now comes from the lathe column and the texture wraps.
+  3 more shots: no seam; the three crowns face three different ways, so groups do not look copied.
+  Unit tests: for five seeds every base circle is inside the footprint; the footprint (box out to
+  the belly at full jitter) fits in one travel lane; the same seed gives the same group.
+
+## Canonical files
+
+- `STRAY_PINS_FOOTPRINT` reaches the belly of each pin at its largest jitter, so it contains the
+  base circles with margin; height = pin height (0.381 m), above any jump clearance.

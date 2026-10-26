@@ -18,9 +18,8 @@ import { createPinCoatTexture } from './pin-texture';
 const LATHE_TESSELLATION = 48;
 /** A pin's coating is a hard, glossy lacquer over plastic. */
 const COAT_ROUGHNESS = 0.18;
-const FULL_TURN = 2 * Math.PI;
-/** u = 0.75 must face -z, towards the foul line (pin-texture.ts). */
-const U_OFFSET = 1;
+/** Shifts the texture round the pin so the crown (u = 0.75) faces -z, towards the foul line. */
+const U_OFFSET = 0;
 
 const coatMaterial = perScene((scene: Scene) => {
   const material = new PBRMaterial('pin-coat', scene);
@@ -32,15 +31,19 @@ const coatMaterial = perScene((scene: Scene) => {
   return material;
 });
 
-/** UVs from the vertex itself: u around the axis, v = height / PIN_HEIGHT_M (see pin-texture.ts). */
-function assignUvs(mesh: Mesh): void {
+/**
+ * UVs: v = height / PIN_HEIGHT_M; u from the lathe column (the lathe stores one rotated copy of the
+ * profile per column, the last repeating the first), so u runs 0 → 1 round the pin without the
+ * jump an angle-based u has at its seam. The texture wraps, so the offset needs no modulo.
+ */
+function assignUvs(mesh: Mesh, profilePoints: number): void {
   const positions = mesh.getVerticesData(VertexBuffer.PositionKind) ?? [];
+  const vertices = positions.length / 3;
+  const columns = vertices / profilePoints;
   const uvs: number[] = [];
-  for (let i = 0; i < positions.length; i += 3) {
-    const x = positions[i] ?? 0;
-    const y = positions[i + 1] ?? 0;
-    const z = positions[i + 2] ?? 0;
-    uvs.push((Math.atan2(z, x) / FULL_TURN + U_OFFSET) % 1, y / PIN_HEIGHT_M);
+  for (let i = 0; i < vertices; i += 1) {
+    const column = Math.floor(i / profilePoints);
+    uvs.push(column / (columns - 1) + U_OFFSET, (positions[i * 3 + 1] ?? 0) / PIN_HEIGHT_M);
   }
   mesh.setVerticesData(VertexBuffer.UVKind, uvs);
 }
@@ -57,7 +60,7 @@ export const createPin: ModelFactory<PinOptions, PinHandle> = (scene: Scene): Pi
   const root = new TransformNode('pin', scene);
   const shape = lathePath().map(([r, h]) => new Vector3(r, h, 0));
   const mesh = CreateLathe('pin-body', { shape, tessellation: LATHE_TESSELLATION, closed: true }, scene);
-  assignUvs(mesh);
+  assignUvs(mesh, shape.length);
   mesh.material = coatMaterial(scene);
   mesh.parent = root;
   return {

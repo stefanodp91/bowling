@@ -15,6 +15,7 @@ export interface Footprint {
 
 import { BALL_DIAMETER_M, BALL_RADIUS_M } from './ball';
 import { PLAYING_SURFACE_WIDTH_M, TRAVEL_LANE_WIDTH_M } from './lane';
+import { PIN_HEIGHT_M, PIN_MAX_DIAMETER_M } from './pins';
 
 /** Box containing every rotated rectangle (centre x/z, half extents, yaw) of a group. */
 function boxAround(parts: ReadonlyArray<{ x: number; z: number; halfWidth: number; halfLength: number; yawRad: number }>): Omit<Footprint, 'heightM' | 'centreZM'> {
@@ -104,3 +105,24 @@ export const GUTTER_RAMP_M = 2;
 export function wideningGutterFootprint(lengthM: number): Footprint {
   return { halfWidthM: TRAVEL_LANE_WIDTH_M / 2, halfDepthM: lengthM / 2, heightM: 0, centreZM: lengthM / 2 };
 }
+
+// --- Stray pins (wiki/models/obstacles/stray-pins.md) ---
+
+/** Three pins in a small triangle (design: closer than deck spacing, so it reads as left-over pins). */
+export const STRAY_PIN_SPACING_M = 0.22;
+/** Largest seeded offset of each pin from its triangle point, along x and z. */
+export const STRAY_PIN_JITTER_M = 0.03;
+/** The triangle's points, centred on the obstacle: one in front (towards the ball), two behind. */
+export const STRAY_PIN_POINTS: ReadonlyArray<readonly [number, number]> = [
+  [0, -STRAY_PIN_SPACING_M * Math.sin(Math.PI / 3) / 2],
+  [-STRAY_PIN_SPACING_M / 2, STRAY_PIN_SPACING_M * Math.sin(Math.PI / 3) / 2],
+  [STRAY_PIN_SPACING_M / 2, STRAY_PIN_SPACING_M * Math.sin(Math.PI / 3) / 2],
+];
+
+/** The box containing every pin at any jitter, out to its belly; height = pin height. */
+export const STRAY_PINS_FOOTPRINT: Footprint = {
+  halfWidthM: Math.max(...STRAY_PIN_POINTS.map(([x]) => Math.abs(x))) + STRAY_PIN_JITTER_M + PIN_MAX_DIAMETER_M / 2,
+  halfDepthM: Math.max(...STRAY_PIN_POINTS.map(([, z]) => Math.abs(z))) + STRAY_PIN_JITTER_M + PIN_MAX_DIAMETER_M / 2,
+  heightM: PIN_HEIGHT_M,
+  centreZM: 0,
+};

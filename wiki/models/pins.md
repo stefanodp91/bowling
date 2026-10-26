@@ -55,6 +55,8 @@ they tumble, so it must be the regulation profile.
 
 ## Rounds
 
+- 2026-10-26 · round 2 · (from the stray pins round) the coat showed a red seam line; u now comes
+  from the lathe column, the crown turned back to face −z. 2 shots: no seam.
 - 2026-10-26 · round 1 · Built the profile (Catmull-Rom through the table, a dome over the last
   7 % of the height), a lathe with UVs set from each vertex (u around, v = height / 15 in) so the
   generated coat maps exactly: white, two red neck stripes, a three-pointed crown of our own design.
@@ -67,5 +69,7 @@ they tumble, so it must be the regulation profile.
 
 - `PIN_PROFILE` (height, radius pairs, metres) is exported for the physics collider of
   [pins physics](../game/pins.md); `pinRadiusAt(h)` is the smoothed profile the mesh uses.
+- UVs: v = height / 15 in; u from the lathe column (`assignUvs`), not from an angle, so there is no
+  seam where u would jump from 1 to 0 (found on the [stray pins](obstacles/stray-pins.md)).
 - `createPin` returns a `PinHandle` whose `instantiate` places another pin sharing geometry and
   material; the deck scene hides the source pin and places ten instances.
