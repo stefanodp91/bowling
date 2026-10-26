@@ -20,7 +20,7 @@
     "gates:selftest": "node scripts/run-gates.mjs --selftest",
     "check": "npm test && npm run test:scripts && npm run gates && npm run gates:selftest && npm run wiki:lint && npm run wiki:selftest",
     "check:full": "npm run check && node scripts/run-gates.mjs --full",
-    "shot": "node scripts/not-built.mjs tools/shot.md",
+    "shot": "node scripts/shot/shot.mjs",
     "pilot": "node scripts/not-built.mjs pilot/headless-runs.md",
     "bake:tracks": "node scripts/not-built.mjs track/track-format.md",
     "wiki:lint": "node scripts/wiki/lint.mjs",
@@ -31,7 +31,8 @@
     "stats": "node scripts/stats/stats.mjs",
     "audio:build": "node scripts/not-built.mjs audio/sounds.md",
     "audio:check": "node scripts/not-built.mjs audio/sounds.md",
-    "wiki:selftest": "node scripts/wiki/lint.mjs --selftest && node scripts/wiki/index.mjs --selftest && node scripts/wiki/check-acceptance.mjs --selftest && node scripts/wiki/agents-lint.mjs --selftest && node scripts/wiki/context.mjs --selftest && node scripts/wiki/touched.mjs --selftest && node scripts/wiki/acceptance-lock.mjs --selftest"
+    "wiki:selftest": "node scripts/wiki/lint.mjs --selftest && node scripts/wiki/index.mjs --selftest && node scripts/wiki/check-acceptance.mjs --selftest && node scripts/wiki/agents-lint.mjs --selftest && node scripts/wiki/context.mjs --selftest && node scripts/wiki/touched.mjs --selftest && node scripts/wiki/acceptance-lock.mjs --selftest",
+    "shot:verify": "node scripts/shot/verify.mjs"
   },
   "devDependencies": {
     "@types/node": "^24.10.0",

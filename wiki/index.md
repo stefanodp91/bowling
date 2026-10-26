@@ -9,8 +9,8 @@ once the script exists.
 2. [method/gates.md](method/gates.md) — Gates — automatic checks that block a regression · `built`
 3. [method/wiki-tooling.md](method/wiki-tooling.md) — Wiki tooling — lint, index, context, touched, acceptance lock · `built`
 4. [method/stats.md](method/stats.md) — Stats — numbers about how the demo was built · `built`
-5. [storybook/catalog.md](storybook/catalog.md) — Storybook catalogue — one story per model · `planned`
-6. [tools/shot.md](tools/shot.md) — Shot tool — how an agent looks at its own work · `planned`
+5. [storybook/catalog.md](storybook/catalog.md) — Storybook catalogue — one story per model · `built`
+6. [tools/shot.md](tools/shot.md) — Shot tool — how an agent looks at its own work · `built`
 7. [models/ball.md](models/ball.md) — Ball — the bowling ball the autopilot rolls · `planned`
 8. [models/lane.md](models/lane.md) — Lane — 500 m of maple, three travel lanes, gutters and pin deck · `planned`
 9. [models/obstacles/rental-shoes.md](models/obstacles/rental-shoes.md) — Rental shoes — a pair of two-tone bowling shoes in one travel lane · `planned`

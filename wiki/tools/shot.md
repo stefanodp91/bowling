@@ -1,9 +1,9 @@
 ---
 title: Shot tool — how an agent looks at its own work
 type: spec
-status: planned
+status: built
 depends_on: [workspace/monorepo.md, storybook/catalog.md]
-canonical: []
+canonical: [scripts/shot/, scripts/headless/]
 verified: 2026-10-26
 ---
 
@@ -44,8 +44,27 @@ saves an image the agent then opens.
 
 ## References
 
-_Filled by the agent (prompt 1, step 2)._
+- Headless Chromium has no GPU; WebGL runs on SwiftShader through ANGLE
+  (`--use-angle=swiftshader`), and recent Chromium requires `--enable-unsafe-swiftshader` to allow
+  that software fallback (https://chromium.googlesource.com/angle/angle/+/HEAD/doc/DevSetup.md,
+  https://developer.chrome.com/blog/supercharge-web-ai-testing).
+- Playwright `page.screenshot`, `waitForSelector`, `waitForFunction`, `console`/`pageerror` events
+  (https://playwright.dev/docs/api/class-page).
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-26 · round 1 · Built `shot.mjs`, the shared `scripts/headless/` (browser flags, page
+  with error capture, pixel reader, server start/reuse) and `npm run shot:verify`. Shots: 6.
+  Results: (1) `story:models-placeholder` → 20 981-byte PNG, centre pixel rgb(183,134,85), not the
+  background #1B1D22; (2) `story:does-not-exist` → exit 1, «story «does-not-exist» does not exist
+  in the catalogue»; (3) `game:pause=1` → skipped with a printed notice until
+  [run](../game/run.md) is built. A story is ready in 1.4 s once Storybook runs.
+
+## Canonical files
+
+- `npm run shot:verify` checks criteria 1–3 here and criterion 2 of the
+  [catalogue](../storybook/catalog.md) for every story; each model page runs it after adding its
+  story. It starts the servers it needs and stops only those it started.
+- File names use the UTC time; `--angle` is passed to the story as `args=angle:<name>`.
+- The game's ready signal is `window.__bowling.ready === true` ([run](../game/run.md), rule 8).
+- SwiftShader's «GPU stall due to ReadPixels» notes are not errors and are ignored.
