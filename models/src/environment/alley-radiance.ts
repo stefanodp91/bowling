@@ -17,7 +17,7 @@ const HORIZON_RGB: Rgb = [0.07, 0.07, 0.1];
 const FLOOR_RGB: Rgb = [0.03, 0.025, 0.02];
 
 /** Strips repeat across x every this many units of the ceiling plane (tan of the angle). */
-const STRIP_PERIOD = 0.9;
+const STRIP_PERIOD = 1.6;
 /** Fraction of each period that is lit. */
 const STRIP_DUTY = 0.12;
 /** Below this elevation (y of the unit direction) the ceiling fades into the horizon. */

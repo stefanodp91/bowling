@@ -1,9 +1,9 @@
 ---
 title: Ball — the bowling ball the autopilot rolls
 type: spec
-status: planned
+status: built
 depends_on: [storybook/catalog.md, tools/shot.md]
-canonical: []
+canonical: [models/src/measures/ball.ts, models/src/ball/, models/src/procedural/, models/src/materials/scene-cache.ts, storybook/src/stories/ball.stories.tsx, storybook/src/stories/ball-house.stories.tsx]
 verified: 2026-10-26
 ---
 
@@ -28,8 +28,9 @@ immediately as a real bowling ball.
 3. Variants via options: `variant: 'player' | 'house'`. `player` is a deep blue-violet marble;
    `house` is a plain, slightly scuffed red ball with a printed weight number, for the
    returning-ball obstacle.
-4. The model does not spin itself: the run rotates `root` so that angular speed matches linear speed
-   (`ω = v / r`).
+4. The model does not spin itself: the run rotates the handle's `spin` node — the ball's centre,
+   child of `root` — so that angular speed matches linear speed (`ω = v / r`). (Rotating `root`
+   itself would swing the ball around its ground contact point, where conventions put the origin.)
 
 ## Acceptance criteria
 
@@ -42,9 +43,37 @@ immediately as a real bowling ball.
 
 ## References
 
-_Filled by the agent (prompt 1, step 2): regulation size and weight, finger-hole layouts, photos of
-reactive-resin covers._
+- USBC limits: weight ≤ 16 lb (7.26 kg), diameter 8.500–8.595 in (21.59–21.83 cm), at most five
+  gripping holes, one per finger and one for the thumb (https://en.wikipedia.org/wiki/Bowling_ball;
+  USBC summary https://images.bowl.com/bowl/media/legacy/internap/bowl/associations/pdfs/BallSpecSummary.pdf;
+  Ten-Pin Canada https://tenpincanada.com/home/resources/equipment-specifications/).
+- Conventional grip, from drilling practice: thumb hole ≈ 1 in, finger holes ≈ 3/4 in, span ≈ 4¼–4½
+  in, bridge ≈ ¼ in between the fingers; values in `measures/ball.ts`.
+- Reactive-resin covers show broad smeared swirls («pearl» or «hybrid» marbling) under a high
+  polish; house balls are polyester, one plain colour, often scuffed, with the weight engraved near
+  the grip (manufacturer product photos, e.g. https://www.stormbowling.com/balls,
+  https://www.brunswickbowling.com/bowling-balls — looked at, not downloaded).
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-26 · round 1 · Built measures, geometry (a 96-segment sphere whose vertices inside each
+  hole are pushed in, shaded dark by vertex colour), generated covers (3D value noise sampled on
+  the sphere, so no seam) and the two stories. 14 shots. Wrong, in order: (a) the marble read as a
+  contour map — «a planet» — because thin sharp veins drew coastlines → two layers of domain-warped
+  noise, broad soft bands; (b) only the thumb hole was visible, the fingers sat on the silhouette →
+  the grip is tilted −1.1 rad towards the viewer, baked into the vertices; (c) tilting the mesh with
+  a rotation inflated its world bounding box (a rotated AABB): the ball «went» 4 cm under the floor
+  and the stage framed it too far → bake instead of rotate; (d) the house ball's weight was printed
+  on the hidden side and then mirrored → label beside the grip, columns against u. Now: default
+  and close-up show a polished blue-violet ball with three dark holes and ceiling-light
+  reflections; the house ball is plain scuffed red with «16» beside the grip. Unit tests:
+  diameter within ±2 mm on three axes for both variants, ≥ 3 separate recesses, lowest point at
+  y = 0. Stories ready in 2.2 s and 1.6 s.
+
+## Canonical files
+
+- `createBall(scene, { variant })` returns a `BallHandle`: `root` at the contact point, `spin` at
+  the centre. Covers are fixed seeds per variant (`COVER_SEEDS`), so every instance shares one
+  material per scene through `perScene` (`models/src/materials/scene-cache.ts`).
+- `models/src/procedural/` holds the seeded PRNG (mulberry32), 3D value noise with fBm, and 5×7
+  digit glyphs; any model that prints a number uses them.

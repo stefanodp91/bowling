@@ -23,3 +23,4 @@ investigations goes here, never in the pages (prompt 3, step 3).
 - 2026-10-26 · storybook/catalog.md, tools/shot.md · ModelStage, stage floor, generated alley
   environment, `npm run shot` and `npm run shot:verify` built; story ids are `models-<name>` with
   one `Default` story each.
+- 2026-10-26 · models/ball.md · ball and house ball built; rule 4 now names the `spin` node (rotating `root` would orbit the contact point).
