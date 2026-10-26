@@ -23,6 +23,13 @@ export interface StageRequest<Options> {
   readonly options: Options;
   readonly angle: StageAngle;
   readonly onReady: () => void;
+  /** Frame this sphere instead of the model's bounds (a scene story shows a part of a large model). */
+  readonly frame?: StageFrame;
+}
+
+export interface StageFrame {
+  readonly centre: readonly [number, number, number];
+  readonly radiusM: number;
 }
 
 /** Creates the stage camera; the mount then frames it on the model. */
@@ -44,11 +51,12 @@ export function mountStage<Options>(scene: Scene, request: StageRequest<Options>
 
   const model = request.factory(scene, request.options);
   const { min, max } = model.root.getHierarchyBoundingVectors();
-  const centre = min.add(max).scale(0.5);
-  const radius = max.subtract(min).length() / 2;
+  const centre = request.frame === undefined ? min.add(max).scale(0.5) : new Vector3(...request.frame.centre);
+  const radius = request.frame?.radiusM ?? max.subtract(min).length() / 2;
   const extent = Math.max(max.x - min.x, max.z - min.z);
   const floor = createStageFloor(scene, { sizeM: Math.max(FLOOR_MIN_SIZE_M, extent * FLOOR_SIZE_FACTOR) });
-  floor.root.position.set(centre.x, 0, centre.z);
+  // The floor goes under the model's lowest point: gutters and pits reach below the lane surface.
+  floor.root.position.set(centre.x, Math.min(0, min.y), centre.z);
   frameCamera(scene, centre, radius, request.angle);
 
   const startMs = performance.now();

@@ -11,5 +11,5 @@ export interface ModelHandle {
   dispose(): void;
 }
 
-/** A function that builds one model in a scene. */
-export type ModelFactory<Options> = (scene: Scene, options: Options) => ModelHandle;
+/** A function that builds one model in a scene; a model may return a richer handle. */
+export type ModelFactory<Options, Handle extends ModelHandle = ModelHandle> = (scene: Scene, options: Options) => Handle;

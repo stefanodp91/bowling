@@ -56,7 +56,7 @@ const MATERIALS: Readonly<Record<BallVariant, (scene: Scene) => PBRMaterial>> = 
 };
 
 /** The bowling ball (wiki/models/ball.md). Root at the ground contact point, ball centre above it. */
-export const createBall: ModelFactory<BallOptions> = (scene: Scene, { variant }): BallHandle => {
+export const createBall: ModelFactory<BallOptions, BallHandle> = (scene: Scene, { variant }): BallHandle => {
   const root = new TransformNode(`ball-${variant}`, scene);
   const spin = new TransformNode(`ball-${variant}-spin`, scene);
   spin.parent = root;

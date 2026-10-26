@@ -24,3 +24,4 @@ investigations goes here, never in the pages (prompt 3, step 3).
   environment, `npm run shot` and `npm run shot:verify` built; story ids are `models-<name>` with
   one `Default` story each.
 - 2026-10-26 · models/ball.md · ball and house ball built; rule 4 now names the `spin` node (rotating `root` would orbit the contact point).
+- 2026-10-26 · models/lane.md, storybook/catalog.md · lane segment and pin deck built; the stage floor now sits under a model's lowest point; factories may return richer handles (`ModelFactory<Options, Handle>`).
