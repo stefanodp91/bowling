@@ -64,4 +64,5 @@ Make a one-minute run that nobody plays watchable from a projector at the back o
   (`scene/camera/slow-motion.test.ts`): the same deck through the session at 60 Hz frames, once at
   time scale 1 and once with `timeScaleAt` — 10 pins down in both, in 195 and 285 frames. Physics
   advances once per simulation step, so slow motion only changes how many frames the steps take.
-  The game applies `timeScaleAt(deck.sinceContactS)` to every frame.
+  The game applies `timeScaleAt(deck.sinceContactS)` to every frame. Record:
+  [deck tests 2026-10-27](../records/deck-tests-20261027.md).

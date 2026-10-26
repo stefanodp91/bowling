@@ -41,4 +41,4 @@ once the script exists.
 
 ## Records
 
-_None yet._
+- [records/deck-tests-20261027.md](records/deck-tests-20261027.md) — Deck tests — pocket and off-pocket pins down in Havok

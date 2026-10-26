@@ -36,3 +36,4 @@ investigations goes here, never in the pages (prompt 3, step 3).
 - 2026-10-27 · game/camera.md · camera rig and slow-motion clock built; page stays planned until the deck simulation exists (criterion 2).
 - 2026-10-27 · game/impacts.md, review.md · impacts built (domain detection and cost, Havok knock-away); the missing Havok adapter of the graphic engine written in «To judge».
 - 2026-10-27 · game/pins.md, game/camera.md · pins physics built (Havok deck, knocked-down rule, score); camera closed with its slow-motion test.
+- 2026-10-27 · records/deck-tests-20261027.md · deck test record (pocket 9, off-pocket 1, deterministic, slow motion neutral) linked from pins physics and camera.

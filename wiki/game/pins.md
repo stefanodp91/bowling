@@ -87,7 +87,7 @@ Havok decides how many pins fall.
   (lane to the deck's end, pit floor, masking wall; nothing beside the lane), the pit measures
   moved into `models/src/measures/lane.ts` so model and colliders share them. After that: pocket
   9 down (a pin rebounds from the wall), side 1, identical twice. 6 shots. The exact counts are in
-  the verification record linked below.
+  the record [deck tests 2026-10-27](../records/deck-tests-20261027.md).
 
 ## Canonical files
 
