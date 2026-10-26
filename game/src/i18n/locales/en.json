@@ -7,5 +7,36 @@
     "physics": "The physics engine could not start: {{detail}}",
     "retry": "Retry"
   },
-  "loading": "Loading the lane…"
+  "loading": "Loading the lane…",
+  "hud": {
+    "distance": "{{metres}} m",
+    "distanceLabel": "Distance",
+    "speed": "{{kmh}} km/h",
+    "speedLabel": "Speed",
+    "impacts": "Impacts: {{count}}",
+    "track": "Track {{id}}",
+    "progress": "Distance travelled"
+  },
+  "skill": {
+    "label": "Autopilot skill",
+    "perfect": "Perfect",
+    "good": "Good",
+    "sloppy": "Sloppy",
+    "hint": "Keys 1, 2, 3"
+  },
+  "countdown": {
+    "roll": "Roll"
+  },
+  "end": {
+    "score": "{{score}} / 10",
+    "strike": "STRIKE!",
+    "impacts": "Impacts: {{count}}",
+    "skill": "Skill: {{skill}}",
+    "runAgain": "Run again",
+    "autoRestart": "Next run in {{seconds}} s",
+    "pins": "Pins: standing are solid, down are faded",
+    "pin": "Pin {{pin}}, {{state}}",
+    "pinDown": "down",
+    "pinStanding": "standing"
+  }
 }

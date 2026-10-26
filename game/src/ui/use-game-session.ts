@@ -10,7 +10,7 @@ import { loadHavok, type HavokInstance } from '../scene';
 
 export type SessionState =
   | { readonly status: 'loading' }
-  | { readonly status: 'running'; readonly session: Session; readonly havok: HavokInstance }
+  | { readonly status: 'running'; readonly session: Session; readonly havok: HavokInstance; readonly playOrder: readonly string[] }
   | { readonly status: 'failed'; readonly message: string };
 
 const fetchJson = (url: string) => fetch(url);
@@ -28,7 +28,7 @@ export function useGameSession(query: GameQuery, attempt: number, t: TFunction):
     let uninstall = (): void => {};
     setState({ status: 'loading' });
     Promise.all([loadTrack(fetchJson, query.track), loadHavok()])
-      .then(([{ track }, havok]) => {
+      .then(([{ track, playOrder }, havok]) => {
         if (cancelled) return;
         const session = createSession({
           track,
@@ -39,7 +39,7 @@ export function useGameSession(query: GameQuery, attempt: number, t: TFunction):
           ...(query.speedup === undefined ? {} : { speedup: query.speedup }),
         });
         uninstall = installTestHook(session.store);
-        setState({ status: 'running', session, havok });
+        setState({ status: 'running', session, havok, playOrder });
       })
       .catch((error: unknown) => {
         console.error('track loading failed', error);

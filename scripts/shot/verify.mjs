@@ -59,8 +59,26 @@ if (!runIsBuilt) {
     record('game:pause=1 writes a PNG', statSync(file).size > 0, file);
     const shot = await takeShot({ target: GAME_AT_250 });
     await checkNotBackground(`${GAME_AT_250}: centre region is not background`, shot.png, FOG);
+    await checkHud();
   } catch (error) {
     record('game shots', false, error.message);
+  }
+}
+
+/** wiki/game/hud.md criterion 3: the 250 m view shows the progress bar and the three skill buttons. */
+async function checkHud() {
+  const server = await ensureServer('game');
+  const browser = await launchBrowser();
+  try {
+    const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
+    await page.goto(`${server.base}/?${GAME_AT_250.replace(/^game:/, '')}`);
+    await page.waitForFunction(() => window.__bowling?.ready === true, undefined, { timeout: 20_000 });
+    const bar = await page.locator('progress').isVisible();
+    const buttons = await page.locator('button[aria-pressed]').evaluateAll((all) => all.filter((b) => b.getBoundingClientRect().height > 0).length);
+    record(`${GAME_AT_250}: progress bar and three skill buttons visible`, bar && buttons === 3, `progress ${bar ? 'visible' : 'missing'}, ${buttons} skill buttons`);
+  } finally {
+    await browser.close();
+    server.stop();
   }
 }
 

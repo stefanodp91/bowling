@@ -1,9 +1,9 @@
 ---
 title: HUD — run information, skill buttons, end screen
 type: spec
-status: planned
+status: built
 depends_on: [game/pins.md, pilot/autopilot.md]
-canonical: []
+canonical: [game/src/config/hud.ts, game/src/ui/, game/src/i18n/, game/src/app/snapshot.ts]
 verified: 2026-10-26
 ---
 
@@ -54,8 +54,35 @@ change how well the autopilot drives, live, with one click.
 
 ## References
 
-_Filled by the agent (prompt 1, step 2): bowling score-display conventions, pin diagram layouts._
+- Scoreboards draw the pins as a triangle seen from the bowler — 7-8-9-10 on top, the head pin at
+  the bottom — standing pins filled, fallen ones empty or dimmed
+  (https://en.wikipedia.org/wiki/Ten-pin_bowling#Scoring and alley scoring screens).
+- WCAG 2.2: text contrast at least 4.5:1 (1.4.3) and no information by colour alone (1.4.1)
+  (https://www.w3.org/TR/WCAG22/); `aria-pressed` for toggle buttons
+  (https://www.w3.org/WAI/ARIA/apg/patterns/button/).
+- React `useSyncExternalStore` to read an external store (https://react.dev/reference/react/useSyncExternalStore).
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-27 · round 1 · Built the HUD from one store: run information (a native `<progress>` —
+  the first draft set a width through a ref to dodge the no-`style=` rule, which is the rule's
+  intent broken, so it was replaced), skill buttons with `aria-pressed`, a filled background, a
+  thicker border and a marker above the active one, keys 1–3; a 3-2-1 countdown over the ready
+  phase and «Roll» over the first 5 m (metres, so `?at=` shots show no banner); the end screen
+  with a scoreboard pin diagram (standing solid, down hollow and dashed), «n / 10», «STRIKE!» only
+  for ten, impacts, the skill at the hand-over, «Run again» to the next track of `index.json`
+  keeping the skill, and a 10 s auto restart; a loading screen. Every string from `en.json`;
+  panels are near-black at 78–86 % opacity under near-white text. 2 shots plus a browser probe:
+  at 250 m the bar, numbers and buttons read clearly; the end screen shows 9 / 10 with pin 8
+  standing; key «1» switched to Perfect; «Run again» opened `?track=lane-02&skill=perfect`.
+  Tests: component tests (click Sloppy, keys 1–3, progress value, STRIKE! only for ten) and the
+  UI-rules test (no literal text, no `style=`, with its own rejection cases). `shot:verify` checks
+  criterion 3 (progress bar and three skill buttons visible).
+
+## Canonical files
+
+- `ui/hud/Hud.tsx` composes `RunInfo`, `Countdown`, `EndScreen` (with `PinDiagram`) and
+  `SkillButtons`; components read `GameSnapshot` through `useSnapshot(session.store)` and change
+  only the skill (`session.setSkill`).
+- The snapshot carries `resultSkill`, the skill active when the ball was handed to the deck.
+- `ui/next-run.ts` builds the next run's query; `ui/ui-rules.test.ts` enforces criterion 2.

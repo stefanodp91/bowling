@@ -45,12 +45,13 @@ export interface Session {
   markReady(): void;
 }
 
-function snapshotOf(world: World, track: Track, skill: Skill, ready: boolean): GameSnapshot {
+function snapshotOf(world: World, track: Track, skill: Skill, ready: boolean, resultSkill: Skill | null): GameSnapshot {
   const state = world.run;
   return {
     ready,
     trackId: track.trackId,
     phase: state.phase,
+    phaseS: state.phaseS,
     z: state.z,
     x: state.x,
     speedMps: state.speedMps,
@@ -58,6 +59,8 @@ function snapshotOf(world: World, track: Track, skill: Skill, ready: boolean): G
     impacts: world.impacts.count,
     skill,
     score: world.deck.pinsDown === null ? null : world.deck.pinsDown.length,
+    pinsDown: world.deck.pinsDown,
+    resultSkill,
     runS: state.runS,
   };
 }
@@ -69,9 +72,10 @@ export function createSession({ track, skill: initialSkill, startAtZ, speedup, c
   let carryS = 0;
   let skill = initialSkill;
   let ready = false;
+  let resultSkill: Skill | null = null;
   let ports: { readonly physics: PhysicsPort; readonly deck: DeckPort } | null = null;
-  const store = createStore(snapshotOf(world, track, skill, ready));
-  const publish = () => store.set(snapshotOf(world, track, skill, ready));
+  const store = createStore(snapshotOf(world, track, skill, ready, resultSkill));
+  const publish = () => store.set(snapshotOf(world, track, skill, ready, resultSkill));
   return {
     track,
     store,
@@ -86,6 +90,7 @@ export function createSession({ track, skill: initialSkill, startAtZ, speedup, c
           ports.physics.step();
           world = deckStep(world, ports.deck, SIM_STEP_S);
         }
+        if (resultSkill === null && world.deck.handedOff) resultSkill = skill;
         onStep?.(world, result.events);
       }
       if (plan.steps > 0) publish();
