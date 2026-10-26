@@ -29,3 +29,4 @@ investigations goes here, never in the pages (prompt 3, step 3).
 - 2026-10-26 · models/obstacles/returning-ball.md · returning ball built on the house ball.
 - 2026-10-26 · models/obstacles/sweep-bar.md · sweep bar built in two rounds; footprint height derived from the swing.
 - 2026-10-26 · models/obstacles/widening-gutter.md, models/lane.md · widening gutter built; lane boards gained a hole plugin; footprints gained `centreZM`.
+- 2026-10-26 · models/pins.md, AGENTS.md · pin model and layout built; the scenes-pin-deck story now holds the ten pins; material-plugin trap recorded.

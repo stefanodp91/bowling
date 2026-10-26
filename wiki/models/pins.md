@@ -1,9 +1,9 @@
 ---
 title: Pins — the ten regulation pins
 type: spec
-status: planned
+status: built
 depends_on: [storybook/catalog.md, tools/shot.md]
-canonical: []
+canonical: [models/src/measures/pins.ts, models/src/pins/, storybook/src/stories/pin.stories.tsx, storybook/src/scenes/pin-deck-scene.ts]
 verified: 2026-10-26
 ---
 
@@ -41,9 +41,31 @@ they tumble, so it must be the regulation profile.
 
 ## References
 
-_Filled by the agent (prompt 1, step 2): the regulation pin profile table, pin spot layout and
-numbering, pin weight range, photos._
+- Pin: 15 in tall, ≈ 4.75 in at the widest, base ≈ 2.03 in, 3 lb 6 oz – 3 lb 10 oz
+  (https://dimensions.com/element/ten-pin-bowling-pin; https://en.wikipedia.org/wiki/Tenpin_bowling;
+  height tolerance 14.969–15.031 in in patent US 8,602,906, https://patents.justia.com/patent/8602906).
+- The profile table in `measures/pins.ts` (diameter at 16 heights, belly 4.766 in at 4.5 in, neck
+  1.797 in at 10 in) is the USBC pin specification as reproduced by equipment references; the
+  primary USBC document was not reachable from this session, so the table is the one point a human
+  should check against it (see [review](../review.md)). USBC procedures list the measured heights:
+  https://bowl.com/equipment-specifications2024/standard-operating-procedures.
+- Layout: spots 12 in apart in an equilateral triangle, pin 1 nearest the bowler, rows 2–3, 4–6,
+  7–10 numbered left to right from the foul line (Wikipedia «Tenpin bowling»).
+- Photos: glossy white coat, two red stripes round the neck, a maker's logo on the upper belly.
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-26 · round 1 · Built the profile (Catmull-Rom through the table, a dome over the last
+  7 % of the height), a lathe with UVs set from each vertex (u around, v = height / 15 in) so the
+  generated coat maps exactly: white, two red neck stripes, a three-pointed crown of our own design.
+  `pinSpots()` gives the ten spots. 2 shots: the close-up shows a pin with the regulation belly and
+  neck, stripes at the neck, crown below; the deck scene shows the ten pins on their spots, pin 1
+  nearest the lane. Unit tests: height and belly within ±2 mm, 18 neighbouring pairs 0.3048 m
+  ±1 mm apart, pin 1 nearest to z = 0, rows numbered left to right.
+
+## Canonical files
+
+- `PIN_PROFILE` (height, radius pairs, metres) is exported for the physics collider of
+  [pins physics](../game/pins.md); `pinRadiusAt(h)` is the smoothed profile the mesh uses.
+- `createPin` returns a `PinHandle` whose `instantiate` places another pin sharing geometry and
+  material; the deck scene hides the source pin and places ten instances.

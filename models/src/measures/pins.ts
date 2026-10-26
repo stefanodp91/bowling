@@ -4,6 +4,41 @@
 
 const METRES_PER_INCH = 0.0254;
 
+/** Pin height: 15 in (USBC; tolerance ± 1/32 in). */
+export const PIN_HEIGHT_M = 15 * METRES_PER_INCH;
+/** Pin mass: 1.53 kg, 3 lb 6 oz, inside the USBC range 3 lb 6 oz – 3 lb 10 oz. */
+export const PIN_MASS_KG = 1.53;
+
+/**
+ * The regulation profile: diameter (in) at height above the base (in), from the USBC pin
+ * specification table as reproduced by equipment references (wiki/models/pins.md, References).
+ * The top is a dome closing at 15 in.
+ */
+const PROFILE_INCHES: ReadonlyArray<readonly [number, number]> = [
+  [0, 2.031],
+  [0.75, 2.828],
+  [2.25, 3.906],
+  [3.375, 4.51],
+  [4.5, 4.766],
+  [5.875, 4.546],
+  [7.25, 3.574],
+  [8.625, 2.475],
+  [9.375, 1.965],
+  [10, 1.797],
+  [10.875, 1.87],
+  [11.75, 2.239],
+  [12.5, 2.527],
+  [13.5, 2.523],
+  [14.5, 1.734],
+  [15, 0],
+];
+
+/** The profile in metres, as (height, radius) pairs, base to top: for the lathe and the collider. */
+export const PIN_PROFILE: ReadonlyArray<readonly [number, number]> = PROFILE_INCHES.map(([h, d]) => [h * METRES_PER_INCH, (d / 2) * METRES_PER_INCH]);
+
+/** The belly: 4.766 in ≈ 0.121 m, the widest point. */
+export const PIN_MAX_DIAMETER_M = 2 * Math.max(...PIN_PROFILE.map(([, r]) => r));
+
 /** Pin spots are 12 in apart, centre to centre, in an equilateral triangle (USBC). */
 export const PIN_SPACING_M = 12 * METRES_PER_INCH;
 /** Distance between rows along the lane: 12 in × sin 60°. */

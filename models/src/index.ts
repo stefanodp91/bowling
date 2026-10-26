@@ -25,3 +25,6 @@ export { createWideningGutter } from './obstacles/widening-gutter/widening-gutte
 export type { WideningGutterOptions } from './obstacles/widening-gutter/widening-gutter';
 export { openBoardHole, MAX_BOARD_HOLES } from './lane/board-holes';
 export type { BoardHole } from './lane/board-holes';
+export { createPin } from './pins/pin';
+export type { PinHandle, PinOptions } from './pins/pin';
+export { radiusAt as pinRadiusAt } from './pins/pin-profile';

@@ -122,3 +122,7 @@ Traps found on the field go here, each with the symptom that reveals it.
   asynchronous page error says «StandardMaterial needs to be imported before…». Every model sets
   its own PBR material ([model conventions](wiki/models/conventions.md)).
 - **Reactylon's canvas has no size.** Symptom: a 300×150 canvas. The page or stage CSS sizes it.
+- **A Babylon material plugin's uniform never arrives.** Symptom: the injected GLSL compiles but
+  behaves as if every uniform were zero. `hardBindForSubMesh` is an «extra event»: set
+  `registerForExtraEvents = true` before enabling the plugin, and mark the material's defines dirty
+  if it was already compiled ([widening gutter](wiki/models/obstacles/widening-gutter.md)).
