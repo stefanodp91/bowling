@@ -19,7 +19,7 @@ once the script exists.
 12. [models/obstacles/widening-gutter.md](models/obstacles/widening-gutter.md) — Widening gutter — the gutter eats one travel lane for a stretch · `built`
 13. [models/pins.md](models/pins.md) — Pins — the ten regulation pins · `built`
 14. [models/obstacles/stray-pins.md](models/obstacles/stray-pins.md) — Stray pins — a group of pins left standing in one travel lane · `built`
-15. [track/track-format.md](track/track-format.md) — Track format — the lane as a JSON file, its bake and its gate · `planned`
+15. [track/track-format.md](track/track-format.md) — Track format — the lane as a JSON file, its bake and its gate · `built`
 16. [game/run.md](game/run.md) — Run — the ball's 500 m, from foul line to pin deck · `planned`
 17. [game/camera.md](game/camera.md) — Camera — chase, impact view and slow motion · `planned`
 18. [game/impacts.md](game/impacts.md) — Impacts — what an obstacle costs · `planned`

@@ -31,3 +31,4 @@ investigations goes here, never in the pages (prompt 3, step 3).
 - 2026-10-26 · models/obstacles/widening-gutter.md, models/lane.md · widening gutter built; lane boards gained a hole plugin; footprints gained `centreZM`.
 - 2026-10-26 · models/pins.md, AGENTS.md · pin model and layout built; the scenes-pin-deck story now holds the ten pins; material-plugin trap recorded.
 - 2026-10-26 · models/obstacles/stray-pins.md, models/pins.md · stray pins built; pin coat UV seam fixed.
+- 2026-10-26 · track/track-format.md, method/gates.md · tracks: schema, generator, rules, bake, check-tracks built; gates now run under tsx to import game TypeScript.

@@ -19,9 +19,16 @@ const gates = readdirSync(GATES_DIR)
   .filter((f) => selftest || full || !HEADLESS_GATES.has(f))
   .sort();
 
+/**
+ * Gates may import the game's TypeScript (config, domain): tsx loads it, with the game's tsconfig
+ * for its path aliases (@models/...).
+ */
+const TS_LOADER = ['--import', 'tsx'];
+const TS_ENV = { ...process.env, TSX_TSCONFIG_PATH: join(REPO_ROOT, 'game/tsconfig.json') };
+
 const failed = gates.filter((gate) => {
-  const args = [join(GATES_DIR, gate), ...(selftest ? ['--selftest'] : [])];
-  return spawnSync(process.execPath, args, { stdio: 'inherit', cwd: REPO_ROOT }).status !== 0;
+  const args = [...TS_LOADER, join(GATES_DIR, gate), ...(selftest ? ['--selftest'] : [])];
+  return spawnSync(process.execPath, args, { stdio: 'inherit', cwd: REPO_ROOT, env: TS_ENV }).status !== 0;
 });
 
 if (failed.length > 0) {

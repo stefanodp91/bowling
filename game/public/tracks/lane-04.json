@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "trackId": "lane-04",
+  "seed": 1004,
+  "lengthM": 500,
+  "lanes": 3,
+  "obstacles": [
+    {
+      "kind": "stray-pins",
+      "lane": 1,
+      "z": 31.27
+    },
+    {
+      "kind": "rental-shoes",
+      "lane": 0,
+      "z": 56.77
+    },
+    {
+      "kind": "returning-ball",
+      "lane": 2,
+      "z": 115.71,
+      "speedMps": 2.75
+    },
+    {
+      "kind": "widening-gutter",
+      "lane": 0,
+      "z": 104.21,
+      "lengthM": 10.01
+    },
+    {
+      "kind": "stray-pins",
+      "lane": 0,
+      "z": 138.02
+    },
+    {
+      "kind": "rental-shoes",
+      "lane": 0,
+      "z": 160.52
+    },
+    {
+      "kind": "rental-shoes",
+      "lane": 1,
+      "z": 181.95
+    },
+    {
+      "kind": "returning-ball",
+      "lane": 2,
+      "z": 291.03,
+      "speedMps": 3.2
+    },
+    {
+      "kind": "returning-ball",
+      "lane": 2,
+      "z": 304.87,
+      "speedMps": 2.68
+    },
+    {
+      "kind": "stray-pins",
+      "lane": 2,
+      "z": 242.45
+    },
+    {
+      "kind": "stray-pins",
+      "lane": 0,
+      "z": 260.75
+    },
+    {
+      "kind": "stray-pins",
+      "lane": 2,
+      "z": 279.4
+    },
+    {
+      "kind": "widening-gutter",
+      "lane": 1,
+      "z": 300.27,
+      "lengthM": 15.66
+    },
+    {
+      "kind": "rental-shoes",
+      "lane": 2,
+      "z": 333.37
+    },
+    {
+      "kind": "returning-ball",
+      "lane": 2,
+      "z": 465.49,
+      "speedMps": 2.59
+    },
+    {
+      "kind": "sweep-bar",
+      "z": 371.44
+    },
+    {
+      "kind": "stray-pins",
+      "lane": 1,
+      "z": 389.26
+    },
+    {
+      "kind": "stray-pins",
+      "lane": 1,
+      "z": 407.76
+    },
+    {
+      "kind": "stray-pins",
+      "lane": 2,
+      "z": 423.28
+    },
+    {
+      "kind": "stray-pins",
+      "lane": 2,
+      "z": 438.68
+    },
+    {
+      "kind": "rental-shoes",
+      "lane": 0,
+      "z": 454.75
+    }
+  ]
+}

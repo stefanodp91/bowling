@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "trackId": "lane-01",
+  "seed": 1001,
+  "lengthM": 500,
+  "lanes": 3,
+  "obstacles": [
+    {
+      "kind": "stray-pins",
+      "lane": 0,
+      "z": 31.4
+    },
+    {
+      "kind": "returning-ball",
+      "lane": 1,
+      "z": 90.34,
+      "speedMps": 3.95
+    },
+    {
+      "kind": "returning-ball",
+      "lane": 0,
+      "z": 115.26,
+      "speedMps": 2.7
+    },
+    {
+      "kind": "returning-ball",
+      "lane": 2,
+      "z": 150.64,
+      "speedMps": 3.01
+    },
+    {
+      "kind": "returning-ball",
+      "lane": 2,
+      "z": 182.36,
+      "speedMps": 2.91
+    },
+    {
+      "kind": "rental-shoes",
+      "lane": 1,
+      "z": 152.27
+    },
+    {
+      "kind": "returning-ball",
+      "lane": 0,
+      "z": 247.93,
+      "speedMps": 3.03
+    },
+    {
+      "kind": "sweep-bar",
+      "z": 195.11
+    },
+    {
+      "kind": "returning-ball",
+      "lane": 2,
+      "z": 305.21,
+      "speedMps": 3.01
+    },
+    {
+      "kind": "rental-shoes",
+      "lane": 2,
+      "z": 238.21
+    },
+    {
+      "kind": "rental-shoes",
+      "lane": 1,
+      "z": 256.69
+    },
+    {
+      "kind": "stray-pins",
+      "lane": 0,
+      "z": 274.75
+    },
+    {
+      "kind": "stray-pins",
+      "lane": 2,
+      "z": 294.71
+    },
+    {
+      "kind": "returning-ball",
+      "lane": 1,
+      "z": 468.24,
+      "speedMps": 3.9
+    },
+    {
+      "kind": "stray-pins",
+      "lane": 1,
+      "z": 333.24
+    },
+    {
+      "kind": "rental-shoes",
+      "lane": 1,
+      "z": 350.85
+    },
+    {
+      "kind": "stray-pins",
+      "lane": 2,
+      "z": 370.01
+    },
+    {
+      "kind": "stray-pins",
+      "lane": 0,
+      "z": 386.48
+    },
+    {
+      "kind": "rental-shoes",
+      "lane": 0,
+      "z": 402.77
+    },
+    {
+      "kind": "stray-pins",
+      "lane": 0,
+      "z": 419.08
+    },
+    {
+      "kind": "stray-pins",
+      "lane": 1,
+      "z": 433.58
+    },
+    {
+      "kind": "rental-shoes",
+      "lane": 2,
+      "z": 450.57
+    }
+  ]
+}

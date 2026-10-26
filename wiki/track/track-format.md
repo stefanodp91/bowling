@@ -1,9 +1,9 @@
 ---
 title: Track format — the lane as a JSON file, its bake and its gate
 type: spec
-status: planned
+status: built
 depends_on: [workspace/monorepo.md, method/gates.md]
-canonical: []
+canonical: [game/src/config/track.ts, game/src/domain/track/, game/src/domain/random.ts, game/src/domain/run/speed.ts, game/public/tracks/, scripts/tracks/, scripts/gates/check-tracks.mjs]
 verified: 2026-10-26
 ---
 
@@ -86,8 +86,42 @@ scene draws, the run collides with and the autopilot reads. Same file, same run.
 
 ## References
 
-_Filled by the agent (prompt 1, step 2)._
+- zod 4: `z.discriminatedUnion` on `kind`, `.strict()` objects, `safeParse` issues with a `path`
+  (https://zod.dev/api#discriminated-unions, https://zod.dev/error-formatting).
+- Seeded generation with a small PRNG (mulberry32) so a seed reproduces a level exactly
+  (https://gist.github.com/tommyettinger/46a874533244883189143505d203312c — the algorithm's
+  public description; no code copied).
+- Motion with speed linear in distance, v = a + b·z: dz/dt = a + b·z, so t(z) = ln(v(z)/a) / b
+  (separable ODE, https://en.wikipedia.org/wiki/Separation_of_variables).
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-26 · round 1 · Built the zod schema, the parser that names the failing field, the pure
+  generator, the rules shared by generator and gate, `npm run bake:tracks` and `check-tracks`.
+  Two design points the rules did not spell out, decided here: (a) an obstacle is checked where
+  the ball **meets** it — a returning ball's file `z` is where it starts, so the rules use the
+  point where a clean run (speed always at its target) meets it, and the generator stores the
+  start that gives the meeting point it chose; (b) a widening gutter spans `[z, z + lengthM]`, and
+  gaps are measured from the end of the previous obstacle. `MIN_REACTION_S` is 0.35 s, the
+  sloppiest profile's notice time; with the 0.6 s jump that asks for 11.4 m at 12 m/s, below the
+  13 m the generator's smallest gap allows. Results: the five tracks have 22, 22, 19, 21, 22
+  obstacles; `check-tracks` passes; its selftest rejects the approach-zone obstacle, the three
+  lanes at the same z (passable, spacing, time-to-act), the sweep bar 3 m after pins
+  (sweep-clearance) and the unknown kind (schema, naming `obstacles.0.kind`). Unit tests: schema
+  (valid, missing field, wrong kind), generator determinism, clear zones on 50 seeds, gaps
+  shrinking (mean early > mean late + 5 m), no violation on 200 seeds. Criterion 5 waits for the
+  game page that loads tracks.
+
+## Canonical files
+
+- Scripts that need the game's TypeScript run under `node --import tsx` with
+  `TSX_TSCONFIG_PATH=game/tsconfig.json` (path aliases): `npm run bake:tracks` and every gate
+  through `scripts/run-gates.mjs`. Run one by hand as
+  `TSX_TSCONFIG_PATH=game/tsconfig.json node --import tsx scripts/gates/check-tracks.mjs`.
+- `check-tracks` also fails when a committed file differs from what its seed bakes, so a change to
+  the generator cannot ship without re-baking.
+- `config/run.ts` was started here (speeds, manoeuvre times) because the time-to-act rule needs
+  them; the [run](../game/run.md) page owns it.
+- `game/src/domain/random.ts` is the domain's seeded generator. The models have their own for
+  textures: `models/` may not import the game and the domain may import only model measures, and
+  the two never need to agree.
