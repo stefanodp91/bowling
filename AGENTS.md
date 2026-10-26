@@ -126,3 +126,6 @@ Traps found on the field go here, each with the symptom that reveals it.
   behaves as if every uniform were zero. `hardBindForSubMesh` is an «extra event»: set
   `registerForExtraEvents = true` before enabling the plugin, and mark the material's defines dirty
   if it was already compiled ([widening gutter](wiki/models/obstacles/widening-gutter.md)).
+- **The audio engine decodes nothing before the first gesture.** Symptom: `cues.warm` resolves,
+  no `.wav` request is made, and every `hold` logs «held voice … was never warmed». Warm after
+  `unlock()` ([sounds](wiki/audio/sounds.md)).

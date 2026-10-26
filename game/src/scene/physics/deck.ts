@@ -1,7 +1,7 @@
 import { Quaternion, Vector3 } from '@babylonjs/core/Maths/math.vector';
 import type { Mesh } from '@babylonjs/core/Meshes/mesh';
 import type { TransformNode } from '@babylonjs/core/Meshes/transformNode';
-import { PhysicsMotionType } from '@babylonjs/core/Physics/v2/IPhysicsEnginePlugin';
+import { PhysicsEventType, PhysicsMotionType } from '@babylonjs/core/Physics/v2/IPhysicsEnginePlugin';
 import { PhysicsBody } from '@babylonjs/core/Physics/v2/physicsBody';
 import { PhysicsShapeConvexHull, PhysicsShapeSphere } from '@babylonjs/core/Physics/v2/physicsShape';
 import type { Scene } from '@babylonjs/core/scene';
@@ -47,6 +47,14 @@ export function createDeck(scene: Scene, nodes: DeckNodes): Deck {
     pinBodies.set(pin, body);
   }
   const pinBodySet = new Set<PhysicsBody>(pinBodies.values());
+  // Every collision a pin starts is a candidate clack: its speed is the impulse over the pin's mass.
+  let contacts: number[] = [];
+  for (const body of pinBodies.values()) {
+    body.setCollisionCallbackEnabled(true);
+    body.getCollisionObservable().add((event) => {
+      if (event.type === PhysicsEventType.COLLISION_STARTED) contacts.push((event.impulse ?? 0) / PIN_MASS_KG);
+    });
+  }
   let ballBody: PhysicsBody | null = null;
   let ballShape: PhysicsShapeSphere | null = null;
   let contacted = false;
@@ -70,6 +78,11 @@ export function createDeck(scene: Scene, nodes: DeckNodes): Deck {
       });
     },
     contacted: () => contacted,
+    drainContacts: () => {
+      const drained = contacts;
+      contacts = [];
+      return drained;
+    },
     pinPoses: () => {
       const poses = new Map<PinNumber, PinPose>();
       for (const [pin, root] of nodes.pins) {

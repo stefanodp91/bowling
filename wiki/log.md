@@ -39,3 +39,4 @@ investigations goes here, never in the pages (prompt 3, step 3).
 - 2026-10-27 · records/deck-tests-20261027.md · deck test record (pocket 9, off-pocket 1, deterministic, slow motion neutral) linked from pins physics and camera.
 - 2026-10-27 · pilot/autopilot.md, method/gates.md · autopilot and simulateRun built and plugged into the game; test files may import node: built-ins.
 - 2026-10-27 · game/hud.md · HUD built: run info, skill buttons, countdown, end screen, loading screen; UI rules test.
+- 2026-10-27 · audio/sounds.md, method/gates.md, AGENTS.md · sounds generated from numbers, check-audio gate, playback through the audio engine; warm-after-unlock trap recorded.

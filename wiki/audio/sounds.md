@@ -1,9 +1,9 @@
 ---
 title: Sounds — generated from numbers, played by the audio engine
 type: spec
-status: planned
+status: built
 depends_on: [game/pins.md, game/hud.md]
-canonical: []
+canonical: [scripts/audio/, scripts/gates/check-audio.mjs, game/public/audio/, game/src/config/audio.ts, game/src/audio/, game/src/app/events.ts, game/src/ui/use-sound.ts, game/src/ui/hud/SoundToggle.tsx]
 verified: 2026-10-26
 ---
 
@@ -44,9 +44,42 @@ comes from a committed script, so an open-source audience gets the source of eve
 
 ## References
 
-_Filled by the agent (prompt 1, step 2): recordings of real bowling alleys to compare against
-(links only), synthesis techniques for impacts._
+- Recordings to compare against (links only, nothing downloaded): bowling-alley ambience and
+  strikes on Freesound, e.g. https://freesound.org/search/?q=bowling+strike and
+  https://freesound.org/search/?q=bowling+alley+ambience.
+- Synthesis of impacts: a struck solid as a sum of exponentially decaying modes plus a short noise
+  burst (modal synthesis, https://en.wikipedia.org/wiki/Modal_synthesis); wood sounds short and
+  «dull» because its modes decay fast, glass and metal ring because they do not (Cook, «Real
+  Sound Synthesis for Interactive Applications», summarised at
+  https://ccrma.stanford.edu/~prc/).
+- RIFF/WAVE PCM header layout (http://soundfile.sapp.org/doc/WaveFormat/).
+- The audio engine's README and types (`node_modules/obsidian-eclipse-audio-engine`): cues,
+  held voices with volume and pan, unlock on a gesture.
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-27 · round 1 · Built the seeded generator (`scripts/audio/`: WAV writer, filters,
+  envelopes, the sound set), `npm run audio:build`, the `check-audio` gate (`npm run audio:check`,
+  byte-for-byte against a fresh generation; its selftest flips one bit of `impact.wav`), the pure
+  event → cue mapping, a player over the audio engine, the session's event stream (impacts, pin
+  contacts from Havok collision events, the result) and a sound toggle. Playback rate: the engine's
+  held voices take volume and pan but no rate, so the rumble is **two crossfaded speed bands** —
+  `roll-slow` (180 Hz noise, 38 Hz rumble) and `roll-fast` (420 Hz noise, 55 Hz rumble), an
+  equal-power crossfade from 6 to 12 m/s. Pin clacks: four variants of three modes between 700
+  and 2 480 Hz decaying in 25 ms plus a 3 ms click — short and low enough to read as wood; the
+  strike is a C-major arpeggio with a bell decay. Files: 8 WAVs, 22 050 Hz mono, 285 KB. Wrong on
+  the way, found in the browser: the player held the rumble before the files were decoded (an
+  error every frame), and decoding never started — the engine decodes only once its audio context
+  runs, after the first gesture → the player warms on the first unlock and plays nothing before.
+  Then: one click turns the toggle to «Sound on», the 8 files load (200), a run to the result logs
+  no error. Unit tests: the scripted run (one impact, eight pins) gives one thud, six clacks, no
+  strike; ten gives the strike; clacks capped at 14 per second; the crossfade ends. Whether it
+  sounds like wood and rumble is criterion 3, for a human with speakers.
+
+## Canonical files
+
+- `scripts/audio/sounds.mjs` holds every sound's parameters; it imports the domain's seeded
+  generator, so the scripts run under tsx.
+- `game/src/audio/cues.ts` is pure (`cuesFor`, `rollMix`); `sound-player.ts` adapts the engine;
+  `connect-sound.ts` plays a session (store → rumble, events → cues); `ui/use-sound.ts` owns the
+  player for the page and unlocks it on any pointer press.

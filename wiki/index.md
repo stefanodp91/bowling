@@ -26,7 +26,7 @@ once the script exists.
 19. [game/pins.md](game/pins.md) — Pins physics — the strike, and the score · `built`
 20. [pilot/autopilot.md](pilot/autopilot.md) — Autopilot — the only player, and its three skill profiles · `built`
 21. [game/hud.md](game/hud.md) — HUD — run information, skill buttons, end screen · `built`
-22. [audio/sounds.md](audio/sounds.md) — Sounds — generated from numbers, played by the audio engine · `planned`
+22. [audio/sounds.md](audio/sounds.md) — Sounds — generated from numbers, played by the audio engine · `built`
 23. [pilot/headless-runs.md](pilot/headless-runs.md) — Headless runs — the tester that never gets tired · `planned`
 24. [release/open-source.md](release/open-source.md) — Open-source release — ready to hand to the audience · `planned`
 

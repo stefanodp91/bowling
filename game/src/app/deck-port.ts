@@ -15,6 +15,8 @@ export interface DeckPort {
   contacted(): boolean;
   /** Each pin's pose relative to the head pin spot. */
   pinPoses(): ReadonlyMap<PinNumber, PinPose>;
+  /** Contact speeds (m/s) of the pin collisions that began since the last call. */
+  drainContacts(): number[];
 }
 
 /** Physics advanced by the simulation, one fixed step at a time. */

@@ -38,5 +38,9 @@
     "pin": "Pin {{pin}}, {{state}}",
     "pinDown": "down",
     "pinStanding": "standing"
+  },
+  "sound": {
+    "on": "Sound on",
+    "off": "Sound off"
   }
 }

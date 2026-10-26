@@ -33,7 +33,7 @@ afterEach(cleanup);
 function renderHud() {
   const store = createStore(rolling);
   const setSkill = vi.fn((skill: Skill) => store.set({ ...store.get(), skill }));
-  render(<Hud session={{ store, setSkill }} onRunAgain={() => {}} />);
+  render(<Hud session={{ store, setSkill }} onRunAgain={() => {}} sound={{ on: false, toggle: () => {} }} />);
   return { setSkill };
 }
 

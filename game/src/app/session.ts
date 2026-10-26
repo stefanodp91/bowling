@@ -6,6 +6,7 @@ import type { Track } from '../domain/track/schema';
 import { SIM_STEP_S } from '../config/run';
 import type { DeckPort, PhysicsPort } from './deck-port';
 import { deckStep } from './deck-step';
+import type { GameEvent } from './events';
 import { frameSteps } from './frame-steps';
 import type { GameSnapshot } from './snapshot';
 import { createStore, type Store } from './store';
@@ -39,6 +40,8 @@ export interface Session {
   frame(frameS: number, timeScale?: number, onStep?: StepListener): FrameStates;
   /** The latest state of the whole simulation. */
   world(): World;
+  /** Listens to what happens, once per frame, in step order; returns the unsubscribe. */
+  onEvents(listener: (events: readonly GameEvent[]) => void): () => void;
   /** The scene's physics and pin deck, stepped with the simulation; returns the detach. */
   attach(ports: { readonly physics: PhysicsPort; readonly deck: DeckPort }): () => void;
   setSkill(skill: Skill): void;
@@ -74,6 +77,7 @@ export function createSession({ track, skill: initialSkill, startAtZ, speedup, c
   let ready = false;
   let resultSkill: Skill | null = null;
   let ports: { readonly physics: PhysicsPort; readonly deck: DeckPort } | null = null;
+  const eventListeners = new Set<(events: readonly GameEvent[]) => void>();
   const store = createStore(snapshotOf(world, track, skill, ready, resultSkill));
   const publish = () => store.set(snapshotOf(world, track, skill, ready, resultSkill));
   return {
@@ -82,21 +86,32 @@ export function createSession({ track, skill: initialSkill, startAtZ, speedup, c
     frame: (frameS, timeScale = 1, onStep) => {
       const plan = frameSteps(carryS, frameS, speedup, timeScale);
       carryS = plan.carryS;
+      const events: GameEvent[] = [];
       for (let i = 0; i < plan.steps; i += 1) {
         previous = world.run;
         const result = worldStep(world, track, commands(world.run, track, skill), SIM_STEP_S);
         world = result.world;
+        const atS = world.run.runS + world.deck.sinceHandOffS;
+        for (const e of result.events) events.push({ kind: 'impact', obstacle: e.kind, speedMps: e.speedMps, atS });
         if (ports !== null) {
           ports.physics.step();
+          const wasJudged = world.deck.pinsDown !== null;
           world = deckStep(world, ports.deck, SIM_STEP_S);
+          for (const speedMps of ports.deck.drainContacts()) events.push({ kind: 'pin-contact', speedMps, atS });
+          if (!wasJudged && world.deck.pinsDown !== null) events.push({ kind: 'result', score: world.deck.pinsDown.length, atS });
         }
         if (resultSkill === null && world.deck.handedOff) resultSkill = skill;
         onStep?.(world, result.events);
       }
       if (plan.steps > 0) publish();
+      if (events.length > 0) for (const listener of eventListeners) listener(events);
       return { previous, current: world.run, alpha: plan.alpha };
     },
     world: () => world,
+    onEvents: (listener) => {
+      eventListeners.add(listener);
+      return () => eventListeners.delete(listener);
+    },
     attach: (next) => {
       ports = next;
       return () => {

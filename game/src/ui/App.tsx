@@ -6,6 +6,7 @@ import { ErrorScreen } from './ErrorScreen';
 import { Hud } from './hud/Hud';
 import { LoadingScreen } from './LoadingScreen';
 import { nextRunSearch } from './next-run';
+import { useSound } from './use-sound';
 import { useGameSession } from './use-game-session';
 
 /** The page: the 3D scene of the current run, or a readable error. */
@@ -15,6 +16,7 @@ export function App() {
   const query = useMemo(() => (parsed.ok ? parsed.query : { pause: false }), [parsed]);
   const [attempt, setAttempt] = useState(0);
   const state = useGameSession(query, attempt, t);
+  const sound = useSound(state.status === 'running' ? state.session : null);
   const retry = () => setAttempt((n) => n + 1);
   const runAgain = useCallback(() => {
     if (state.status !== 'running') return;
@@ -26,7 +28,7 @@ export function App() {
   return (
     <>
       <GameCanvas session={state.session} pause={query.pause} havok={state.havok} />
-      <Hud session={state.session} onRunAgain={runAgain} />
+      <Hud session={state.session} onRunAgain={runAgain} sound={sound} />
     </>
   );
 }

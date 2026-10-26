@@ -41,6 +41,7 @@ A gate is that memory, executed on every commit.
 | `check-no-foreign-refs` | no tracked file, file name or commit message contains a forbidden term | open-source hygiene (AGENTS.md rule 6) |
 | `check-magic-numbers` | numeric literals other than 0, 1, -1, 2 and array indexes do not appear in `game/src/domain/`, `game/src/pilot/`, `game/src/scene/` outside `config/` and named `const` declarations | tunables live in one place |
 | `check-file-size` | no source file over 300 lines | single responsibility |
+| `check-audio` | the committed WAV files equal, byte for byte, what `scripts/audio/generate.mjs` produces (see [sounds](../audio/sounds.md)) | every sound has its source in the repository |
 | `check-tracks` | see [track format](../track/track-format.md): schema, rules, index, and equality with the baked seed | every track is solvable |
 | `check-pilot` (full) | see [headless runs](../pilot/headless-runs.md) | the pilot really plays |
 

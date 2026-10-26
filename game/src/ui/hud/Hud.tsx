@@ -4,15 +4,17 @@ import { EndScreen } from './EndScreen';
 import styles from './Hud.module.css';
 import { RunInfo } from './RunInfo';
 import { SkillButtons } from './SkillButtons';
+import { SoundToggle } from './SoundToggle';
 import { useSnapshot } from './use-snapshot';
 
 export interface HudProps {
   readonly session: Pick<Session, 'store' | 'setSkill'>;
   readonly onRunAgain: () => void;
+  readonly sound: { readonly on: boolean; readonly toggle: () => void };
 }
 
 /** Everything drawn over the scene (wiki/game/hud.md). Reads only the session's store. */
-export function Hud({ session, onRunAgain }: HudProps) {
+export function Hud({ session, onRunAgain, sound }: HudProps) {
   const snapshot = useSnapshot(session.store);
   return (
     <div className={styles.hud}>
@@ -22,6 +24,7 @@ export function Hud({ session, onRunAgain }: HudProps) {
         <EndScreen pinsDown={snapshot.pinsDown} impacts={snapshot.impacts} skill={snapshot.resultSkill ?? snapshot.skill} onRunAgain={onRunAgain} />
       ) : null}
       <SkillButtons active={snapshot.skill} onSelect={session.setSkill} />
+      <SoundToggle on={sound.on} onToggle={sound.toggle} />
     </div>
   );
 }
