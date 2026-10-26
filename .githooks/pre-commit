@@ -1,6 +1,11 @@
 #!/bin/sh
 # Refuse a commit while the automatic checks fail (wiki/workspace/monorepo.md, rule 7).
-npm run check --silent || {
+# The output is kept quiet on success and shown in full on failure.
+log=$(mktemp)
+if ! npm run check --silent >"$log" 2>&1; then
+  cat "$log"
+  rm -f "$log"
   echo "pre-commit: npm run check failed; commit refused." >&2
   exit 1
-}
+fi
+rm -f "$log"

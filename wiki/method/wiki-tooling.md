@@ -1,9 +1,9 @@
 ---
 title: Wiki tooling — lint, index, context, touched, acceptance lock
 type: spec
-status: planned
+status: built
 depends_on: [workspace/monorepo.md]
-canonical: []
+canonical: [scripts/wiki/, wiki/acceptance.lock.json]
 verified: 2026-10-26
 ---
 
@@ -54,8 +54,34 @@ consistent. Without them «read before acting» depends on the agent's goodwill.
 
 ## References
 
-_Filled by the agent (prompt 1, step 2)._
+- Topological sorting with Kahn's algorithm: repeatedly take a node with no unprocessed
+  predecessor; choosing the smallest available node gives a deterministic order
+  (https://en.wikipedia.org/wiki/Topological_sorting#Kahn's_algorithm).
+- SHA-256 through Node's `crypto.createHash('sha256')` (https://nodejs.org/api/crypto.html).
+- Node's built-in test runner (`node --test`) runs the script tests without a dependency
+  (https://nodejs.org/api/test.html).
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-26 · round 1 · Built the parser and the six scripts. First `wiki:lint` on the real
+  repository: front matter, links, paths and index all passed — the hand-written round zero index
+  is byte-identical to the generated one, which confirms the build-order rule (Kahn, smallest path
+  first, code-point order). It failed only because no lock existed; `scripts/wiki/first-lock.mjs`
+  wrote it from the round zero commit (`547be39`), and `--verify` re-checks that. Then: lint green;
+  changing «65 s» to «66 s» in `game/run.md`'s criteria made it fail naming `wiki/game/run.md`
+  (reverted); `npm run wiki:selftest` rejected the seven broken cases (missing title, broken link,
+  missing canonical file, stale index, edited acceptance section, oversized AGENTS.md, missing page
+  to lock) and proved the `game/src/domain/run.ts → game/run.md` mapping on a fixture.
+
+## Canonical files
+
+- `parse.mjs` is the one parser (front matter subset, sections, hashing); `coverage.mjs` decides
+  whether a `canonical:` entry (a file or a folder) covers a file; `fixture.mjs` writes the small
+  valid wiki every selftest breaks.
+- `lint.mjs` runs, in order: front matter, links (outside code spans), `depends_on`/`canonical`
+  paths, `index.mjs --check`, `check-acceptance.mjs`, `agents-lint.mjs`. If the first three find
+  anything it stops there, because the index cannot be rendered from broken front matter.
+- `npm run wiki:selftest` runs every script's `--selftest`; `npm run check` runs `wiki:lint` and
+  `wiki:selftest`.
+- `wiki:touched` reports files under `wiki/` neither as covered nor as uncovered: they are the
+  documentation itself.
