@@ -105,7 +105,8 @@ the term from the content; never edit the hash list.
 - `check-boundaries` rules, as built: `models/src/measures/` imports nothing; the rest of
   `models/src/` imports Babylon.js, the graphic engine and its own files; `game/src/domain/` and
   `game/src/pilot/` import their own files, `zod` and `@models/measures/...` only; `game/src/ui/`
-  reaches `scene/` only through `scene/index.ts`. Test files may also import `vitest`.
+  reaches `scene/` only through `scene/index.ts`. Test files may also import `vitest` and `node:`
+  built-ins (they read committed fixtures such as the tracks).
 - `check-magic-numbers` accepts literals inside module-level `const SCREAMING_CASE` declarations
   and array indexes, and skips `*.test.ts(x)`: a test's literals are the values it states.
 - `npm run check` = `npm test` + `npm run test:scripts` (Node's test runner on

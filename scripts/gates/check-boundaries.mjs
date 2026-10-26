@@ -10,7 +10,7 @@ import { finding, readText, rel, walk, withTempDir, runGate } from '../lib/gate.
 import { importsOf } from '../lib/imports.mjs';
 
 const SOURCE = /\.(ts|tsx|mts|js|mjs)$/;
-/** Test files may also import the test runner. */
+/** Test files may also import the test runner and Node built-ins (to read committed fixtures). */
 const TEST_FILE = /\.test\.(ts|tsx)$/;
 const isRelative = (s) => s.startsWith('./') || s.startsWith('../');
 const isBabylon = (s) => s === '@babylonjs/core' || s.startsWith('@babylonjs/');
@@ -60,7 +60,7 @@ export function checkBoundaries(root) {
     if (rule === undefined) return [];
     const isTest = TEST_FILE.test(path);
     return importsOf(path, readText(file))
-      .filter(({ specifier }) => !(isTest && specifier === 'vitest') && !rule.allows(specifier, path))
+      .filter(({ specifier }) => !(isTest && (specifier === 'vitest' || specifier.startsWith('node:'))) && !rule.allows(specifier, path))
       .map(({ specifier, line }) => finding(path, line, `imports «${specifier}»: ${rule.why}`));
   });
 }

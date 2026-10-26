@@ -5,6 +5,7 @@ import type { GameQuery } from '../app/query';
 import { createSession, type Session } from '../app/session';
 import { DEFAULT_SKILL } from '../config/pilot';
 import { installTestHook } from '../dev/test-hook';
+import { createAutopilot } from '../pilot/command-source';
 import { loadHavok, type HavokInstance } from '../scene';
 
 export type SessionState =
@@ -32,6 +33,8 @@ export function useGameSession(query: GameQuery, attempt: number, t: TFunction):
         const session = createSession({
           track,
           skill: query.skill ?? DEFAULT_SKILL,
+          // The run's seed is the track's: the browser plays exactly what simulateRun predicts.
+          commands: createAutopilot(track.seed),
           ...(query.at === undefined ? {} : { startAtZ: query.at }),
           ...(query.speedup === undefined ? {} : { speedup: query.speedup }),
         });

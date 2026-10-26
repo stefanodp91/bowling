@@ -1,9 +1,9 @@
 ---
 title: Autopilot — the only player, and its three skill profiles
 type: spec
-status: planned
+status: built
 depends_on: [game/impacts.md, game/pins.md]
-canonical: []
+canonical: [game/src/config/pilot.ts, game/src/pilot/, game/src/domain/deck/hand-off.ts]
 verified: 2026-10-26
 ---
 
@@ -73,8 +73,35 @@ be lowered on stage, so the audience sees impacts turn into fewer pins.
 
 ## References
 
-_Filled by the agent (prompt 1, step 2)._
+- Planning by short forward simulation with the game's own model, choosing the first acceptable
+  action in a fixed preference order — a form of model-predictive control
+  (https://en.wikipedia.org/wiki/Model_predictive_control) — here with a horizon of a group of
+  obstacles plus a short tail.
+- Time to collision for two bodies closing at speeds v₁ and v₂: distance / (v₁ + v₂)
+  (https://en.wikipedia.org/wiki/Time_to_collision).
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-27 · round 1 · Built `decide` (pure; memory of noticed and ignored obstacles passed in and
+  out), time to meet, groups within `GROUP_WINDOW_S` (0.5 s), candidates in the rule's order
+  tried by simulating the run's own `step` and the domain's `touches` until the group is passed
+  plus `PLAN_TAIL_S`; a jump «starts when it clears» because jumping too early fails that
+  simulation, so the pilot waits a step and tries again. The ignore draw is keyed by the run seed
+  and obstacle index; the game's run seed is the track seed. `simulateRun` runs the domain without
+  a browser in ≈ 0.12 s. Results: perfect has 0 impacts and the centre lane at the hand-over on
+  all five tracks; good 6 and sloppy 14 impacts in total (seed 1). The first constructed case for
+  «two obstacles → third lane» failed only because it sampled the lane after the crossing, when
+  the approach had already brought the ball back to the centre; it now checks at the crossing.
+  In the browser: lane-01 with `perfect` 0 impacts and 9 pins, with `sloppy` 2 impacts and
+  10 pins; a frame just after lane-01's sweep bar shows the ball beyond the board after its jump.
+  `check-boundaries` stopped a pilot test importing `node:fs`; test files may now import `node:`
+  built-ins. 1 shot. For the human: impacts cost few pins (sloppy 10 vs perfect 9 on lane-01) —
+  see the [headless runs](headless-runs.md) record before judging.
+
+## Canonical files
+
+- `createAutopilot(seed)` (`pilot/command-source.ts`) is the session's `CommandSource`; it keeps
+  the memory between steps. Changing skill mid-run changes only what is noticed afterwards: an
+  obstacle keeps the ignore decision taken when it was noticed.
+- The aim at the pocket is `handOffX` (`domain/deck/hand-off.ts`): the pilot's approach brings the
+  ball to the centre lane, and the hand-over places it on the pocket plus the aim error.
