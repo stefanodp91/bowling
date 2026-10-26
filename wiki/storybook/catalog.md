@@ -1,9 +1,9 @@
 ---
 title: Storybook catalogue — one story per model
 type: spec
-status: planned
+status: built
 depends_on: [workspace/monorepo.md]
-canonical: []
+canonical: [storybook/src/stage/, storybook/src/stories/, storybook/src/no-geometry.test.ts, storybook/.storybook/main.ts, models/src/stage/stage-floor.ts, models/src/environment/]
 verified: 2026-10-26
 ---
 
@@ -41,8 +41,31 @@ the visual source of truth: the game must show a model exactly as its story does
 
 ## References
 
-_Filled by the agent (prompt 1, step 2)._
+- Storybook story ids are URL-sanitised from the CSF `title` and the export name; the iframe of a
+  story opens at `iframe.html?id=<story-id>&viewMode=story`, and the `args` query parameter
+  (`args=key:value`, alphanumerics, spaces, `_` and `-` only) overrides its initial args
+  (https://storybook.js.org/docs/7.1/writing-stories/args, https://storybook.js.org/docs/writing-stories).
+- Image-based lighting: a PBR material reflects `scene.environmentTexture`; without one, metals and
+  clear coats look flat (https://doc.babylonjs.com/features/featuresDeepDive/materials/using/introToPBR).
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-26 · round 1 · Built `ModelStage` (mount in `mountStage.ts`, tunables in
+  `stage-config.ts`), the grey floor and a generated alley environment in `models/` (stories may
+  not build geometry), and the no-geometry test. Shots: 4 (default and close of the placeholder,
+  twice). Wrong in the first pair: the close-up filled the frame with one face of the cube and the
+  floor was washed out → close distance 0.6 → 0.85 of the framing radius, key light 2.2 → 1.6.
+  Then: `npm run shot:verify` — `models-placeholder` ready in 1.4 s, centre pixel rgb(183,134,85)
+  against background #1B1D22.
+
+## Canonical files
+
+- **Story ids, as built.** Storybook always appends the story name to an id, so each story file
+  has the title `Models/<Name>` (or `Scenes/<Name>`) and exports exactly one story, `Default`: the
+  catalogue lists `models-<name>` and the story itself is `models-<name>--default`. The shot tool
+  accepts `story:models-<name>` and opens `models-<name>--default`.
+- `ModelStage` takes `factory`, `options` and `angle` (`default` | `close`); the camera frames the
+  bounding sphere of `root`'s hierarchy. `data-ready` becomes `"true"` after two frames rendered
+  with `scene.isReady()`. An animated model's `animate` receives seconds since mount.
+- `applyAlleyEnvironment` (in `models/`, shared with the game) generates a cube texture from
+  `alleyRadiance`: dim warm ceiling with light strips along +z, dark walls and floor.
