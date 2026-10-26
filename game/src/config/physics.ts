@@ -16,9 +16,10 @@ export const FLOOR_MARGIN_M = 6;
 
 /**
  * Surface properties. Published simulations of ball–pin collisions (UC Davis BioSport, wiki/game/
- * pins.md References) model wood and resin with moderate friction and restitution; the exact
- * values here are design choices inside those ranges, tuned until a pocket hit at 12 m/s strikes
- * and an off-pocket hit does not (the deck record has the counts).
+ * pins.md References) model wood and resin with moderate friction and restitution; the values
+ * here are design choices inside those ranges. Varying them (pin friction 0.3–0.5, restitution
+ * 0.5–0.75, ball restitution 0.4–0.6) did not change the pocket outcome: a straight ball on the
+ * pocket leaves pin 8 (wiki/records/deck-tests-20261027.md, wiki/review.md).
  */
 export const LANE_SURFACE = { friction: 0.2, restitution: 0.3 } as const;
 export const BALL_SURFACE = { friction: 0.2, restitution: 0.6 } as const;

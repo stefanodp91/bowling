@@ -5,6 +5,7 @@ import type { GameQuery } from '../app/query';
 import { createSession, type Session } from '../app/session';
 import { DEFAULT_SKILL } from '../config/pilot';
 import { installTestHook } from '../dev/test-hook';
+import { createBlindDriver } from '../pilot/blind';
 import { createAutopilot } from '../pilot/command-source';
 import { loadHavok, type HavokInstance } from '../scene';
 
@@ -30,11 +31,13 @@ export function useGameSession(query: GameQuery, attempt: number, t: TFunction):
     Promise.all([loadTrack(fetchJson, query.track), loadHavok()])
       .then(([{ track, playOrder }, havok]) => {
         if (cancelled) return;
+        // The run's seed defaults to the track's: the browser plays exactly what simulateRun predicts.
+        const seed = query.seed ?? track.seed;
         const session = createSession({
           track,
+          seed,
           skill: query.skill ?? DEFAULT_SKILL,
-          // The run's seed is the track's: the browser plays exactly what simulateRun predicts.
-          commands: createAutopilot(track.seed),
+          commands: query.driver === 'blind' ? createBlindDriver(seed) : createAutopilot(seed),
           ...(query.at === undefined ? {} : { startAtZ: query.at }),
           ...(query.speedup === undefined ? {} : { speedup: query.speedup }),
         });

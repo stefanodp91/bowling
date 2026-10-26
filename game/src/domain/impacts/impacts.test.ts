@@ -32,6 +32,11 @@ describe('impacts, one obstacle kind at a time', () => {
     expect(hits(track, ballAt(100, 1, JUMP_APEX_M))).toBe(0);
   });
 
+  it('stray pins and a returning ball are hit even at jump apex: they are not jumpable', () => {
+    expect(hits(trackWith({ kind: 'stray-pins', lane: 1, z: 100 }), ballAt(100, 1, JUMP_APEX_M))).toBe(1);
+    expect(hits(trackWith({ kind: 'returning-ball', lane: 1, z: 100, speedMps: 3 }), ballAt(100, 1, JUMP_APEX_M))).toBe(1);
+  });
+
   it('rental shoes: none at jump apex', () => {
     expect(hits(trackWith({ kind: 'rental-shoes', lane: 1, z: 100 }), ballAt(100, 1, JUMP_APEX_M))).toBe(0);
   });

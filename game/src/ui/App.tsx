@@ -13,7 +13,7 @@ import { useGameSession } from './use-game-session';
 export function App() {
   const { t } = useTranslation();
   const parsed = useMemo(() => parseQuery(window.location.search), []);
-  const query = useMemo(() => (parsed.ok ? parsed.query : { pause: false }), [parsed]);
+  const query = useMemo(() => (parsed.ok ? parsed.query : ({ pause: false, driver: 'auto' } as const)), [parsed]);
   const [attempt, setAttempt] = useState(0);
   const state = useGameSession(query, attempt, t);
   const sound = useSound(state.status === 'running' ? state.session : null);

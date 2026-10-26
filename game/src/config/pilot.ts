@@ -29,3 +29,12 @@ export const GROUP_WINDOW_S = 0.5;
 export const PLAN_TAIL_S = 0.7;
 /** Salt mixed into the run seed for ignore draws, distinct from the aim-error salt (design). */
 export const IGNORE_SALT = 0x85ebca6b;
+
+/** Who drives: the autopilot, or the blind baseline of headless runs (wiki/pilot/headless-runs.md). */
+export const DRIVERS = ['auto', 'blind'] as const;
+export type Driver = (typeof DRIVERS)[number];
+
+/** The blind baseline: a random command every 0.3–1.2 s (design: «taps without looking»). */
+export const BLIND_INTERVAL_S = { min: 0.3, max: 1.2 } as const;
+/** Salt for the blind driver's draws, distinct from the other salts (design). */
+export const BLIND_SALT = 0xc2b2ae35;

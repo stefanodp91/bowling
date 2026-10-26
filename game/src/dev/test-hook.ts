@@ -1,5 +1,6 @@
 import type { GameSnapshot } from '../app/snapshot';
 import type { Store } from '../app/store';
+import { renderStats, type RenderStats } from './render-stats';
 
 /**
  * window.__bowling (wiki/game/run.md, rule 8): a read-only view of the run for headless tools
@@ -8,6 +9,7 @@ import type { Store } from '../app/store';
 export interface TestHook {
   readonly ready: boolean;
   snapshot(): GameSnapshot;
+  renderStats(): RenderStats;
 }
 
 declare global {
@@ -22,6 +24,7 @@ export function installTestHook(store: Store<GameSnapshot>): () => void {
       return store.get().ready;
     },
     snapshot: () => store.get(),
+    renderStats,
   };
   return () => {
     delete window.__bowling;

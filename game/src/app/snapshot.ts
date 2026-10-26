@@ -27,4 +27,9 @@ export interface GameSnapshot {
   readonly resultSkill: Skill | null;
   /** Simulated seconds since rolling began. */
   readonly runS: number;
+  /** The run's seed (ignore draws, blind commands). */
+  readonly seed: number;
+  /** Speed and lateral aim error when the ball was handed to the deck; null before. */
+  readonly handOffSpeedMps: number | null;
+  readonly aimErrorM: number;
 }

@@ -23,6 +23,9 @@ const rolling: GameSnapshot = {
   pinsDown: null,
   resultSkill: null,
   runS: 30,
+  seed: 1,
+  handOffSpeedMps: null,
+  aimErrorM: 0,
 };
 
 beforeAll(() => {

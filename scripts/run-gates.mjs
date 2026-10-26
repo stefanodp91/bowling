@@ -1,7 +1,8 @@
 // Runs every gate in scripts/gates/ (wiki/method/gates.md, rule 2).
 //   node scripts/run-gates.mjs              the static gates (npm run gates, part of check)
 //   node scripts/run-gates.mjs --full       static + headless gates (part of check:full)
-//   node scripts/run-gates.mjs --selftest   every gate's --selftest (npm run gates:selftest)
+//   node scripts/run-gates.mjs --selftest   every static gate's --selftest (npm run gates:selftest)
+//   node scripts/run-gates.mjs --full --selftest   the headless gates' selftests too
 import { spawnSync } from 'node:child_process';
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -16,7 +17,7 @@ const full = process.argv.includes('--full');
 
 const gates = readdirSync(GATES_DIR)
   .filter((f) => /^check-.*\.mjs$/.test(f))
-  .filter((f) => selftest || full || !HEADLESS_GATES.has(f))
+  .filter((f) => full || !HEADLESS_GATES.has(f))
   .sort();
 
 /**

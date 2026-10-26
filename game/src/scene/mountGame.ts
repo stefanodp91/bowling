@@ -7,6 +7,7 @@ import { Scene } from '@babylonjs/core/scene';
 import { applyAlleyEnvironment } from '@models';
 import type { Session } from '../app/session';
 import { SIM_STEP_S } from '../config/run';
+import { recordFrame } from '../dev/render-stats';
 import { CHASE_FOV_RAD, FOG_END_M, FOG_HEX, FOG_START_M } from '../config/camera';
 import { AMBIENT_INTENSITY, KEY_LIGHT } from '../config/scene';
 import { cameraPose, timeScaleAt } from './camera/rig';
@@ -87,6 +88,7 @@ export function mountGame(scene: Scene, session: Session, options: MountOptions)
     render(scene.getEngine().getDeltaTime() / MS_PER_S);
   });
   const afterRender = scene.onAfterRenderObservable.add(() => {
+    recordFrame(scene.getEngine().getDeltaTime(), scene.getActiveMeshes().length);
     if (!scene.isReady()) return;
     frames += 1;
     if (frames === 1) session.markReady();

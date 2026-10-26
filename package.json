@@ -21,7 +21,7 @@
     "check": "npm test && npm run test:scripts && npm run gates && npm run gates:selftest && npm run wiki:lint && npm run wiki:selftest",
     "check:full": "npm run check && node scripts/run-gates.mjs --full",
     "shot": "node scripts/shot/shot.mjs",
-    "pilot": "node scripts/not-built.mjs pilot/headless-runs.md",
+    "pilot": "TSX_TSCONFIG_PATH=game/tsconfig.json node --import tsx scripts/pilot/pilot.mjs",
     "bake:tracks": "TSX_TSCONFIG_PATH=game/tsconfig.json node --import tsx scripts/tracks/bake.mjs",
     "wiki:lint": "node scripts/wiki/lint.mjs",
     "wiki:index": "node scripts/wiki/index.mjs",

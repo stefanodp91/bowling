@@ -17,6 +17,8 @@ export const stayOnly: CommandSource = () => 'stay';
 
 export interface SessionOptions {
   readonly track: Track;
+  /** The run's seed, reported in the snapshot (the command source uses the same). */
+  readonly seed?: number;
   readonly skill: Skill;
   readonly startAtZ?: number;
   readonly speedup?: number;
@@ -48,7 +50,7 @@ export interface Session {
   markReady(): void;
 }
 
-function snapshotOf(world: World, track: Track, skill: Skill, ready: boolean, resultSkill: Skill | null): GameSnapshot {
+function snapshotOf(world: World, track: Track, skill: Skill, ready: boolean, resultSkill: Skill | null, seed: number, handOffSpeedMps: number | null): GameSnapshot {
   const state = world.run;
   return {
     ready,
@@ -64,22 +66,27 @@ function snapshotOf(world: World, track: Track, skill: Skill, ready: boolean, re
     score: world.deck.pinsDown === null ? null : world.deck.pinsDown.length,
     pinsDown: world.deck.pinsDown,
     resultSkill,
+    seed,
+    handOffSpeedMps,
+    aimErrorM: world.impacts.aimErrorM,
     runS: state.runS,
   };
 }
 
 /** One run of one track: the simulation, its fixed-step clock and the snapshot it publishes. */
-export function createSession({ track, skill: initialSkill, startAtZ, speedup, commands = stayOnly }: SessionOptions): Session {
+export function createSession({ track, skill: initialSkill, startAtZ, speedup, commands = stayOnly, seed = track.seed }: SessionOptions): Session {
   let world = initialWorld(track, startAtZ);
   let previous = world.run;
   let carryS = 0;
   let skill = initialSkill;
   let ready = false;
   let resultSkill: Skill | null = null;
+  let handOffSpeedMps: number | null = null;
   let ports: { readonly physics: PhysicsPort; readonly deck: DeckPort } | null = null;
   const eventListeners = new Set<(events: readonly GameEvent[]) => void>();
-  const store = createStore(snapshotOf(world, track, skill, ready, resultSkill));
-  const publish = () => store.set(snapshotOf(world, track, skill, ready, resultSkill));
+  const snapshot = () => snapshotOf(world, track, skill, ready, resultSkill, seed, handOffSpeedMps);
+  const store = createStore(snapshot());
+  const publish = () => store.set(snapshot());
   return {
     track,
     store,
@@ -100,7 +107,10 @@ export function createSession({ track, skill: initialSkill, startAtZ, speedup, c
           for (const speedMps of ports.deck.drainContacts()) events.push({ kind: 'pin-contact', speedMps, atS });
           if (!wasJudged && world.deck.pinsDown !== null) events.push({ kind: 'result', score: world.deck.pinsDown.length, atS });
         }
-        if (resultSkill === null && world.deck.handedOff) resultSkill = skill;
+        if (resultSkill === null && world.deck.handedOff) {
+          resultSkill = skill;
+          handOffSpeedMps = world.run.speedMps;
+        }
         onStep?.(world, result.events);
       }
       if (plan.steps > 0) publish();

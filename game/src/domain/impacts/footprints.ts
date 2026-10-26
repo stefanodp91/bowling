@@ -7,6 +7,7 @@ import {
   wideningGutterFootprint,
   type Footprint,
 } from '@models/measures/obstacles';
+import { JUMPABLE_KINDS } from '../../config/impacts';
 import type { Obstacle } from '../track/schema';
 
 /** An obstacle's footprint placed on the lane at run time `runS`: a box in x, z and height. */
@@ -16,6 +17,8 @@ export interface PlacedBox {
   readonly halfWidthM: number;
   readonly halfDepthM: number;
   readonly heightM: number;
+  /** Whether an airborne ball can pass over it at all. */
+  readonly jumpable: boolean;
 }
 
 function footprintOf(obstacle: Obstacle): Footprint {
@@ -46,5 +49,6 @@ export function placedBox(obstacle: Obstacle, runS: number): PlacedBox {
     halfWidthM: footprint.halfWidthM,
     halfDepthM: footprint.halfDepthM,
     heightM: footprint.heightM,
+    jumpable: JUMPABLE_KINDS.has(obstacle.kind),
   };
 }

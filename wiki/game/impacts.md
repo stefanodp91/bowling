@@ -71,6 +71,13 @@ pins, because it costs speed and aim.
   lane), sweep bar and shoes cleared at jump apex, returning ball hit where it is at that time,
   each obstacle once, gutter push, 12 → 9 m/s and recovery at 1.5 m/s², same aim error twice.
 
+- 2026-10-27 · round 2 · `check-pilot`'s selftest (an «impossible» track with stray pins across
+  all three lanes) passed when it should fail: the perfect pilot jumped the pins — 0.38 m tall,
+  under the 0.5 m apex. The obstacle pages say stray pins and the returning ball are not
+  jumpable, but rule 1 only compared heights. Now `JUMPABLE_KINDS` (`config/impacts.ts`: rental
+  shoes and sweep bar) decides: any other obstacle is hit at any height. New unit test; perfect
+  still has 0 impacts on every track.
+
 ## Canonical files
 
 - `applyImpacts(run, impacts, track)` is pure; `ImpactState` holds one hit flag per obstacle, the

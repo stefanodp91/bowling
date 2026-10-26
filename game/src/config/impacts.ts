@@ -1,5 +1,12 @@
 /** Impact tunables (wiki/game/impacts.md, rule 5). */
 
+/**
+ * The obstacles a jump can clear (wiki/models/obstacles/*, «Overcome by»): rental shoes and the
+ * sweep bar. Stray pins and a returning ball must be avoided by changing lane, whatever their
+ * height; a widening gutter is terrain.
+ */
+export const JUMPABLE_KINDS: ReadonlySet<string> = new Set(['rental-shoes', 'sweep-bar']);
+
 /** An impact multiplies speed by 1 − 0.25: at 12 m/s the ball drops to 9 m/s (rule 2). */
 export const IMPACT_SPEED_LOSS = 0.25;
 /** Each impact adds a seeded aim error uniform in ± 0.04 m at the pin deck (rule 2). */

@@ -43,7 +43,7 @@ A gate is that memory, executed on every commit.
 | `check-file-size` | no source file over 300 lines | single responsibility |
 | `check-audio` | the committed WAV files equal, byte for byte, what `scripts/audio/generate.mjs` produces (see [sounds](../audio/sounds.md)) | every sound has its source in the repository |
 | `check-tracks` | see [track format](../track/track-format.md): schema, rules, index, and equality with the baked seed | every track is solvable |
-| `check-pilot` (full) | see [headless runs](../pilot/headless-runs.md) | the pilot really plays |
+| `check-pilot` (full) | see [headless runs](../pilot/headless-runs.md): `perfect` on every track in the browser — no impact, a result, no console error, active meshes within budget, impacts equal to `simulateRun` | the pilot really plays |
 
 ### `check-no-foreign-refs` in detail
 
