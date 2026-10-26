@@ -1,9 +1,9 @@
 ---
 title: Stats — numbers about how the demo was built
 type: spec
-status: planned
+status: built
 depends_on: [method/wiki-tooling.md, method/gates.md]
-canonical: []
+canonical: [scripts/stats/, scripts/tests/stats.test.mjs]
 verified: 2026-10-26
 ---
 
@@ -44,8 +44,25 @@ who clones it can recompute them.
 
 ## References
 
-_Filled by the agent (prompt 1, step 2)._
+- Git trailers (`Key: value` lines at the end of a message) and `git interpret-trailers`
+  (https://git-scm.com/docs/git-interpret-trailers); `Co-authored-by` as GitHub reads it
+  (https://docs.github.com/en/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors).
+- `git log --diff-filter=A` lists the commit that added a path
+  (https://git-scm.com/docs/git-log#Documentation/git-log.txt---diff-filterACDMRTUXB82308203).
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-26 · round 1 · Built the pure counts, the git/wiki readers and the text and Markdown
+  output. Fixture tests (a git repository built in a temporary folder with fixed commit dates)
+  pass: two models counted apart and one human commit; a 29-min gap keeps the streak and a
+  31-min gap breaks it (3 commits in 58 min); a human commit ends a streak; statuses 1/2/1 read
+  from front matter. On this repository `npm run stats -- --md` printed a 15-row table. Checked by
+  eye: the round zero commit counts as an agent commit because its message carries a
+  `Co-Authored-By` trailer — the rule counts trailers, so that is correct, not a bug.
+
+## Canonical files
+
+- `counts.mjs` holds the pure functions and `STREAK_GAP_MIN`; `read-repo.mjs` reads commits
+  (committer date), gates, shots and the wiki; `stats.mjs` assembles rows and prints them.
+- A streak counts agent commits in time order; a human commit or a gap over `STREAK_GAP_MIN`
+  ends it. The first `Co-Authored-By` trailer names the agent and model.

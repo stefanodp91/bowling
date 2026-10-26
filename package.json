@@ -28,7 +28,7 @@
     "wiki:context": "node scripts/wiki/context.mjs",
     "wiki:touched": "node scripts/wiki/touched.mjs",
     "acceptance:lock": "node scripts/wiki/acceptance-lock.mjs",
-    "stats": "node scripts/not-built.mjs method/stats.md",
+    "stats": "node scripts/stats/stats.mjs",
     "audio:build": "node scripts/not-built.mjs audio/sounds.md",
     "audio:check": "node scripts/not-built.mjs audio/sounds.md",
     "wiki:selftest": "node scripts/wiki/lint.mjs --selftest && node scripts/wiki/index.mjs --selftest && node scripts/wiki/check-acceptance.mjs --selftest && node scripts/wiki/agents-lint.mjs --selftest && node scripts/wiki/context.mjs --selftest && node scripts/wiki/touched.mjs --selftest && node scripts/wiki/acceptance-lock.mjs --selftest"
