@@ -1,9 +1,9 @@
 ---
 title: Gates — automatic checks that block a regression
 type: spec
-status: planned
+status: built
 depends_on: [workspace/monorepo.md]
-canonical: []
+canonical: [scripts/gates/, scripts/lib/gate.mjs, scripts/lib/imports.mjs, scripts/run-gates.mjs, scripts/tests/gates-table.test.mjs, .githooks/commit-msg]
 verified: 2026-10-26
 ---
 
@@ -76,8 +76,37 @@ the term from the content; never edit the hash list.
 
 ## References
 
-_Filled by the agent (prompt 1, step 2)._
+- Git hooks: `pre-commit` runs before the message is asked and a non-zero exit aborts the commit;
+  `commit-msg` receives the path of the message file as its only argument and can refuse it
+  (https://git-scm.com/docs/githooks). `core.hooksPath` relative to the working tree root
+  (https://git-scm.com/docs/git-config).
+- TypeScript compiler API (`ts.createSourceFile`, `ts.forEachChild`) parses a file without a
+  program, which is enough to read imports and numeric literals
+  (https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API).
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-26 · round 1 · Built the five static gates, the runner and the table test. First run on
+  the real code: `check-boundaries` found two cases — a test file importing `vitest` (now allowed in
+  `*.test.ts` only) and `ui/App.tsx` importing `scene/GameCanvas` directly (now through
+  `game/src/scene/index.ts`). The other gates passed at once. Every `--selftest` printed the case it
+  rejected (`npm run gates:selftest`: 5 of 5). `check-no-foreign-refs` passes on the full history
+  (2 commits at the time). Gap found while building: the pre-commit hook cannot see the message of
+  the commit being written, so `check-no-foreign-refs --message-file` runs from a `commit-msg`
+  hook too.
+
+## Canonical files
+
+- `scripts/lib/gate.mjs` holds the contract (`runGate`, findings, temp dirs, file walking);
+  `scripts/lib/imports.mjs` reads import specifiers with the TypeScript parser. Helpers live in
+  `scripts/lib/`, never in `scripts/gates/`, because every file there is a gate with a row above.
+- `scripts/run-gates.mjs` discovers `scripts/gates/check-*.mjs`; its `HEADLESS_GATES` set names
+  the gates that run only in `check:full`.
+- `check-boundaries` rules, as built: `models/src/measures/` imports nothing; the rest of
+  `models/src/` imports Babylon.js, the graphic engine and its own files; `game/src/domain/` and
+  `game/src/pilot/` import their own files, `zod` and `@models/measures/...` only; `game/src/ui/`
+  reaches `scene/` only through `scene/index.ts`. Test files may also import `vitest`.
+- `check-magic-numbers` accepts literals inside module-level `const SCREAMING_CASE` declarations
+  and array indexes, and skips `*.test.ts(x)`: a test's literals are the values it states.
+- `npm run check` = `npm test` + `npm run test:scripts` (Node's test runner on
+  `scripts/tests/`) + `npm run gates` + `npm run gates:selftest`.

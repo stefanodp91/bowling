@@ -15,3 +15,5 @@ investigations goes here, never in the pages (prompt 3, step 3).
 - 2026-10-26 · workspace/monorepo.md, AGENTS.md · workspace built: three npm workspaces, engines
   from release URLs, root commands with not-built placeholders, pre-commit hook; two traps
   (tree-shaken default material, unsized Reactylon canvas) recorded in AGENTS.md.
+- 2026-10-26 · method/gates.md · five static gates, runner, selftests and the table test built;
+  `check-boundaries` found two real cases on its first run; a `commit-msg` hook added for messages.
