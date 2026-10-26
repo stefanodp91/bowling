@@ -112,6 +112,10 @@ scene draws, the run collides with and the autopilot reads. Same file, same run.
   shrinking (mean early > mean late + 5 m), no violation on 200 seeds. Criterion 5 waits for the
   game page that loads tracks.
 
+- 2026-10-27 · round 2 · With the game page built, criterion 5 checked headlessly:
+  `?track=does-not-exist` shows «The demo cannot start — Track «does-not-exist» was not found.»
+  and a Retry button, no lane.
+
 ## Canonical files
 
 - Scripts that need the game's TypeScript run under `node --import tsx` with

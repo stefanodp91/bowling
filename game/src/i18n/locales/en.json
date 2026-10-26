@@ -1,0 +1,11 @@
+{
+  "error": {
+    "title": "The demo cannot start",
+    "trackNotFound": "Track «{{detail}}» was not found.",
+    "trackInvalid": "Track file is invalid: {{detail}}",
+    "query": "The address has an invalid «{{field}}» parameter.",
+    "unexpected": "Something went wrong: {{detail}}",
+    "retry": "Retry"
+  },
+  "loading": "Loading the lane…"
+}

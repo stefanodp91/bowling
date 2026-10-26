@@ -44,15 +44,42 @@ try {
   server.stop();
 }
 
+/** The game's fog and background colour, from game/src/config/camera.ts (FOG_HEX). */
+const FOG = readFileSync(join(REPO_ROOT, 'game/src/config/camera.ts'), 'utf8').match(/FOG_HEX = '#([0-9A-F]{6})'/i)[1];
+/** wiki/game/run.md criterion 3: the ball on the lane at 250 m. */
+const GAME_AT_250 = 'game:track=lane-01&at=250&pause=1';
+
 const run = parseFrontMatter(readFileSync(join(REPO_ROOT, 'wiki/game/run.md'), 'utf8')).frontMatter;
-if (run.status === 'planned') {
+const runIsBuilt = run.status !== 'planned' || process.argv.includes('--game');
+if (!runIsBuilt) {
   console.log('SKIP  game:pause=1 — the game page (wiki/game/run.md) is not built yet; criterion skipped, not passed');
 } else {
   try {
     const { file } = await takeShot({ target: 'game:pause=1' });
     record('game:pause=1 writes a PNG', statSync(file).size > 0, file);
+    const shot = await takeShot({ target: GAME_AT_250 });
+    await checkNotBackground(`${GAME_AT_250}: centre region is not background`, shot.png, FOG);
   } catch (error) {
-    record('game:pause=1 writes a PNG', false, error.message);
+    record('game shots', false, error.message);
+  }
+}
+
+/** Five pixels around the centre: the region is «not background» if most differ from `hex`. */
+async function checkNotBackground(name, png, hex) {
+  const browser = await launchBrowser();
+  try {
+    const width = png.readUInt32BE(16);
+    const height = png.readUInt32BE(20);
+    const bg = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16));
+    const offsets = [[0, 0], [-40, 0], [40, 0], [0, -40], [0, 40]];
+    let differing = 0;
+    for (const [dx, dy] of offsets) {
+      const [r, g, b] = await pixelOf(browser, png, Math.floor(width / 2) + dx, Math.floor(height / 2) + dy);
+      if (![r, g, b].every((c, i) => Math.abs(c - bg[i]) <= CHANNEL_TOLERANCE)) differing += 1;
+    }
+    record(name, differing > offsets.length / 2, `${differing}/${offsets.length} centre pixels differ from #${hex}`);
+  } finally {
+    await browser.close();
   }
 }
 

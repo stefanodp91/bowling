@@ -60,6 +60,11 @@ saves an image the agent then opens.
   in the catalogue»; (3) `game:pause=1` → skipped with a printed notice until
   [run](../game/run.md) is built. A story is ready in 1.4 s once Storybook runs.
 
+- 2026-10-27 · round 2 · The game page exists: criterion 3 now runs instead of being skipped —
+  `game:pause=1` writes a PNG — and `shot:verify` also checks the run page's 250 m shot (centre
+  pixels against the fog colour). First game shot failed with «504 (Outdated Optimize Dep)»: Vite
+  re-optimised new dependencies on first load; the retry passed (no change needed).
+
 ## Canonical files
 
 - `npm run shot:verify` checks criteria 1–3 here and criterion 2 of the

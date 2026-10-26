@@ -20,7 +20,7 @@ once the script exists.
 13. [models/pins.md](models/pins.md) — Pins — the ten regulation pins · `built`
 14. [models/obstacles/stray-pins.md](models/obstacles/stray-pins.md) — Stray pins — a group of pins left standing in one travel lane · `built`
 15. [track/track-format.md](track/track-format.md) — Track format — the lane as a JSON file, its bake and its gate · `built`
-16. [game/run.md](game/run.md) — Run — the ball's 500 m, from foul line to pin deck · `planned`
+16. [game/run.md](game/run.md) — Run — the ball's 500 m, from foul line to pin deck · `built`
 17. [game/camera.md](game/camera.md) — Camera — chase, impact view and slow motion · `planned`
 18. [game/impacts.md](game/impacts.md) — Impacts — what an obstacle costs · `planned`
 19. [game/pins.md](game/pins.md) — Pins physics — the strike, and the score · `planned`

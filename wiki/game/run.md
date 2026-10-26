@@ -1,9 +1,9 @@
 ---
 title: Run — the ball's 500 m, from foul line to pin deck
 type: spec
-status: planned
+status: built
 depends_on: [track/track-format.md, models/ball.md, models/lane.md]
-canonical: []
+canonical: [game/src/config/run.ts, game/src/config/loop.ts, game/src/config/scene.ts, game/src/domain/run/, game/src/app/, game/src/dev/test-hook.ts, game/src/scene/, game/src/ui/App.tsx, game/src/ui/ErrorScreen.tsx, game/src/ui/use-game-session.ts, game/src/i18n/]
 verified: 2026-10-26
 ---
 
@@ -58,8 +58,43 @@ and jumping when the autopilot says so.
 
 ## References
 
-_Filled by the agent (prompt 1, step 2): typical bowling ball speeds, for the record._
+- Real release speeds: under 17 mph slow, 17–19 mph average, over 19 mph fast (7.6–8.5 m/s
+  average); a ball loses about 3–3½ mph before the pins
+  (https://www.topendsports.com/sport/tenpin/physics-speed.htm). This run's 6 → 12 m/s
+  (13 → 27 mph) is deliberately faster than a real throw: it is a 500 m lane.
+- Fixed-step simulation with an accumulator and render interpolation («Fix your timestep»,
+  https://gafferongames.com/post/fix_your_timestep/).
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-27 · round 1 · Built the pure run (`domain/run/`: state, step, speed), the fixed-step
+  clock with `speedup` and time scale (`app/frame-steps.ts`), the session that publishes a
+  snapshot to a store, query parsing (zod), track loading through an injected fetch, the
+  `window.__bowling` hook, and the scene: recycled lane segments (pool of `SEGMENTS_BEHIND +
+  SEGMENTS_AHEAD` instances, first and last segments with markings), the ball (spin node turned by
+  the roll angle), obstacles created inside the fog and disposed behind, a chase camera from a pure
+  rig, linear fog, the alley environment. Unit tests: speed ≤ target at every step over 70 s;
+  target monotonic; bit-identical states for the same commands; lane change ends exactly on the
+  adjacent centre after 0.25 s; wrong-lane and second-change commands ignored; jump back to y = 0
+  after 0.6 s, no lane change while airborne; «stay» rolls 56.3 s (inside 50–65 s). The
+  jump-clearance tests of the rental shoes and sweep bar are now real (0.12 m and ≈ 0.30 m < 0.5 m).
+  Shots: 3, plus a full run at `speedup=40` in headless Chromium (deck reached at 56.3 s simulated,
+  15.7 s wall, no console error). `game:track=lane-01&at=250&pause=1`: the ball sits on the
+  lane, a pair of shoes ahead, the lane fading into the fog; 5 of 5 centre pixels differ from the
+  fog colour. Left for the [camera](camera.md) page: the ball reads small at 3 m with a 0.9 rad
+  field of view, and the obstacles are small until close.
+
+## Canonical files
+
+- `game/src/app/` is the composition layer (no Babylon, no React): `query.ts`, `load-track.ts`
+  (fetch is a port), `frame-steps.ts`, `session.ts` (owns the run state, calls the command source
+  each step, publishes `GameSnapshot` to a `Store`), `store.ts`.
+- `CommandSource` is the port the [autopilot](../pilot/autopilot.md) plugs into; until then the
+  session uses `stayOnly`.
+- The scene is `scene/mountGame.ts` plus `scene/views/` (lane, ball, obstacles) and
+  `scene/camera/chase-rig.ts`; the frame loop runs in `onBeforeRenderObservable`, the ready signal
+  after the first frame rendered with `scene.isReady()`.
+- `?at=` starts rolling at that metre at its target speed; `?pause=1` freezes after the first
+  frame; `?speedup=k` runs exactly k fixed steps per rendered frame.
+- A returning ball's position is `z0 − speedMps · runS`, `runS` counting from the start of
+  `rolling`.
