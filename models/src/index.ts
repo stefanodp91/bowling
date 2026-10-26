@@ -19,3 +19,5 @@ export type { RentalShoesOptions } from './obstacles/rental-shoes/rental-shoes';
 export * from './measures/obstacles';
 export { createReturningBall } from './obstacles/returning-ball/returning-ball';
 export type { ReturningBallOptions } from './obstacles/returning-ball/returning-ball';
+export { createSweepBar } from './obstacles/sweep-bar/sweep-bar';
+export type { SweepBarOptions } from './obstacles/sweep-bar/sweep-bar';

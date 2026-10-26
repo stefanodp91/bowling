@@ -7,4 +7,5 @@ import { describe, it } from 'vitest';
  */
 describe('jumpable obstacles are below the jump apex', () => {
   it.skip('rental shoes footprint height < JUMP_APEX_M — waits for wiki/game/run.md (config/run.ts)', () => {});
+  it.skip('sweep bar footprint height < JUMP_APEX_M — waits for wiki/game/run.md (config/run.ts)', () => {});
 });

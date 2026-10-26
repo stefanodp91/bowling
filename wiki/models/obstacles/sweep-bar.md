@@ -1,9 +1,9 @@
 ---
 title: Sweep bar — the pinsetter's rake across all three travel lanes
 type: spec
-status: planned
+status: built
 depends_on: [models/lane.md]
-canonical: []
+canonical: [models/src/obstacles/sweep-bar/, models/src/measures/obstacles.ts, storybook/src/stories/obstacle-sweep-bar.stories.tsx, game/src/domain/obstacles/jump-clearance.test.ts]
 verified: 2026-10-26
 ---
 
@@ -37,8 +37,29 @@ The only obstacle that blocks every lane: the pilot must jump, so it is where a 
 
 ## References
 
-_Filled by the agent (prompt 1, step 2): photos and descriptions of pinsetter sweeps and rakes._
+- The sweep (rake) of a pinsetter is a board that lowers across the lane as a guard and then moves
+  over the deck to push dead wood into the pit; it hangs from the machine above the deck
+  (https://en.wikipedia.org/wiki/Pinsetter; patent US2657929A «Sweep and guard mechanism for
+  bowling pin setting machines», https://patents.google.com/patent/US2657929A/en; Brunswick GS
+  service manual, https://brunswickbowling.com/uploads/document-library/Service-Manuals/Pinsetters/GS/Service-Manuals_GS-Service-Manual-Full-47-902735-000-Rev-1-10-18.pdf).
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-26 · round 1 · Built a red guard board with a white stripe and a steel top lip, two arms
+  to pivots at 1.4 m, swinging as a pendulum. The unit test found that the swung lip rose 3.5 mm
+  above 0.30 m: the footprint now contains the whole swing — depth = lip + amplitude, height
+  derived from the largest angle (≈ 0.3035 m), and the angle is set so the bottom edge, the
+  farthest point, moves exactly ± the amplitude. 1 shot: a thin black frame over a red board read
+  as a fence or a goal, and the metal mirrored the dark alley into black.
+- 2026-10-26 · round 2 · Added the machine housing the arms hang from (charcoal, yellow/black
+  hazard band), crank plates on the pivots, painted (partly metallic) lighter steel. 1 shot: reads
+  as the underside of a pinsetter with its sweep down. Left for the human: the housing floats with
+  no visible support, which a 500 m lane cannot give it.
+
+## Canonical files
+
+- `createSweepBar(scene, { swingPeriodS })`: the period is the game's tunable; the amplitude is a
+  measure, because the footprint depends on it. `animate(t)` sets the pendulum angle
+  `SWEEP_SWING_ANGLE_RAD · sin(2πt / period)`.
+- The test samples five instants of the swing and checks the board and lip stay inside
+  `SWEEP_BAR_FOOTPRINT` and span the playing surface.

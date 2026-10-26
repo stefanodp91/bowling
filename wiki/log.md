@@ -27,3 +27,4 @@ investigations goes here, never in the pages (prompt 3, step 3).
 - 2026-10-26 · models/lane.md, storybook/catalog.md · lane segment and pin deck built; the stage floor now sits under a model's lowest point; factories may return richer handles (`ModelFactory<Options, Handle>`).
 - 2026-10-26 · models/obstacles/rental-shoes.md · rental shoes built in two rounds; `@models/<path>` alias added to the game.
 - 2026-10-26 · models/obstacles/returning-ball.md · returning ball built on the house ball.
+- 2026-10-26 · models/obstacles/sweep-bar.md · sweep bar built in two rounds; footprint height derived from the swing.
