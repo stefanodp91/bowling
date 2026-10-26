@@ -5,7 +5,7 @@ once the script exists.
 
 ## Specification, in build order
 
-1. [workspace/monorepo.md](workspace/monorepo.md) — Workspace — monorepo, engines, toolchain and commands · `planned`
+1. [workspace/monorepo.md](workspace/monorepo.md) — Workspace — monorepo, engines, toolchain and commands · `built`
 2. [method/gates.md](method/gates.md) — Gates — automatic checks that block a regression · `planned`
 3. [method/wiki-tooling.md](method/wiki-tooling.md) — Wiki tooling — lint, index, context, touched, acceptance lock · `planned`
 4. [method/stats.md](method/stats.md) — Stats — numbers about how the demo was built · `planned`

@@ -115,4 +115,10 @@ The code is read by people who were in the audience of a talk: it must be an exa
 
 ## Traps
 
-Traps found on the field go here, each with the symptom that reveals it. None yet.
+Traps found on the field go here, each with the symptom that reveals it.
+
+- **A mesh without a material renders nothing.** Babylon is imported by deep paths, so the default
+  `StandardMaterial` is not loaded. Symptom: the scene shows only its clear colour, and an
+  asynchronous page error says «StandardMaterial needs to be imported before…». Every model sets
+  its own PBR material ([model conventions](wiki/models/conventions.md)).
+- **Reactylon's canvas has no size.** Symptom: a 300×150 canvas. The page or stage CSS sizes it.

@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node", "vite/client"],
+    "baseUrl": ".",
+    "paths": { "@models": ["../models/src/index.ts"], "@models/*": ["../models/src/*"] }
+  },
+  "include": ["src", ".storybook", "vitest.config.ts", "../models/src"]
+}

@@ -1,0 +1,37 @@
+{
+  "name": "bowling",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.11"
+  },
+  "workspaces": [
+    "models",
+    "game",
+    "storybook"
+  ],
+  "scripts": {
+    "prepare": "git config core.hooksPath .githooks",
+    "dev": "npm run dev -w game",
+    "storybook": "npm run storybook -w storybook",
+    "test": "npm run test --workspaces",
+    "check": "npm test",
+    "check:full": "npm run check",
+    "shot": "node scripts/not-built.mjs tools/shot.md",
+    "pilot": "node scripts/not-built.mjs pilot/headless-runs.md",
+    "bake:tracks": "node scripts/not-built.mjs track/track-format.md",
+    "wiki:lint": "node scripts/not-built.mjs method/wiki-tooling.md",
+    "wiki:index": "node scripts/not-built.mjs method/wiki-tooling.md",
+    "wiki:context": "node scripts/not-built.mjs method/wiki-tooling.md",
+    "wiki:touched": "node scripts/not-built.mjs method/wiki-tooling.md",
+    "acceptance:lock": "node scripts/not-built.mjs method/wiki-tooling.md",
+    "stats": "node scripts/not-built.mjs method/stats.md",
+    "audio:build": "node scripts/not-built.mjs audio/sounds.md",
+    "audio:check": "node scripts/not-built.mjs audio/sounds.md"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "playwright": "^1.64.1",
+    "typescript": "^5.9.3"
+  }
+}
