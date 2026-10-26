@@ -4,6 +4,8 @@ import type { RunState, Command } from '../domain/run/state';
 import { initialWorld, worldStep, type World } from '../domain/simulation';
 import type { Track } from '../domain/track/schema';
 import { SIM_STEP_S } from '../config/run';
+import type { DeckPort, PhysicsPort } from './deck-port';
+import { deckStep } from './deck-step';
 import { frameSteps } from './frame-steps';
 import type { GameSnapshot } from './snapshot';
 import { createStore, type Store } from './store';
@@ -37,6 +39,8 @@ export interface Session {
   frame(frameS: number, timeScale?: number, onStep?: StepListener): FrameStates;
   /** The latest state of the whole simulation. */
   world(): World;
+  /** The scene's physics and pin deck, stepped with the simulation; returns the detach. */
+  attach(ports: { readonly physics: PhysicsPort; readonly deck: DeckPort }): () => void;
   setSkill(skill: Skill): void;
   markReady(): void;
 }
@@ -53,7 +57,7 @@ function snapshotOf(world: World, track: Track, skill: Skill, ready: boolean): G
     lane: state.lane,
     impacts: world.impacts.count,
     skill,
-    score: null,
+    score: world.deck.pinsDown === null ? null : world.deck.pinsDown.length,
     runS: state.runS,
   };
 }
@@ -65,6 +69,7 @@ export function createSession({ track, skill: initialSkill, startAtZ, speedup, c
   let carryS = 0;
   let skill = initialSkill;
   let ready = false;
+  let ports: { readonly physics: PhysicsPort; readonly deck: DeckPort } | null = null;
   const store = createStore(snapshotOf(world, track, skill, ready));
   const publish = () => store.set(snapshotOf(world, track, skill, ready));
   return {
@@ -77,12 +82,22 @@ export function createSession({ track, skill: initialSkill, startAtZ, speedup, c
         previous = world.run;
         const result = worldStep(world, track, commands(world.run, track, skill), SIM_STEP_S);
         world = result.world;
+        if (ports !== null) {
+          ports.physics.step();
+          world = deckStep(world, ports.deck, SIM_STEP_S);
+        }
         onStep?.(world, result.events);
       }
       if (plan.steps > 0) publish();
       return { previous, current: world.run, alpha: plan.alpha };
     },
     world: () => world,
+    attach: (next) => {
+      ports = next;
+      return () => {
+        ports = null;
+      };
+    },
     setSkill: (next) => {
       skill = next;
       publish();

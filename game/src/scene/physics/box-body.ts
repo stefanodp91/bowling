@@ -18,14 +18,16 @@ export interface BoxBodyOptions {
   readonly position: readonly [number, number, number];
   /** kg; 0 makes the body static. */
   readonly massKg: number;
+  readonly surface?: { readonly friction: number; readonly restitution: number };
 }
 
-export function createBoxBody(scene: Scene, { name, size, position, massKg }: BoxBodyOptions): BoxBody {
+export function createBoxBody(scene: Scene, { name, size, position, massKg, surface }: BoxBodyOptions): BoxBody {
   const node = new TransformNode(name, scene);
   node.position.set(...position);
   node.rotationQuaternion = Quaternion.Identity();
   const body = new PhysicsBody(node, massKg > 0 ? PhysicsMotionType.DYNAMIC : PhysicsMotionType.STATIC, false, scene);
   const shape = new PhysicsShapeBox(Vector3.Zero(), Quaternion.Identity(), new Vector3(...size), scene);
+  if (surface !== undefined) shape.material = { friction: surface.friction, restitution: surface.restitution };
   body.shape = shape;
   if (massKg > 0) body.setMassProperties({ mass: massKg });
   return {

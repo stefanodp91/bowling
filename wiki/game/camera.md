@@ -1,9 +1,9 @@
 ---
 title: Camera — chase, impact view and slow motion
 type: spec
-status: planned
+status: built
 depends_on: [game/run.md]
-canonical: []
+canonical: [game/src/config/camera.ts, game/src/scene/camera/, game/src/scene/mountGame.ts, game/src/app/frame-steps.ts]
 verified: 2026-10-26
 ---
 
@@ -60,3 +60,8 @@ Make a one-minute run that nobody plays watchable from a projector at the back o
   same input same pose at z 0, 250, 495; chase offsets; lateral follow lags and arrives; partial
   jump follow; impact pose from the impact zone; slow motion only for 1.5 s after contact.
   Not closed: criterion 2 needs the deck simulation of [pins physics](pins.md).
+- 2026-10-27 · round 2 · With the deck built, criterion 2 runs as a test
+  (`scene/camera/slow-motion.test.ts`): the same deck through the session at 60 Hz frames, once at
+  time scale 1 and once with `timeScaleAt` — 10 pins down in both, in 195 and 285 frames. Physics
+  advances once per simulation step, so slow motion only changes how many frames the steps take.
+  The game applies `timeScaleAt(deck.sinceContactS)` to every frame.

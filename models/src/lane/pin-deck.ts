@@ -9,10 +9,20 @@ import { Mesh } from '@babylonjs/core/Meshes/mesh';
 import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
 import type { Scene } from '@babylonjs/core/scene';
 import { perScene } from '../materials/scene-cache';
-import { BOARDS_SURFACE_WIDTH_M, GUTTER_DEPTH_M, GUTTER_WIDTH_M, PLAYING_SURFACE_WIDTH_M } from '../measures/lane';
+import {
+  BOARDS_SURFACE_WIDTH_M,
+  GUTTER_DEPTH_M,
+  GUTTER_WIDTH_M,
+  MASKING_WALL_HEIGHT_M,
+  PIN_DECK_END_M,
+  PIN_DECK_FRONT_M,
+  PIT_DEPTH_M,
+  PIT_DROP_M,
+  PLAYING_SURFACE_WIDTH_M,
+} from '../measures/lane';
 import { gutterMaterial } from './lane-materials';
 import { createTroughMesh } from './trough-geometry';
-import { PIN_ROW_DEPTH_M, PIN_SPOT_DIAMETER_M, pinSpots } from '../measures/pins';
+import { PIN_SPOT_DIAMETER_M, pinSpots } from '../measures/pins';
 import type { ModelFactory, ModelHandle } from '../model-handle';
 
 /**
@@ -21,20 +31,15 @@ import type { ModelFactory, ModelHandle } from '../model-handle';
  * a soft spotlight. Root at the head pin spot.
  */
 
-/** The deck starts 0.3 m before the head pin and ends 0.3 m past the back row (design margins). */
-const DECK_FRONT_M = 0.3;
-const DECK_BACK_MARGIN_M = 0.3;
-const DECK_LENGTH_M = DECK_FRONT_M + 3 * PIN_ROW_DEPTH_M + DECK_BACK_MARGIN_M;
+const DECK_FRONT_M = PIN_DECK_FRONT_M;
+const DECK_LENGTH_M = PIN_DECK_FRONT_M + PIN_DECK_END_M;
 /** The deck is a light synthetic plate, a hair above the lane boards to avoid z-fighting. */
 const DECK_LIFT_M = 0.0015;
 const SPOT_LIFT_M = 0.002;
 const DECK_HEX = '#E9E4D8';
 const DECK_ROUGHNESS = 0.3;
 const SPOT_HEX = '#2B1A12';
-/** Pit behind the deck, and the masking wall at its back. */
-const PIT_DEPTH_M = 0.8;
-const PIT_DROP_M = 0.25;
-const WALL_HEIGHT_M = 1.6;
+/** The wall and pit overhang the playing surface a little on each side. */
 const WALL_MARGIN_M = 0.4;
 const DARK_HEX = '#08080B';
 /** The spotlight: above and in front of the deck, aimed at its centre, soft-edged. */
@@ -79,7 +84,7 @@ export const createPinDeck: ModelFactory<PinDeckOptions> = (scene: Scene): Model
   spots.name = 'pin-deck-spots';
   spots.material = spotMaterial(scene);
 
-  const deckEnd = DECK_LENGTH_M - DECK_FRONT_M;
+  const deckEnd = PIN_DECK_END_M;
   const gutters = [-1, 1].map((side) => {
     const gutter = createTroughMesh(`pin-deck-gutter-${side}`, scene, {
       widthM: GUTTER_WIDTH_M,
@@ -94,8 +99,8 @@ export const createPinDeck: ModelFactory<PinDeckOptions> = (scene: Scene): Model
   const pit = CreateGround('pin-deck-pit', { width: PLAYING_SURFACE_WIDTH_M + WALL_MARGIN_M, height: PIT_DEPTH_M }, scene);
   pit.position.set(0, -PIT_DROP_M, deckEnd + PIT_DEPTH_M / 2);
   pit.material = darkMaterial(scene);
-  const wall = CreatePlane('pin-deck-wall', { width: PLAYING_SURFACE_WIDTH_M + WALL_MARGIN_M, height: WALL_HEIGHT_M }, scene);
-  wall.position.set(0, WALL_HEIGHT_M / 2 - PIT_DROP_M, deckEnd + PIT_DEPTH_M);
+  const wall = CreatePlane('pin-deck-wall', { width: PLAYING_SURFACE_WIDTH_M + WALL_MARGIN_M, height: MASKING_WALL_HEIGHT_M }, scene);
+  wall.position.set(0, MASKING_WALL_HEIGHT_M / 2 - PIT_DROP_M, deckEnd + PIT_DEPTH_M);
   wall.material = darkMaterial(scene);
 
   const light = new SpotLight(

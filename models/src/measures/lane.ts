@@ -57,3 +57,17 @@ export const FINAL_FOUL_LINE_Z_M = LANE_LENGTH_M - REGULATION_FOUL_TO_HEAD_PIN_M
 export function boardCentreX(lane: LaneIndex, board: number): number {
   return laneCentreX(lane) - TRAVEL_LANE_WIDTH_M / 2 + (board - 0.5) * BOARD_WIDTH_M;
 }
+
+/**
+ * The pin deck's end and the pit behind it (wiki/models/lane.md, rule 3), relative to the head pin
+ * spot along z: the deck starts 0.3 m before the head pin and ends 0.3 m past the back row
+ * (design margins); the pit is 0.8 m deep and 0.25 m below the lane; the masking wall stands at
+ * its back, 1.6 m tall. Shared by the deck model and the physics colliders.
+ */
+export const PIN_DECK_FRONT_M = 0.3;
+export const PIN_DECK_BACK_MARGIN_M = 0.3;
+const PIN_ROWS_DEPTH_M = 3 * 12 * METRES_PER_INCH * Math.sin(Math.PI / 3);
+export const PIN_DECK_END_M = PIN_ROWS_DEPTH_M + PIN_DECK_BACK_MARGIN_M;
+export const PIT_DEPTH_M = 0.8;
+export const PIT_DROP_M = 0.25;
+export const MASKING_WALL_HEIGHT_M = 1.6;

@@ -9,7 +9,8 @@ import type { Session } from '../app/session';
 import { SIM_STEP_S } from '../config/run';
 import { CHASE_FOV_RAD, FOG_END_M, FOG_HEX, FOG_START_M } from '../config/camera';
 import { AMBIENT_INTENSITY, KEY_LIGHT } from '../config/scene';
-import { cameraPose } from './camera/rig';
+import { cameraPose, timeScaleAt } from './camera/rig';
+import { createDeck } from './physics/deck';
 import { createBallView } from './views/ball-view';
 import { createLaneView } from './views/lane-view';
 import { createObstacleView } from './views/obstacle-view';
@@ -56,19 +57,22 @@ export function mountGame(scene: Scene, session: Session, options: MountOptions)
   const lane = createLaneView(scene);
   const ball = createBallView(scene);
   const pins = createPinsView(scene);
+  const deck = createDeck(scene, { ball: ball.root, pins: pins.pins, pinMesh: pins.pinMesh });
+  const detach = session.attach({ physics, deck });
   const obstacles = createObstacleView(scene, session.track);
   const camera = scene.activeCamera;
 
   let frames = 0;
   const render = (frameS: number): void => {
-    const { previous, current, alpha } = session.frame(frameS, 1, (_world, events) => {
+    const timeScale = timeScaleAt(session.world().deck.sinceContactS);
+    const { previous, current, alpha } = session.frame(frameS, timeScale, (_world, events) => {
       for (const event of events) obstacles.knock(event.obstacleIndex, event.runS, event.speedMps);
-      physics.step();
       obstacles.age(SIM_STEP_S);
     });
     const lerp = (a: number, b: number): number => a + (b - a) * alpha;
     const pose = { x: lerp(previous.x, current.x), y: lerp(previous.y, current.y), z: lerp(previous.z, current.z) };
-    ball.update(pose, lerp(previous.rollRad, current.rollRad));
+    // From the hand-over on, Havok moves the ball.
+    if (!session.world().deck.handedOff) ball.update(pose, lerp(previous.rollRad, current.rollRad));
     const { position, target } = cameraPose({ ...pose, lastLaneChange: current.lastLaneChange });
     if (camera instanceof FreeCamera) {
       camera.position.set(...position);
@@ -91,6 +95,8 @@ export function mountGame(scene: Scene, session: Session, options: MountOptions)
   return () => {
     beforeRender.remove();
     afterRender.remove();
+    detach();
+    deck.dispose();
     obstacles.dispose();
     pins.dispose();
     ball.dispose();

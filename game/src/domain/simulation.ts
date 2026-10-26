@@ -1,3 +1,4 @@
+import { initialDeck, type DeckState } from './deck/deck';
 import { applyImpacts, initialImpacts, type ImpactEvent, type ImpactState } from './impacts/impacts';
 import { initialRunState, runStateAt, step } from './run/step';
 import type { Command, RunState } from './run/state';
@@ -7,10 +8,11 @@ import type { Track } from './track/schema';
 export interface World {
   readonly run: RunState;
   readonly impacts: ImpactState;
+  readonly deck: DeckState;
 }
 
 export function initialWorld(track: Track, startAtZ?: number): World {
-  return { run: startAtZ === undefined ? initialRunState() : runStateAt(startAtZ), impacts: initialImpacts(track) };
+  return { run: startAtZ === undefined ? initialRunState() : runStateAt(startAtZ), impacts: initialImpacts(track), deck: initialDeck };
 }
 
 /**
@@ -21,5 +23,5 @@ export function worldStep(world: World, track: Track, command: Command, dtS: num
   const run = step(world.run, command, dtS);
   if (run.phase !== 'rolling') return { world: { ...world, run }, events: [] };
   const result = applyImpacts(run, world.impacts, track);
-  return { world: { run: result.run, impacts: result.impacts }, events: result.events };
+  return { world: { ...world, run: result.run, impacts: result.impacts }, events: result.events };
 }
