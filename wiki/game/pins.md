@@ -89,6 +89,12 @@ Havok decides how many pins fall.
   9 down (a pin rebounds from the wall), side 1, identical twice. 6 shots. The exact counts are in
   the record [deck tests 2026-10-27](../records/deck-tests-20261027.md).
 
+- 2026-10-27 · round 2 · From the headless campaign: every perfect run ends with 9 pins, pin 8
+  standing — a straight ball (no entry angle) on the pocket. Varying the surface values (pin
+  friction 0.3–0.5, restitution 0.5–0.75, ball restitution 0.4–0.6) left the outcome unchanged,
+  so the leave comes from the geometry of the hit, not the materials. Criteria still pass; the
+  consequence for the demo is in [review](../review.md).
+
 ## Canonical files
 
 - The session calls `physics.step()` and `deckStep()` after every world step; the deck's verdict

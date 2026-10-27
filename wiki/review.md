@@ -31,6 +31,18 @@ the agent recommends.
   engine feature that does not exist in the pinned release. Recommend: either amend the rule to
   «Babylon's Havok plugin behind `scene/physics/`», or publish the adapter in a new engine release
   and pin it.
+- 2026-10-27 · [impacts](game/impacts.md), [pins physics](game/pins.md), [autopilot](pilot/autopilot.md)
+  purpose · Built and measured ([pilot vs blind](records/pilot-vs-blind-20261027.md)): with the
+  spec's values (speed × 0.75 then recovery at 1.5 m/s², aim error ± 0.04 m per impact), every
+  run reaches the deck at 12 m/s and sloppy runs average 9.6 pins against perfect's 9.0 — the
+  demo's message «the audience sees impacts turn into fewer pins» does not show. Two causes: the
+  speed loss is recovered before the deck, and the perfect pocket hit (a straight ball, no entry
+  angle) always leaves pin 8, so small aim errors help as often as they hurt. All automatic
+  criteria pass, so this is a design decision, not a failing page. Recommend one of: carry the
+  speed loss to the deck (no recovery after the last obstacle, or a lower recovery rate); a larger
+  aim error per impact (≈ 0.10–0.15 m reaches the 1–3 or 1–2 «Brooklyn» side and the split
+  zone); or an entry angle at the hand-over so the pocket hit strikes. Each changes a value a
+  human wrote in a rule or criterion.
 
 ## Approved
 

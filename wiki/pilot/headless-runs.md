@@ -1,9 +1,9 @@
 ---
 title: Headless runs — the tester that never gets tired
 type: spec
-status: planned
+status: built
 depends_on: [pilot/autopilot.md, game/hud.md, game/camera.md, tools/shot.md]
-canonical: []
+canonical: [scripts/pilot/, scripts/gates/check-pilot.mjs, scripts/headless/, game/src/config/render.ts, game/src/dev/, game/src/pilot/blind.ts]
 verified: 2026-10-26
 ---
 
@@ -48,8 +48,30 @@ browser, driven by the autopilot, many times, and writes down numbers instead of
 
 ## References
 
-_Filled by the agent (prompt 1, step 2)._
+- Playwright `page.route` to replace a response in flight, `waitForFunction` with polling
+  (https://playwright.dev/docs/api/class-page).
+- Comparing an agent against random play as a baseline is standard in game-AI evaluation
+  (random agents in the Arcade Learning Environment, https://arxiv.org/abs/1207.4708).
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-27 · round 1 · Built `npm run pilot` (`scripts/pilot/`: one browser run read through
+  `window.__bowling`, the Node prediction from `simulateRun`, the campaign and its summary),
+  frame statistics for the test hook (`game/src/dev/render-stats.ts`), the snapshot's hand-over
+  speed, aim error and seed, the `seed` and `pilot=blind` query parameters, the blind driver, the
+  render budget and `check-pilot`. Its selftest replaces `lane-01.json` in flight with stray pins
+  across all three lanes; the first time it **passed** — the perfect pilot jumped the pins — which
+  exposed that the domain let a jump clear any obstacle lower than the apex (fixed in
+  [impacts](../game/impacts.md), round 2). Then the selftest rejects it («perfect hit 1
+  obstacle(s)») and the gate passes on the five tracks. The active-mesh budget (250) comes from
+  the measured peak (174) with headroom. Campaign: 20 runs, all agree with `simulateRun`, record
+  [pilot vs blind 2026-10-27](../records/pilot-vs-blind-20261027.md); the deck tests are in
+  [deck tests 2026-10-27](../records/deck-tests-20261027.md). `npm run check:full` passes. What
+  the campaign shows about impacts and pins is in [review](../review.md).
+
+## Canonical files
+
+- `scripts/pilot/browser-run.mjs` is shared by the CLI and the gate; it uses the shot tool's
+  browser setup (`scripts/headless/`).
+- The browser plays the run seed it is given (default the track's seed), so a run and
+  `simulateRun(track, skill, seed)` are the same computation until the deck.

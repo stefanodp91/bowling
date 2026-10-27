@@ -27,7 +27,7 @@ once the script exists.
 20. [pilot/autopilot.md](pilot/autopilot.md) — Autopilot — the only player, and its three skill profiles · `built`
 21. [game/hud.md](game/hud.md) — HUD — run information, skill buttons, end screen · `built`
 22. [audio/sounds.md](audio/sounds.md) — Sounds — generated from numbers, played by the audio engine · `built`
-23. [pilot/headless-runs.md](pilot/headless-runs.md) — Headless runs — the tester that never gets tired · `planned`
+23. [pilot/headless-runs.md](pilot/headless-runs.md) — Headless runs — the tester that never gets tired · `built`
 24. [release/open-source.md](release/open-source.md) — Open-source release — ready to hand to the audience · `planned`
 
 ## Concepts
@@ -42,3 +42,4 @@ once the script exists.
 ## Records
 
 - [records/deck-tests-20261027.md](records/deck-tests-20261027.md) — Deck tests — pocket and off-pocket pins down in Havok
+- [records/pilot-vs-blind-20261027.md](records/pilot-vs-blind-20261027.md) — Pilot vs blind — 5 tracks, three skills and the blind baseline in the browser
