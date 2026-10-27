@@ -1,13 +1,18 @@
 /**
- * Pin measures and the ten-pin layout (wiki/models/pins.md). Metres. Pure: imports nothing.
+ * Pin measures and the ten-pin layout (wiki/models/pins.md). Metres, at twice life size
+ * (PROP_SCALE, wiki/models/conventions.md). Pure: imports only the scale.
  */
+import { PROP_MASS_SCALE, PROP_SCALE } from './scale';
 
-const METRES_PER_INCH = 0.0254;
+/** One regulation inch, in game metres: every pin measure below is given in inches. */
+const METRES_PER_INCH = 0.0254 * PROP_SCALE;
 
 /** Pin height: 15 in (USBC; tolerance ± 1/32 in). */
-export const PIN_HEIGHT_M = 15 * METRES_PER_INCH;
+export const PIN_HEIGHT_IN = 15;
+export const PIN_HEIGHT_M = PIN_HEIGHT_IN * METRES_PER_INCH;
 /** Pin mass: 1.53 kg, 3 lb 6 oz, inside the USBC range 3 lb 6 oz – 3 lb 10 oz. */
-export const PIN_MASS_KG = 1.53;
+const REGULATION_MASS_KG = 1.53;
+export const PIN_MASS_KG = REGULATION_MASS_KG * PROP_MASS_SCALE;
 
 /**
  * The regulation profile: diameter (in) at height above the base (in), from the USBC pin

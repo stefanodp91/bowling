@@ -14,6 +14,7 @@ import {
   SWEEP_PIVOT_HEIGHT_M,
   SWEEP_SWING_ANGLE_RAD,
 } from '../../measures/obstacles';
+import { PROP_SCALE } from '../../measures/scale';
 import type { ModelFactory, ModelHandle } from '../../model-handle';
 
 export interface SweepBarOptions {
@@ -21,28 +22,29 @@ export interface SweepBarOptions {
   readonly swingPeriodS: number;
 }
 
+/** The board spans the lane, which is not scaled; every other length here is × PROP_SCALE, like the props. */
 const BOARD_WIDTH_M = PLAYING_SURFACE_WIDTH_M + 2 * SWEEP_OVERHANG_M;
 /** A painted stripe along the board face: its height and how high its centre sits. */
-const STRIPE_HEIGHT_M = 0.05;
-const STRIPE_CENTRE_M = 0.2;
-const STRIPE_DEPTH_M = 0.004;
+const STRIPE_HEIGHT_M = 0.05 * PROP_SCALE;
+const STRIPE_CENTRE_M = 0.2 * PROP_SCALE;
+const STRIPE_DEPTH_M = 0.004 * PROP_SCALE;
 /** Folded top lip of the board: its height (its depth is SWEEP_LIP_DEPTH_M). */
-const LIP_HEIGHT_M = 0.025;
+const LIP_HEIGHT_M = 0.025 * PROP_SCALE;
 /** Arms: square steel tubes from the board ends up to the pivots; the header beam joins them. */
-const ARM_SECTION_M = 0.05;
-const HEADER_SECTION_M = 0.08;
-const PIVOT_RADIUS_M = 0.05;
-const PIVOT_LENGTH_M = 0.12;
+const ARM_SECTION_M = 0.05 * PROP_SCALE;
+const HEADER_SECTION_M = 0.08 * PROP_SCALE;
+const PIVOT_RADIUS_M = 0.05 * PROP_SCALE;
+const PIVOT_LENGTH_M = 0.12 * PROP_SCALE;
 const PIVOT_TESSELLATION = 16;
 
 /** The pinsetter's underside the arms hang from: a painted housing across the lane. */
-const HOUSING_DEPTH_M = 0.6;
-const HOUSING_HEIGHT_M = 0.28;
-const HAZARD_HEIGHT_M = 0.06;
+const HOUSING_DEPTH_M = 0.6 * PROP_SCALE;
+const HOUSING_HEIGHT_M = 0.28 * PROP_SCALE;
+const HAZARD_HEIGHT_M = 0.06 * PROP_SCALE;
 const HAZARD_STRIPES = 24;
 /** A crank plate on each pivot shaft, as on the real sweep drive. */
-const CRANK_RADIUS_M = 0.11;
-const CRANK_THICKNESS_M = 0.02;
+const CRANK_RADIUS_M = 0.11 * PROP_SCALE;
+const CRANK_THICKNESS_M = 0.02 * PROP_SCALE;
 
 const BOARD_HEX = '#B3261E';
 const HOUSING_HEX = '#2B2E33';

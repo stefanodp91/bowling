@@ -1,14 +1,16 @@
 /** Pin-deck tunables (wiki/game/pins.md). */
 import { BOARD_WIDTH_M } from '@models/measures/lane';
 import { PIN_SPACING_M } from '@models/measures/pins';
+import { PROP_SCALE } from '@models/measures/scale';
 
 /**
  * The pocket, 2.5 boards right of the head pin: a right-hander's ideal entry is board 17½ while the
  * head pin stands on board 20 (counted from the right), so the ball centre passes ≈ 6.8 cm right
- * of pin 1, between pins 1 and 3 (rule 1; bowling coaching references in wiki/game/pins.md).
+ * of pin 1, between pins 1 and 3 (rule 1; bowling coaching references in wiki/game/pins.md). Boards
+ * of a regulation lane: the pins are twice life size, so the offset is × PROP_SCALE too.
  */
 export const POCKET_BOARDS = 2.5;
-export const POCKET_OFFSET_M = POCKET_BOARDS * BOARD_WIDTH_M;
+export const POCKET_OFFSET_M = POCKET_BOARDS * BOARD_WIDTH_M * PROP_SCALE;
 
 /** Pins are judged 3 s after the first ball–pin contact (rule 4). */
 export const SETTLE_S = 3;

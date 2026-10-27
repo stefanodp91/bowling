@@ -1,17 +1,16 @@
 import { Constants } from '@babylonjs/core/Engines/constants';
 import { RawTexture } from '@babylonjs/core/Materials/Textures/rawTexture';
 import type { Scene } from '@babylonjs/core/scene';
-import { PIN_HEIGHT_M } from '../measures/pins';
+import { PIN_HEIGHT_IN } from '../measures/pins';
 
 /**
  * The pin's printed coat (wiki/models/pins.md, rule 3): glossy white, two red neck stripes and a
  * small crown of this project's own design. u goes around the pin (0.75 faces -z), v is height /
- * PIN_HEIGHT_M.
+ * pin height.
  */
 const WIDTH = 512;
 const HEIGHT = 512;
 const CHANNELS = 4;
-const METRES_PER_INCH = 0.0254;
 
 type Rgb = readonly [number, number, number];
 const WHITE: Rgb = [246, 245, 240];
@@ -44,7 +43,7 @@ function inCrown(x: number, y: number): boolean {
 export function pinCoatData(): Uint8Array {
   const data = new Uint8Array(WIDTH * HEIGHT * CHANNELS);
   for (let row = 0; row < HEIGHT; row += 1) {
-    const hIn = ((row + 0.5) / HEIGHT) * (PIN_HEIGHT_M / METRES_PER_INCH);
+    const hIn = ((row + 0.5) / HEIGHT) * PIN_HEIGHT_IN;
     const isStripe = STRIPE_CENTRES_IN.some((c) => Math.abs(hIn - c) <= STRIPE_WIDTH_IN / 2);
     for (let col = 0; col < WIDTH; col += 1) {
       const u = (col + 0.5) / WIDTH;

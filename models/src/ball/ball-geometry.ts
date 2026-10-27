@@ -4,11 +4,12 @@ import type { Mesh } from '@babylonjs/core/Meshes/mesh';
 import { VertexData } from '@babylonjs/core/Meshes/mesh.vertexData';
 import type { Scene } from '@babylonjs/core/scene';
 import { BALL_DIAMETER_M, BALL_RADIUS_M, FINGER_HOLES, holeDirection } from '../measures/ball';
+import { PROP_SCALE } from '../measures/scale';
 
-/** Sphere tessellation: ≈ 3.6 mm between vertices at the equator, fine enough for a 19 mm hole. */
+/** Sphere tessellation: ≈ 3.6 mm between vertices at the equator (× PROP_SCALE), fine enough for a hole. */
 const SPHERE_SEGMENTS = 96;
-/** Width of the rounded rim around each hole, metres (a drilled hole is bevelled). */
-const RIM_M = 0.0025;
+/** Width of the rounded rim around each hole, metres (a drilled hole is bevelled; × PROP_SCALE). */
+const RIM_M = 0.0025 * PROP_SCALE;
 /** Albedo multiplier inside a hole: the shadowed interior reads almost black. */
 const HOLE_SHADE = 0.03;
 const CHANNELS_RGBA = 4;

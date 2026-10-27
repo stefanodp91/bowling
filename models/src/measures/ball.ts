@@ -1,13 +1,17 @@
 /**
- * Bowling ball measures (wiki/models/ball.md, rule 1). Metres and kilograms. Pure: imports nothing.
+ * Bowling ball measures (wiki/models/ball.md, rule 1). Metres and kilograms, at twice life size
+ * (PROP_SCALE, wiki/models/conventions.md). Pure: imports only the scale.
  */
+import { PROP_MASS_SCALE, PROP_SCALE } from './scale';
 
 /** 0.218 m: the USBC maximum diameter, 8.595 in = 0.2183 m, rounded to the millimetre. */
-export const BALL_DIAMETER_M = 0.218;
+const REGULATION_DIAMETER_M = 0.218;
+export const BALL_DIAMETER_M = REGULATION_DIAMETER_M * PROP_SCALE;
 export const BALL_RADIUS_M = BALL_DIAMETER_M / 2;
 
 /** 7.26 kg: 16 lb, the USBC maximum weight (1 lb = 0.45359 kg). */
-export const BALL_MASS_KG = 7.26;
+const REGULATION_MASS_KG = 7.26;
+export const BALL_MASS_KG = REGULATION_MASS_KG * PROP_MASS_SCALE;
 
 /** The weight printed on the house ball, in pounds, matching BALL_MASS_KG. */
 export const BALL_WEIGHT_LB = 16;
@@ -28,12 +32,12 @@ export interface FingerHole {
  * bridge between the fingers ≈ 1/4 in (6 mm), so finger centres ≈ 25 mm apart. Depths are what the
  * eye can see, not the drilled depth (a recess only has to read as a hole).
  */
-const THUMB_DIAMETER_M = 0.0254;
-const FINGER_DIAMETER_M = 0.019;
-const SPAN_M = 0.11;
-const FINGER_CENTRES_M = 0.025;
-const THUMB_DEPTH_M = 0.03;
-const FINGER_DEPTH_M = 0.024;
+const THUMB_DIAMETER_M = 0.0254 * PROP_SCALE;
+const FINGER_DIAMETER_M = 0.019 * PROP_SCALE;
+const SPAN_M = 0.11 * PROP_SCALE;
+const FINGER_CENTRES_M = 0.025 * PROP_SCALE;
+const THUMB_DEPTH_M = 0.03 * PROP_SCALE;
+const FINGER_DEPTH_M = 0.024 * PROP_SCALE;
 
 /** Half the span, as an angle from the pole: the grip is centred on +y. */
 const HALF_SPAN_RAD = SPAN_M / 2 / BALL_RADIUS_M;

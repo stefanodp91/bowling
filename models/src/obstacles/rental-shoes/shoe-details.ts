@@ -6,12 +6,13 @@ import { CreateTube } from '@babylonjs/core/Meshes/Builders/tubeBuilder';
 import { Mesh } from '@babylonjs/core/Meshes/mesh';
 import type { Scene } from '@babylonjs/core/scene';
 import { perScene } from '../../materials/scene-cache';
+import { PROP_SCALE } from '../../measures/scale';
 import { GLYPH_HEIGHT, GLYPH_WIDTH, glyphInk } from '../../procedural/digit-glyphs';
 import { LACE_RANGE, outlineHalfWidth, SOLE_HEIGHT_M, tToZ, upperHeight } from './shoe-shape';
 
-/** Laces: round cord ≈ 4.5 mm thick, lying just on the upper. */
-const LACE_RADIUS_M = 0.0022;
-const LACE_LIFT_M = 0.002;
+/** Laces: round cord ≈ 4.5 mm thick, lying just on the upper (× PROP_SCALE, like the shoe). */
+const LACE_RADIUS_M = 0.0022 * PROP_SCALE;
+const LACE_LIFT_M = 0.002 * PROP_SCALE;
 const LACE_TESSELLATION = 6;
 const SECTION_EXPONENT = 2.6;
 
@@ -43,10 +44,10 @@ export function createLacesMesh(name: string, scene: Scene, mirrored: boolean): 
 
 /** The size printed on the back of the heel (design: a men's US 10). */
 export const PRINTED_SIZE = '10';
-const LABEL_HEIGHT_M = 0.014;
+const LABEL_HEIGHT_M = 0.014 * PROP_SCALE;
 /** Where along the heel the label sits: far enough in that the rounded heel is as wide as the label. */
 const LABEL_T = 0.035;
-const LABEL_Y_M = SOLE_HEIGHT_M + 0.04;
+const LABEL_Y_M = SOLE_HEIGHT_M + 0.04 * PROP_SCALE;
 /** Texels per glyph cell, and one cell of margin around the digits. */
 const CELL = 4;
 const MARGIN_CELLS = 1;

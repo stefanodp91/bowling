@@ -1,7 +1,10 @@
 /**
- * Lane measures (wiki/models/lane.md, rule 1). Metres. Pure: imports nothing.
+ * Lane measures (wiki/models/lane.md, rule 1). Metres. Pure: imports only other measures.
  * x across the lane (left negative), z along it from the foul line (z = 0) to the head pin.
+ * The lane is at regulation size; the pin deck is sized for the pins, so it grows with them.
  */
+import { PIN_ROW_DEPTH_M } from './pins';
+import { PROP_SCALE } from './scale';
 
 const METRES_PER_INCH = 0.0254;
 const METRES_PER_FOOT = 0.3048;
@@ -62,12 +65,13 @@ export function boardCentreX(lane: LaneIndex, board: number): number {
  * The pin deck's end and the pit behind it (wiki/models/lane.md, rule 3), relative to the head pin
  * spot along z: the deck starts 0.3 m before the head pin and ends 0.3 m past the back row
  * (design margins); the pit is 0.8 m deep and 0.25 m below the lane; the masking wall stands at
- * its back, 1.6 m tall. Shared by the deck model and the physics colliders.
+ * its back, 1.6 m tall. Sized for regulation pins, so × PROP_SCALE like them. Shared by the deck
+ * model and the physics colliders.
  */
-export const PIN_DECK_FRONT_M = 0.3;
-export const PIN_DECK_BACK_MARGIN_M = 0.3;
-const PIN_ROWS_DEPTH_M = 3 * 12 * METRES_PER_INCH * Math.sin(Math.PI / 3);
+export const PIN_DECK_FRONT_M = 0.3 * PROP_SCALE;
+export const PIN_DECK_BACK_MARGIN_M = 0.3 * PROP_SCALE;
+const PIN_ROWS_DEPTH_M = 3 * PIN_ROW_DEPTH_M;
 export const PIN_DECK_END_M = PIN_ROWS_DEPTH_M + PIN_DECK_BACK_MARGIN_M;
-export const PIT_DEPTH_M = 0.8;
-export const PIT_DROP_M = 0.25;
-export const MASKING_WALL_HEIGHT_M = 1.6;
+export const PIT_DEPTH_M = 0.8 * PROP_SCALE;
+export const PIT_DROP_M = 0.25 * PROP_SCALE;
+export const MASKING_WALL_HEIGHT_M = 1.6 * PROP_SCALE;

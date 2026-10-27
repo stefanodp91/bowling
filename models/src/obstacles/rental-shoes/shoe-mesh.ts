@@ -1,6 +1,7 @@
 import { Mesh } from '@babylonjs/core/Meshes/mesh';
 import { VertexData } from '@babylonjs/core/Meshes/mesh.vertexData';
 import type { Scene } from '@babylonjs/core/scene';
+import { PROP_SCALE } from '../../measures/scale';
 import { isInCollar, outlineHalfWidth, SOLE_HEIGHT_M, tToZ, upperHeight, zoneAt, type ShoeZone } from './shoe-shape';
 
 /** Stations along the length and points around each cross-section of the upper. */
@@ -9,8 +10,8 @@ const ARC_POINTS = 44;
 /** Superellipse exponent of the cross-section: 2 is an ellipse, higher is boxier (a last's shape). */
 const SECTION_EXPONENT = 2.6;
 /** The foxing band at the bottom of the upper, and the insole's height above the sole. */
-const FOXING_M = 0.008;
-const INSOLE_LIFT_M = 0.004;
+const FOXING_M = 0.008 * PROP_SCALE;
+const INSOLE_LIFT_M = 0.004 * PROP_SCALE;
 
 type Rgba = readonly [number, number, number, number];
 /** Classic rental colours (red, blue, grey leather; grey foxing; tan sole; dark insole). */

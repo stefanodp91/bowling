@@ -17,12 +17,13 @@ export const IMPACT_AIM_ERROR_M = 0.04;
  */
 export const AIM_ERROR_SALT = 0x9e3779b1;
 import { BALL_MASS_KG } from '@models/measures/ball';
+import { PROP_MASS_SCALE } from '@models/measures/scale';
 
-/** Mass given to a knocked obstacle's body, kg (design: light enough to fly; for show only). */
-export const KNOCKED_MASS_KG = 2;
+/** Mass given to a knocked obstacle's body, kg (design: light enough to fly; for show only), × PROP_MASS_SCALE like the ball. */
+export const KNOCKED_MASS_KG = 2 * PROP_MASS_SCALE;
 /**
  * The knock-away for show (rule 4): a head-on elastic hit sends a light body off at
- * 2M / (M + m) times the ball's speed (≈ 1.57 for 7.26 kg against 2 kg), so it flies ahead of the
+ * 2M / (M + m) times the ball's speed (≈ 1.57 for 7.26 kg against 2 kg, at any scale), so it flies ahead of the
  * ball instead of being overtaken. Impulse per m/s of ball speed = m · that ratio.
  */
 export const KNOCK_IMPULSE_PER_MPS = KNOCKED_MASS_KG * ((2 * BALL_MASS_KG) / (BALL_MASS_KG + KNOCKED_MASS_KG));

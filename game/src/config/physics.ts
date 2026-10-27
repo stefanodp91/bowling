@@ -2,6 +2,7 @@
  * Physics tunables (wiki/game/pins.md, rules 2 and 3). Each friction and restitution value names the
  * source it was chosen from (wiki/game/pins.md, References).
  */
+import { PIN_HEIGHT_M } from '@models/measures/pins';
 import { SIM_STEP_S } from './run';
 
 /** Standard gravity, m/s². */
@@ -26,6 +27,7 @@ export const BALL_SURFACE = { friction: 0.2, restitution: 0.6 } as const;
 export const PIN_SURFACE = { friction: 0.4, restitution: 0.65 } as const;
 /**
  * A pin's centre of mass sits low, about 38 % of its height (design: a solid wood pin is heavier at
- * the belly than at the neck); 0.145 m above the base.
+ * the belly than at the neck); 0.145 m above the base of a regulation pin.
  */
-export const PIN_CENTRE_OF_MASS_M = 0.145;
+export const PIN_CENTRE_OF_MASS_SHARE = 0.38;
+export const PIN_CENTRE_OF_MASS_M = PIN_CENTRE_OF_MASS_SHARE * PIN_HEIGHT_M;

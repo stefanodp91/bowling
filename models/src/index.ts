@@ -14,6 +14,7 @@ export { createTroughMesh } from './lane/trough-geometry';
 export * from './measures/lane';
 export * from './measures/pins';
 export * from './measures/ball';
+export * from './measures/scale';
 export { createRentalShoes } from './obstacles/rental-shoes/rental-shoes';
 export type { RentalShoesOptions } from './obstacles/rental-shoes/rental-shoes';
 export * from './measures/obstacles';

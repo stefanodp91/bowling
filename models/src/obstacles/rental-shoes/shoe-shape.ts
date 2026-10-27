@@ -1,11 +1,13 @@
 /**
  * The shape of one rental shoe as pure functions of t, the fraction of its length from heel (0) to
- * toe (1): half-width of the outline, height of the upper, colour zone, collar opening. Metres.
+ * toe (1): half-width of the outline, height of the upper, colour zone, collar opening. Metres, at
+ * twice life size like every prop (PROP_SCALE).
  */
 import { RENTAL_SHOE_HEIGHT_M, RENTAL_SHOE_LENGTH_M, RENTAL_SHOE_WIDTH_M } from '../../measures/obstacles';
+import { PROP_SCALE } from '../../measures/scale';
 
 /** Sole thickness: a rental shoe's flat slide sole and heel. */
-export const SOLE_HEIGHT_M = 0.016;
+export const SOLE_HEIGHT_M = 0.016 * PROP_SCALE;
 const HALF_WIDTH_M = RENTAL_SHOE_WIDTH_M / 2;
 /** Outline width as a fraction of the widest point: narrow heel, waist, ball of the foot, toe. */
 const OUTLINE_PROFILE: ReadonlyArray<readonly [number, number]> = [
@@ -39,13 +41,13 @@ export function outlineHalfWidth(t: number): number {
 
 /** Upper height above the sole: high heel counter, a dip at the collar, the instep, a low toe. */
 const UPPER_PROFILE: ReadonlyArray<readonly [number, number]> = [
-  [0, 0.06],
+  [0, 0.06 * PROP_SCALE],
   [0.06, RENTAL_SHOE_HEIGHT_M - SOLE_HEIGHT_M],
-  [0.3, 0.08],
-  [0.48, 0.078],
-  [0.75, 0.05],
-  [0.92, 0.035],
-  [1, 0.02],
+  [0.3, 0.08 * PROP_SCALE],
+  [0.48, 0.078 * PROP_SCALE],
+  [0.75, 0.05 * PROP_SCALE],
+  [0.92, 0.035 * PROP_SCALE],
+  [1, 0.02 * PROP_SCALE],
 ];
 
 export function upperHeight(t: number): number {
@@ -63,13 +65,13 @@ export function zoneAt(t: number): ShoeZone {
 }
 
 /** The foot opening, an ellipse seen from above: centre t, half-length in t, half-width in metres. */
-const COLLAR = { t: 0.25, halfT: 0.17, halfWidthM: 0.032 } as const;
+const COLLAR = { t: 0.25, halfT: 0.17, halfWidthM: 0.032 * PROP_SCALE } as const;
 
 export function isInCollar(t: number, x: number): boolean {
   return ((t - COLLAR.t) / COLLAR.halfT) ** 2 + (x / COLLAR.halfWidthM) ** 2 < 1;
 }
 
 /** Laces cross the vamp between these fractions of the length, eyelets this far from the centre. */
-export const LACE_RANGE = { fromT: 0.44, toT: 0.66, eyeletXM: 0.02, crossings: 5 } as const;
+export const LACE_RANGE = { fromT: 0.44, toT: 0.66, eyeletXM: 0.02 * PROP_SCALE, crossings: 5 } as const;
 
 export const tToZ = (t: number): number => (t - 0.5) * RENTAL_SHOE_LENGTH_M;

@@ -23,6 +23,7 @@ import {
 import { gutterMaterial } from './lane-materials';
 import { createTroughMesh } from './trough-geometry';
 import { PIN_SPOT_DIAMETER_M, pinSpots } from '../measures/pins';
+import { PROP_SCALE } from '../measures/scale';
 import type { ModelFactory, ModelHandle } from '../model-handle';
 
 /**
@@ -42,8 +43,8 @@ const SPOT_HEX = '#2B1A12';
 /** The wall and pit overhang the playing surface a little on each side. */
 const WALL_MARGIN_M = 0.4;
 const DARK_HEX = '#08080B';
-/** The spotlight: above and in front of the deck, aimed at its centre, soft-edged. */
-const SPOT_POSITION = { y: 2.2, z: -1.2 } as const;
+/** The spotlight: above and in front of the deck, aimed at its centre, soft-edged; placed for the pins, so × PROP_SCALE. */
+const SPOT_POSITION = { y: 2.2 * PROP_SCALE, z: -1.2 * PROP_SCALE } as const;
 const SPOT_ANGLE_RAD = 0.9;
 const SPOT_EXPONENT = 2;
 const SPOT_INTENSITY = 6;

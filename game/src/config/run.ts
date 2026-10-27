@@ -4,6 +4,7 @@
  */
 import { BALL_RADIUS_M } from '@models/measures/ball';
 import { LANE_LENGTH_M } from '@models/measures/lane';
+import { PROP_SCALE } from '@models/measures/scale';
 import { APPROACH_START_Z_M } from './track';
 
 /** The countdown before rolling starts by itself (rule 1). */
@@ -23,8 +24,8 @@ export const ACCEL_MPS2 = 1.5;
 export const LANE_CHANGE_S = 0.25;
 /** A jump lasts 0.6 s (rule 5)… */
 export const JUMP_AIRTIME_S = 0.6;
-/** …and lifts the ball's lowest point 0.5 m at its apex (rule 5). */
-export const JUMP_APEX_M = 0.5;
+/** …and lifts the ball's lowest point 0.5 m × PROP_SCALE = 1 m at its apex, clearing the twice-life-size props (rule 5). */
+export const JUMP_APEX_M = 0.5 * PROP_SCALE;
 /** The longest manoeuvre, used by the track's time-to-act rule. */
 export const LONGEST_MANOEUVRE_S = Math.max(LANE_CHANGE_S, JUMP_AIRTIME_S);
 /** The ball is handed to physics 2 m before the head pin (rule 1). */
