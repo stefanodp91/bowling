@@ -12,6 +12,7 @@ import { CHASE_FOV_RAD, FOG_END_M, FOG_HEX, FOG_START_M } from '../config/camera
 import { AMBIENT_INTENSITY, KEY_LIGHT } from '../config/scene';
 import { cameraPose, timeScaleAt } from './camera/rig';
 import { createDeck } from './physics/deck';
+import { createAlleyView } from './views/alley-view';
 import { createBallView } from './views/ball-view';
 import { createLaneView } from './views/lane-view';
 import { createObstacleView } from './views/obstacle-view';
@@ -56,6 +57,7 @@ export function mountGame(scene: Scene, session: Session, options: MountOptions)
 
   const physics = createPhysicsWorld(scene, options.havok);
   const lane = createLaneView(scene);
+  const alley = createAlleyView(scene);
   const ball = createBallView(scene);
   const pins = createPinsView(scene);
   const deck = createDeck(scene, { ball: ball.root, pins: pins.pins, pinMesh: pins.pinMesh });
@@ -80,6 +82,7 @@ export function mountGame(scene: Scene, session: Session, options: MountOptions)
       camera.setTarget(new Vector3(...target));
     }
     lane.update(Math.min(position[2], pose.z));
+    alley.update(Math.min(position[2], pose.z));
     obstacles.update(Math.min(position[2], pose.z), lerp(previous.runS, current.runS));
   };
   render(0);
@@ -102,6 +105,7 @@ export function mountGame(scene: Scene, session: Session, options: MountOptions)
     obstacles.dispose();
     pins.dispose();
     ball.dispose();
+    alley.dispose();
     lane.dispose();
     physics.dispose();
     key.dispose();

@@ -18,8 +18,8 @@ export const CHASE_FOV_RAD = 0.75;
 /** Fog ahead of the camera: clear up to 60 m, gone by 140 m (rule 4). */
 export const FOG_START_M = 60;
 export const FOG_END_M = 140;
-/** Fog colour: the dark of the alley (hex). */
-export const FOG_HEX = '#121218';
+/** Fog colour: the alley's own dusky purple haze, so the far end fades into the room, not into black (wiki/models/lane.md, rule 5). */
+export const FOG_HEX = '#3B2D4A';
 
 /** The camera's lateral follow lags a lane change by this much, seconds (rule 1, damping). */
 export const CHASE_DAMPING_S = 0.25;

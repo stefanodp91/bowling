@@ -9,11 +9,11 @@ import { Mesh } from '@babylonjs/core/Meshes/mesh';
 import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
 import type { Scene } from '@babylonjs/core/scene';
 import { perScene } from '../materials/scene-cache';
+import { ALLEY_HALF_WIDTH_M, CEILING_HEIGHT_M } from '../measures/alley';
 import {
   BOARDS_SURFACE_WIDTH_M,
   GUTTER_DEPTH_M,
   GUTTER_WIDTH_M,
-  MASKING_WALL_HEIGHT_M,
   PIN_DECK_END_M,
   PIN_DECK_FRONT_M,
   PIT_DEPTH_M,
@@ -40,8 +40,10 @@ const SPOT_LIFT_M = 0.002;
 const DECK_HEX = '#E9E4D8';
 const DECK_ROUGHNESS = 0.3;
 const SPOT_HEX = '#2B1A12';
-/** The wall and pit overhang the playing surface a little on each side. */
-const WALL_MARGIN_M = 0.4;
+/** The pit overhangs the playing surface a little on each side; the wall closes the whole room. */
+const PIT_MARGIN_M = 0.4;
+const WALL_WIDTH_M = 2 * ALLEY_HALF_WIDTH_M;
+const WALL_HEIGHT_M = CEILING_HEIGHT_M + PIT_DROP_M;
 const DARK_HEX = '#08080B';
 /** The spotlight: above and in front of the deck, aimed at its centre, soft-edged; placed for the pins, so × PROP_SCALE. */
 const SPOT_POSITION = { y: 2.2 * PROP_SCALE, z: -1.2 * PROP_SCALE } as const;
@@ -97,11 +99,11 @@ export const createPinDeck: ModelFactory<PinDeckOptions> = (scene: Scene): Model
     gutter.material = gutterMaterial(scene);
     return gutter;
   });
-  const pit = CreateGround('pin-deck-pit', { width: PLAYING_SURFACE_WIDTH_M + WALL_MARGIN_M, height: PIT_DEPTH_M }, scene);
+  const pit = CreateGround('pin-deck-pit', { width: PLAYING_SURFACE_WIDTH_M + PIT_MARGIN_M, height: PIT_DEPTH_M }, scene);
   pit.position.set(0, -PIT_DROP_M, deckEnd + PIT_DEPTH_M / 2);
   pit.material = darkMaterial(scene);
-  const wall = CreatePlane('pin-deck-wall', { width: PLAYING_SURFACE_WIDTH_M + WALL_MARGIN_M, height: MASKING_WALL_HEIGHT_M }, scene);
-  wall.position.set(0, MASKING_WALL_HEIGHT_M / 2 - PIT_DROP_M, deckEnd + PIT_DEPTH_M);
+  const wall = CreatePlane('pin-deck-wall', { width: WALL_WIDTH_M, height: WALL_HEIGHT_M }, scene);
+  wall.position.set(0, WALL_HEIGHT_M / 2 - PIT_DROP_M, deckEnd + PIT_DEPTH_M);
   wall.material = darkMaterial(scene);
 
   const light = new SpotLight(

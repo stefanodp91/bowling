@@ -1,10 +1,10 @@
 import type { TransformNode } from '@babylonjs/core/Meshes/transformNode';
 import type { Scene } from '@babylonjs/core/scene';
 import { createLaneSegment, createPinDeck, FINAL_FOUL_LINE_Z_M, LANE_LENGTH_M, SEGMENT_LENGTH_M } from '@models';
-import { SEGMENTS_AHEAD, SEGMENTS_BEHIND } from '../../config/scene';
+import { firstVisibleSegment, SEGMENT_POOL_SIZE } from './segment-window';
 
 const LAST_SEGMENT = LANE_LENGTH_M / SEGMENT_LENGTH_M - 1;
-const POOL_SIZE = SEGMENTS_BEHIND + SEGMENTS_AHEAD;
+const POOL_SIZE = SEGMENT_POOL_SIZE;
 
 /**
  * The lane drawn as a few recycled 20 m segments around the camera (wiki/models/lane.md,
@@ -21,7 +21,7 @@ export function createLaneView(scene: Scene): { update(cameraZ: number): void; d
   deck.root.position.z = LANE_LENGTH_M;
 
   const update = (cameraZ: number): void => {
-    const first = Math.max(0, Math.floor(cameraZ / SEGMENT_LENGTH_M) - SEGMENTS_BEHIND);
+    const first = firstVisibleSegment(cameraZ);
     start.root.setEnabled(first === 0);
     final.root.setEnabled(first + POOL_SIZE > LAST_SEGMENT);
     pool.forEach((segment, i) => {
