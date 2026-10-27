@@ -53,3 +53,11 @@ investigations goes here, never in the pages (prompt 3, step 3).
   review.md · 300 m lane, 40 s run and music built; records of the new deck tests and campaign;
   review updated.
 - 2026-10-27 · audio/sounds.md, game/hud.md, AGENTS.md · music silent and effects lost after a new run, fixed: sound rules 4 and 6 and HUD rule 4 sharpened, in-page Run again, player restarts the music; trap recorded.
+- 2026-10-27 · models/conventions.md, models/ball.md, models/pins.md, models/lane.md,
+  models/obstacles/rental-shoes.md, models/obstacles/sweep-bar.md, game/run.md, game/camera.md,
+  game/impacts.md, game/pins.md, pilot/autopilot.md, audio/sounds.md, acceptance.lock.json · the
+  human decided: props (ball, pins, obstacles, deck) at twice life size on the regulation lane; an
+  alley around the lane instead of a black void; happier music; skills that differ visibly (impacts
+  cost more speed and aim, the speed loss reaches the pins, good and sloppy ignore more obstacles).
+  Impacts criterion 2, models/pins criterion 2 and pins physics criterion 1 rewritten and re-locked
+  by the agent on the human's explicit authorization in chat; the changed pages back to `planned`.

@@ -60,11 +60,22 @@ the agent recommends.
   Update after the 300 m lane ([record](records/pilot-vs-blind-300m-20261027.md)): perfect now
   strikes on all five tracks, good averages 9.6 pins and sloppy 9.8, blind 4.0. Impacts cost a
   little, still not enough to be seen from the back of a room; the recommendation stands.
+  Update of 2026-10-27: the human asked that the skills differ visibly and authorised the change of
+  impacts criterion 2. The spec now carries the speed loss to the pins (0.4 loss, recovery at
+  0.5 m/s²), a larger aim error (0.12 m at regulation size) and more ignored obstacles for `good`
+  and `sloppy`; the next record measures whether the pins show it. A human closes this entry.
 - 2026-10-27 · [sounds](audio/sounds.md) rule 6 (music) · The human asked for background music;
   it is built as rule 6, but no acceptance criterion covers it (only a human writes criteria).
   Recommend adding: «[auto] the music loop is produced by `npm run audio:build` and checked by
   `audio:check` like the other sounds; [human] it sits under the effects and loops without an
   audible seam.» The first half already holds (`check-audio` covers `music-alley.wav`).
+
+- 2026-10-27 · [lane](models/lane.md) rule 6 (the alley) · The human asked for scenery around the
+  lane; it is specified as rule 6, but no acceptance criterion covers it (only a human writes
+  criteria). Recommend adding: «[auto] story `models-alley-segment` exists and reaches ready, and
+  `npm run shot -- game:track=lane-01&at=100&pause=1` has no black region above the lane; [human]
+  from the chase camera it reads as a cheerful bowling alley, and it never hides the next
+  obstacles.»
 
 ## Approved
 

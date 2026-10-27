@@ -1,10 +1,10 @@
 ---
 title: Pins — the ten regulation pins
 type: spec
-status: built
+status: planned
 depends_on: [storybook/catalog.md, tools/shot.md]
 canonical: [models/src/measures/pins.ts, models/src/pins/, storybook/src/stories/pin.stories.tsx, storybook/src/scenes/pin-deck-scene.ts]
-verified: 2026-10-26
+verified: 2026-10-27
 ---
 
 # Pins
@@ -20,11 +20,12 @@ they tumble, so it must be the regulation profile.
 
 ## Rules
 
-1. Measures (`models/src/measures/pins.ts`): height 0.381 m (15 in); the lathe profile (diameter
-   at each height, including the 0.121 m belly and the neck) taken from the regulation
-   specification found in step 2 and cited; mass 1.53 kg.
+1. Measures (`models/src/measures/pins.ts`): the regulation pin — height 0.381 m (15 in), the
+   lathe profile (diameter at each height, including the 0.121 m belly and the neck) taken from the
+   regulation specification found in step 2 and cited, mass 1.53 kg — at twice life size
+   ([conventions](conventions.md)): height 0.762 m, belly 0.242 m, mass 12.24 kg.
 2. Layout: four rows forming a triangle with the head pin (pin 1) nearest to the ball, pin spots
-   0.3048 m (12 in) apart centre to centre; standard numbering 1–10 (row 2 is pins 2–3, row 3 is
+   12 in (0.3048 m) × `PROP_SCALE` = 0.6096 m apart centre to centre; standard numbering 1–10 (row 2 is pins 2–3, row 3 is
    4–6, row 4 is 7–10, left to right as seen from the foul line). The layout is a pure function in
    `measures/pins.ts` returning ten positions relative to the head pin spot.
 3. Look: glossy white coating, two red neck stripes, a small printed crown logo of our own design
@@ -35,8 +36,9 @@ they tumble, so it must be the regulation profile.
 ## Acceptance criteria
 
 1. [auto] Stories `models-pin` and `scenes-pin-deck` exist and reach ready.
-2. [auto] Unit tests: pin height within ±2 mm; maximum diameter within ±2 mm; layout distances
-   between neighbouring spots equal 0.3048 m ± 1 mm; pin 1 is the nearest to `z = 0`.
+2. [auto] Unit tests: pin height within ±2 mm of the measure; maximum diameter within ±2 mm of
+   the measure; layout distances between neighbouring spots equal 0.3048 m × `PROP_SCALE` ± 1 mm;
+   pin 1 is the nearest to `z = 0`.
 3. [human] Next to the ball at true scale, the pins look like regulation pins.
 
 ## References

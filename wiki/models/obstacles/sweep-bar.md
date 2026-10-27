@@ -1,10 +1,10 @@
 ---
 title: Sweep bar — the pinsetter's rake across all three travel lanes
 type: spec
-status: built
+status: planned
 depends_on: [models/lane.md]
 canonical: [models/src/obstacles/sweep-bar/, models/src/measures/obstacles.ts, storybook/src/stories/obstacle-sweep-bar.stories.tsx, game/src/domain/obstacles/jump-clearance.test.ts]
-verified: 2026-10-26
+verified: 2026-10-27
 ---
 
 # Sweep bar
@@ -22,7 +22,8 @@ The only obstacle that blocks every lane: the pilot must jump, so it is where a 
    spanning the whole playing surface (three travel lanes and both gutters). It swings gently back
    and forth along `z` (amplitude and period are tunables), without ever leaving its footprint.
 2. Measures (`models/src/measures/obstacles.ts`): the bottom edge of the board is at the lane
-   surface; the top edge at `SWEEP_BAR_HEIGHT_M` (0.30 m), below the jump apex.
+   surface; the top edge at `SWEEP_BAR_HEIGHT_M` (0.30 m × `PROP_SCALE` = 0.60 m, like every prop,
+   [conventions](../conventions.md)), below the jump apex. Its width stays the lane's.
 3. Footprint: the full width; depth = board thickness plus the swing amplitude.
 4. Overcome by: jumping only.
 

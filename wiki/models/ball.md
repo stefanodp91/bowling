@@ -1,10 +1,10 @@
 ---
 title: Ball — the bowling ball the autopilot rolls
 type: spec
-status: built
+status: planned
 depends_on: [storybook/catalog.md, tools/shot.md]
 canonical: [models/src/measures/ball.ts, models/src/ball/, models/src/procedural/, models/src/materials/scene-cache.ts, storybook/src/stories/ball.stories.tsx, storybook/src/stories/ball-house.stories.tsx]
-verified: 2026-10-26
+verified: 2026-10-27
 ---
 
 # Ball
@@ -20,8 +20,9 @@ immediately as a real bowling ball.
 
 ## Rules
 
-1. Measures (`models/src/measures/ball.ts`): diameter 0.218 m and mass 7.26 kg (a 16 lb ball at the
-   regulation maximum size); finger-hole layout as researched.
+1. Measures (`models/src/measures/ball.ts`): a 16 lb ball at the regulation maximum size —
+   diameter 0.218 m, mass 7.26 kg — at twice life size ([conventions](conventions.md)): diameter
+   0.436 m, mass 58.08 kg; finger-hole layout as researched, scaled the same way.
 2. Look: polished reactive-resin cover with a marbled swirl (procedural texture, seeded), strong
    clear-coat reflections; three finger holes (thumb and two fingers) cut into the surface, visible
    as dark recesses, so the rotation is readable while rolling.

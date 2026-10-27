@@ -1,7 +1,7 @@
 ---
 title: Lane — 300 m of maple, three travel lanes, gutters and pin deck
 type: spec
-status: built
+status: planned
 depends_on: [storybook/catalog.md, tools/shot.md]
 canonical: [models/src/measures/lane.ts, models/src/lane/, storybook/src/stories/lane-segment.stories.tsx, storybook/src/stories/pin-deck.stories.tsx, storybook/src/scenes/pin-deck-scene.ts]
 verified: 2026-10-27
@@ -9,8 +9,8 @@ verified: 2026-10-27
 
 # Lane
 
-> Boundary: the lane surface model — boards, markings, outer gutters, pin deck and back wall — and
-> its measures. NOT covered: the widening gutter obstacle ([widening gutter](obstacles/widening-gutter.md)),
+> Boundary: the lane surface model — boards, markings, outer gutters, pin deck and back wall — its
+> measures, and the alley around it (rule 6). NOT covered: the widening gutter obstacle ([widening gutter](obstacles/widening-gutter.md)),
 > the pins ([pins](pins.md)).
 
 ## Purpose
@@ -30,11 +30,24 @@ to render for its whole length.
    along the lane where they make sense: foul line at `z = 0`, dots and targeting arrows near the
    start, and again in the last 20 m before the pin deck.
 3. Pin deck at the end of the centre travel lane, with the ten pin spots marked; a dark masking
-   wall behind it with a soft spotlight on the deck.
+   wall behind it with a soft spotlight on the deck. The deck's margins, pit and wall are sized for
+   the pins, so they grow with them ([conventions](conventions.md), twice life size); the masking
+   wall runs the whole width of the alley.
 4. Built in segments (`SEGMENT_LENGTH_M`, 20 m) that the scene instances and recycles: the factory
    creates one segment, not 300 m of geometry. The pin deck is a separate factory.
 5. Fog or a fade hides where the lane ends in the distance (the distance is a tunable owned by
-   [camera](../game/camera.md)).
+   [camera](../game/camera.md)). The fog is the colour of the alley's own haze, so the far end
+   fades into the room, never into black.
+6. **The alley around the lane** (a human's request of 2026-10-27: the game showed a black void
+   around the lane). On each side, beyond the outer gutter: a raised capping, then two neighbouring
+   regulation lanes with their gutters, separated by cappings; then a side wall. The walls carry a
+   cheerful retro decor generated from numbers (wide bands of saturated colour, a repeating pattern
+   of circles and stripes, a darker wainscot); a ceiling closes the room, with rows of light strips
+   along the lanes and cross beams every few metres, so the sense of speed comes from the room too.
+   Built like the lane: `createAlleySegment` makes one `SEGMENT_LENGTH_M` segment that the scene
+   recycles with the lane segments, in at most three meshes (decor, light strips, neighbouring
+   boards), so the draw budget of [headless runs](../pilot/headless-runs.md) holds. Measures in
+   `models/src/measures/alley.ts`. Story `models-alley-segment`.
 
 ## Acceptance criteria
 

@@ -1,10 +1,10 @@
 ---
 title: Rental shoes — a pair of two-tone bowling shoes in one travel lane
 type: spec
-status: built
+status: planned
 depends_on: [storybook/catalog.md, tools/shot.md]
 canonical: [models/src/measures/obstacles.ts, models/src/obstacles/rental-shoes/, storybook/src/stories/obstacle-rental-shoes.stories.tsx, game/src/domain/obstacles/jump-clearance.test.ts]
-verified: 2026-10-26
+verified: 2026-10-27
 ---
 
 # Rental shoes
@@ -22,8 +22,9 @@ code, which makes it the best example of the self-approval loop on stage.
 1. A pair of classic rental bowling shoes: two-tone leather (three colour zones), laces, a smooth
    sole and a size number printed on the heel. Built from code: a sole outline extruded, an upper
    built from lofted cross-sections, laces as thin tubes.
-2. Measures (`models/src/measures/obstacles.ts`): about 0.30 m long and 0.12 m high per shoe, as
-   researched; the two shoes side by side, slightly rotated, in one travel lane.
+2. Measures (`models/src/measures/obstacles.ts`): a real shoe is about 0.30 m long and 0.12 m
+   high, as researched; in the game twice that ([conventions](../conventions.md)), 0.60 m and
+   0.24 m; the two shoes side by side, slightly rotated, in one travel lane.
 3. Footprint: the box that contains both shoes; height = shoe height.
 4. Overcome by: jumping, or changing lane.
 

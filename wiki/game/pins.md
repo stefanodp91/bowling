@@ -1,10 +1,10 @@
 ---
 title: Pins physics — the strike, and the score
 type: spec
-status: built
+status: planned
 depends_on: [game/impacts.md, models/pins.md]
 canonical: [game/src/config/pins.ts, game/src/config/physics.ts, game/src/domain/scoring/, game/src/domain/deck/, game/src/app/deck-port.ts, game/src/app/deck-step.ts, game/src/scene/physics/, game/src/scene/views/pins-view.ts, models/src/measures/lane.ts]
-verified: 2026-10-26
+verified: 2026-10-27
 ---
 
 # Pins physics
@@ -23,7 +23,8 @@ Havok decides how many pins fall.
 1. At `DECK_HANDOFF_Z` the ball becomes a Havok dynamic sphere (ball measures: radius, mass) with
    its current linear velocity along `z`, angular velocity consistent with rolling, and
    `x = aim target + aim error`. The aim target is the pocket, `POCKET_OFFSET_M` to the right of the
-   head pin, defined in `game/src/config/pins.ts` with its source; the
+   head pin (2.5 boards at regulation size, × `PROP_SCALE` like the pins), defined in
+   `game/src/config/pins.ts` with its source; the
    [autopilot](../pilot/autopilot.md) steers towards it once that page is built.
 2. The ten pins are Havok dynamic bodies placed on their spots (pins layout), mass from the pin
    measures, collider derived from the pin profile (the choice — convex hull or compound — and its
@@ -41,7 +42,7 @@ Havok decides how many pins fall.
 ## Acceptance criteria
 
 1. [auto] Unit tests on the knocked-down rule: upright pin on its spot → standing; tilted 50° →
-   down; upright but moved 0.2 m → down.
+   down; upright but moved 0.2 m × `PROP_SCALE` → down.
 2. [auto] A deck simulation test (Babylon `NullEngine` + Havok WASM inside Vitest, no browser): a
    ball at the pocket (head pin centre + `POCKET_OFFSET_M`) at 12 m/s with no aim error knocks down
    at least 8 pins (the exact count goes in a verification record).

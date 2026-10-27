@@ -1,7 +1,7 @@
 ---
 title: Run — the ball's 300 m, from foul line to pin deck
 type: spec
-status: built
+status: planned
 depends_on: [track/track-format.md, models/ball.md, models/lane.md]
 canonical: [game/src/config/run.ts, game/src/config/loop.ts, game/src/config/scene.ts, game/src/domain/run/, game/src/app/, game/src/dev/test-hook.ts, game/src/scene/, game/src/ui/App.tsx, game/src/ui/ErrorScreen.tsx, game/src/ui/use-game-session.ts, game/src/i18n/]
 verified: 2026-10-27
@@ -28,13 +28,16 @@ and jumping when the autopilot says so.
    (`SIM_STEP_S`, 1/120 s); rendering interpolates. No `Date.now`, no `Math.random` in the domain.
 3. **Target speed** grows linearly with distance from `START_SPEED_MPS` (3.7 m/s) at `z = 0` to
    `MAX_SPEED_MPS` (12 m/s) at the start of the approach zone, then stays there. Actual speed moves
-   towards the target with at most `ACCEL_MPS2` (1.5 m/s²). A clean run lasts 40 s: the start
+   towards the target with at most `ACCEL_MPS2` (0.5 m/s²: above the ≈ 0.38 m/s² a clean run needs
+   at 12 m/s, low enough that a ball slowed by an impact is still slow at the pins — a human's
+   decision of 2026-10-27, so the skills differ visibly; it was 1.5 m/s²). A clean run lasts 40 s: the start
    speed is chosen for that on the 300 m lane (a human's decision of 2026-10-27), while the
    speed at the pins stays 12 m/s.
 4. **Lane change:** to an adjacent travel lane in `LANE_CHANGE_S` (0.25 s), eased. A command for a
    lane that does not exist is ignored. A second change can start only when the first has ended.
 5. **Jump:** a parabola lasting `JUMP_AIRTIME_S` (0.6 s) whose apex lifts the ball's lowest point to
-   `JUMP_APEX_M` (0.5 m). No lane change while airborne.
+   `JUMP_APEX_M` (1.0 m: 0.5 m × `PROP_SCALE`, so the jump clears the props, which are twice life
+   size — [conventions](../models/conventions.md)). No lane change while airborne.
 6. **Rolling:** the ball's rotation follows its speed (`ω = v / r`, radius from the ball measures).
 7. **Query parameters** (parsed and validated in one module): `track`, `skill` (initial skill),
    `at` (start already at that metre, for shots), `pause=1` (freeze after the first rendered frame,

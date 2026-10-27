@@ -1,10 +1,10 @@
 ---
 title: Impacts — what an obstacle costs
 type: spec
-status: built
+status: planned
 depends_on: [game/run.md, models/obstacles/stray-pins.md, models/obstacles/returning-ball.md, models/obstacles/rental-shoes.md, models/obstacles/sweep-bar.md, models/obstacles/widening-gutter.md]
 canonical: [game/src/config/impacts.ts, game/src/domain/impacts/, game/src/domain/simulation.ts, game/src/scene/views/knock-away.ts, game/src/scene/views/obstacle-view.ts, game/src/scene/physics/]
-verified: 2026-10-26
+verified: 2026-10-27
 ---
 
 # Impacts
@@ -25,9 +25,12 @@ pins, because it costs speed and aim.
    that moment (`z(t) = z0 − speedMps · t`, from when the run started). An airborne ball clears an
    obstacle if its lowest point is above the obstacle's height.
 2. **Each obstacle can be hit once.** On impact:
-   - speed is multiplied by `1 − IMPACT_SPEED_LOSS` (0.25), then recovers at `ACCEL_MPS2`;
-   - the aim error grows by a seeded uniform value in ±`IMPACT_AIM_ERROR_M` (0.04 m), applied to the
-     ball's `x` when it reaches the pin deck;
+   - speed is multiplied by `1 − IMPACT_SPEED_LOSS` (0.4), then recovers at the run's `ACCEL_MPS2`
+     (0.5 m/s², [run](run.md)), slowly enough that an impact in the last ≈ 100 m still reaches the
+     pins slower;
+   - the aim error grows by a seeded uniform value in ±`IMPACT_AIM_ERROR_M` (0.24 m: 0.12 m at
+     regulation size, the distance that moves a pocket hit to the Brooklyn side or the split zone,
+     × `PROP_SCALE`), applied to the ball's `x` when it reaches the pin deck;
    - the impact count grows by one, and an impact event is emitted (for the scene and the audio).
 3. **Widening gutter:** a ball inside its lane and range counts one impact and is steered to the
    nearest free adjacent lane by a forced lane change.
@@ -40,8 +43,8 @@ pins, because it costs speed and aim.
 1. [auto] Unit tests, one per obstacle kind: a ball in the obstacle's lane at its `z` registers one
    impact; a ball in another lane registers none; for rental shoes and sweep bar, a ball at jump
    apex registers none; a returning ball is hit where it is at that time, not where it started.
-2. [auto] Unit test: after an impact at 12 m/s the speed is 9 m/s and recovers to the target at
-   1.5 m/s².
+2. [auto] Unit test: after an impact at 12 m/s the speed is 7.2 m/s and recovers to the target at
+   0.5 m/s².
 3. [auto] Unit test: the same track, seed and command sequence produce the same aim error.
 4. [human] An impact is visible and readable: the obstacle flies, the ball visibly slows.
 

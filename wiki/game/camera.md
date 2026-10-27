@@ -1,7 +1,7 @@
 ---
 title: Camera — chase, impact view and slow motion
 type: spec
-status: built
+status: planned
 depends_on: [game/run.md]
 canonical: [game/src/config/camera.ts, game/src/scene/camera/, game/src/scene/mountGame.ts, game/src/app/frame-steps.ts]
 verified: 2026-10-27
@@ -18,8 +18,9 @@ Make a one-minute run that nobody plays watchable from a projector at the back o
 
 ## Rules
 
-1. **Chase camera** while `rolling`: `CHASE_BEHIND_M` (3 m) behind and `CHASE_HEIGHT_M` (1.2 m)
-   above the ball, looking `CHASE_LOOK_AHEAD_M` (6 m) ahead; it follows lane changes with damping
+1. **Chase camera** while `rolling`: `CHASE_BEHIND_M` (4.5 m) behind and `CHASE_HEIGHT_M` (1.9 m)
+   above the ball, looking `CHASE_LOOK_AHEAD_M` (9 m) ahead (the ball is twice life size: the
+   camera keeps it about the share of the frame it had, and looks over it at the next obstacles); it follows lane changes with damping
    (`CHASE_DAMPING_S`) and does not follow the jump fully (`CHASE_JUMP_FOLLOW`, a fraction), so the
    jump reads as a jump.
 2. **Impact camera** from `IMPACT_CAMERA_Z` (10 m before the head pin, 290 m): a smooth blend to a low side

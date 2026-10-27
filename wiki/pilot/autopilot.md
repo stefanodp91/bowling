@@ -1,10 +1,10 @@
 ---
 title: Autopilot — the only player, and its three skill profiles
 type: spec
-status: built
+status: planned
 depends_on: [game/impacts.md, game/pins.md]
 canonical: [game/src/config/pilot.ts, game/src/pilot/, game/src/domain/deck/hand-off.ts]
-verified: 2026-10-26
+verified: 2026-10-27
 ---
 
 # Autopilot
@@ -44,8 +44,11 @@ be lowered on stage, so the audience sees impacts turn into fewer pins.
    | Profile | Notices an obstacle at a time to meet of | Chance to ignore a noticed obstacle |
    |---|---|---|
    | `perfect` | 1.0 s | 0 |
-   | `good` | 0.6 s | 0.10 |
-   | `sloppy` | 0.35 s | 0.30 |
+   | `good` | 0.6 s | 0.25 |
+   | `sloppy` | 0.35 s | 0.55 |
+
+   The chances to ignore were 0.10 and 0.30; a human asked on 2026-10-27 that the skills differ
+   visibly, so `good` now hits about one obstacle in four and `sloppy` about one in two.
 
    The ignore draw happens once per obstacle, when it is first noticed, from the seeded source
    keyed by the obstacle's index: same track, seed and skill changes → same run. Changing skill
