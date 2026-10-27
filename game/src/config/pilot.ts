@@ -13,11 +13,11 @@ export interface SkillProfile {
   readonly ignoreChance: number;
 }
 
-/** The three profiles (rule 5, table). */
+/** The three profiles (rule 5, table; a human asked on 2026-10-27 that they differ visibly). */
 export const SKILL_PROFILES = {
   perfect: { noticeS: 1.0, ignoreChance: 0 },
-  good: { noticeS: 0.6, ignoreChance: 0.1 },
-  sloppy: { noticeS: 0.35, ignoreChance: 0.3 },
+  good: { noticeS: 0.6, ignoreChance: 0.25 },
+  sloppy: { noticeS: 0.35, ignoreChance: 0.7 },
 } as const satisfies Readonly<Record<Skill, SkillProfile>>;
 
 /** Obstacles met within this many seconds of the first one are solved together (rule 4; design). */

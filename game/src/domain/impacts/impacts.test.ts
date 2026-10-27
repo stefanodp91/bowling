@@ -1,10 +1,12 @@
 import { laneCentreX, type LaneIndex, LANE_LENGTH_M } from '@models/measures/lane';
 import { describe, expect, it } from 'vitest';
 import { ACCEL_MPS2, JUMP_APEX_M, MAX_SPEED_MPS, SIM_STEP_S } from '../../config/run';
+import { targetSpeed } from '../run/speed';
 import { runStateAt } from '../run/step';
 import type { RunState } from '../run/state';
 import { initialWorld, worldStep, type World } from '../simulation';
 import type { Obstacle, Track } from '../track/schema';
+import { IMPACT_AIM_ERROR_M, IMPACT_AIM_ERROR_MIN_M } from '../../config/impacts';
 import { aimErrorOf, applyImpacts, initialImpacts } from './impacts';
 
 const trackWith = (...obstacles: Obstacle[]): Track => ({ schemaVersion: 1, trackId: 't', seed: 7, lengthM: LANE_LENGTH_M, lanes: 3, obstacles });
@@ -61,19 +63,36 @@ describe('impacts, one obstacle kind at a time', () => {
 });
 
 describe('impact cost', () => {
-  it('drops 12 m/s to 9 m/s and recovers to the target at 1.5 m/s²', () => {
-    const track = trackWith({ kind: 'stray-pins', lane: 1, z: 270 });
-    let world: World = { ...initialWorld(track, 269.9), run: { ...runStateAt(269.9), speedMps: MAX_SPEED_MPS } };
+  it('drops 12 m/s to 7.2 m/s and recovers to the target at 0.5 m/s²', () => {
+    expect(ACCEL_MPS2).toBe(0.5);
+    // Early enough that the ≈ 10 s of recovery end before the pin deck.
+    const track = trackWith({ kind: 'stray-pins', lane: 1, z: 150 });
+    let world: World = { ...initialWorld(track, 149.9), run: { ...runStateAt(149.9), speedMps: MAX_SPEED_MPS } };
     let speedAfter = 0;
     for (let i = 0; i < 10 && speedAfter === 0; i += 1) {
       const result = worldStep(world, track, 'stay', SIM_STEP_S);
       world = result.world;
       if (result.events.length > 0) speedAfter = world.run.speedMps;
     }
-    expect(speedAfter).toBeCloseTo(9, 1);
+    expect(speedAfter).toBeCloseTo(7.2, 1);
+    const oneSecond = Math.round(1 / SIM_STEP_S);
+    for (let i = 0; i < oneSecond; i += 1) world = worldStep(world, track, 'stay', SIM_STEP_S).world;
+    expect(world.run.speedMps - speedAfter).toBeCloseTo(ACCEL_MPS2, 2);
+    // The target below 12 m/s here, so recovery ends sooner than (12 − 7.2) / 0.5 s.
     const recoverySteps = Math.round((MAX_SPEED_MPS - speedAfter) / ACCEL_MPS2 / SIM_STEP_S);
     for (let i = 0; i < recoverySteps; i += 1) world = worldStep(world, track, 'stay', SIM_STEP_S).world;
-    expect(world.run.speedMps).toBeCloseTo(MAX_SPEED_MPS, 1);
+    expect(world.run.speedMps).toBeCloseTo(targetSpeed(world.run.z), 1);
+  });
+
+  it('pushes every impact of a run to the same side, by a bounded amount', () => {
+    for (const seed of [1, 7, 58, 1001]) {
+      const errors = [0, 1, 2, 3, 4].map((index) => aimErrorOf(seed, index));
+      expect(new Set(errors.map(Math.sign)).size).toBe(1);
+      for (const e of errors) {
+        expect(Math.abs(e)).toBeGreaterThanOrEqual(IMPACT_AIM_ERROR_MIN_M);
+        expect(Math.abs(e)).toBeLessThanOrEqual(IMPACT_AIM_ERROR_M);
+      }
+    }
   });
 
   it('gives the same aim error for the same track, seed and commands', () => {

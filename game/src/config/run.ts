@@ -18,8 +18,12 @@ export const START_SPEED_MPS = 3.7;
 export const MAX_SPEED_MPS = 12;
 /** Target speed grows linearly with distance up to here: the start of the approach zone. */
 export const MAX_SPEED_AT_Z_M = APPROACH_START_Z_M;
-/** The most the actual speed can change towards the target, m/s² (rule 3). */
-export const ACCEL_MPS2 = 1.5;
+/**
+ * The most the actual speed can change towards the target, m/s² (rule 3): above the ≈ 0.38 m/s² a
+ * clean run needs at 12 m/s (12 · 8.3 / 260), low enough that a ball slowed by an impact in the
+ * last ≈ 100 m is still slow at the pins (a human's decision of 2026-10-27; it was 1.5).
+ */
+export const ACCEL_MPS2 = 0.5;
 /** A lane change to the adjacent travel lane takes 0.25 s, eased (rule 4). */
 export const LANE_CHANGE_S = 0.25;
 /** A jump lasts 0.6 s (rule 5)… */
