@@ -95,6 +95,10 @@ Havok decides how many pins fall.
   so the leave comes from the geometry of the hit, not the materials. Criteria still pass; the
   consequence for the demo is in [review](../review.md).
 
+- 2026-10-27 · round 3 · Lane at 300 m: deck tests unchanged and green — pocket 9, off-pocket 2 —
+  [deck tests, 300 m](../records/deck-tests-300m-20261027.md). In the browser the same pocket hit
+  now strikes (the hand-over lands a fraction of a step later), which shows how sensitive one hit is.
+
 ## Canonical files
 
 - The session calls `physics.step()` and `deckStep()` after every world step; the deck's verdict

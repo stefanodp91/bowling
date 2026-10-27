@@ -1,7 +1,7 @@
 ---
 title: HUD — run information, skill buttons, end screen
 type: spec
-status: planned
+status: built
 depends_on: [game/pins.md, pilot/autopilot.md]
 canonical: [game/src/config/hud.ts, game/src/ui/, game/src/i18n/, game/src/app/snapshot.ts]
 verified: 2026-10-27
@@ -78,6 +78,11 @@ change how well the autopilot drives, live, with one click.
   Tests: component tests (click Sloppy, keys 1–3, progress value, STRIKE! only for ten) and the
   UI-rules test (no literal text, no `style=`, with its own rejection cases). `shot:verify` checks
   criterion 3 (progress bar and three skill buttons visible).
+
+- 2026-10-27 · round 2 · The bar reads 0–300 m (it reads `LANE_LENGTH_M`, no code change). Running
+  `shot:verify` for the 300 m lane showed its HUD check counting four `aria-pressed` buttons: the
+  sound toggle (added by the sounds page) uses the attribute too, and the check had never run since.
+  It now counts the buttons of the «Autopilot skill» group: three, pass.
 
 ## Canonical files
 

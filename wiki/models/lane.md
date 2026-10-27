@@ -1,7 +1,7 @@
 ---
 title: Lane — 300 m of maple, three travel lanes, gutters and pin deck
 type: spec
-status: planned
+status: built
 depends_on: [storybook/catalog.md, tools/shot.md]
 canonical: [models/src/measures/lane.ts, models/src/lane/, storybook/src/stories/lane-segment.stories.tsx, storybook/src/stories/pin-deck.stories.tsx, storybook/src/scenes/pin-deck-scene.ts]
 verified: 2026-10-27
@@ -70,6 +70,11 @@ to render for its whole length.
   nearest the foul line, gutters, pit and masking wall. Unit tests: width 3.632 m (±5 mm),
   length 20 m, lane centres −1.054/0/+1.054, instancing adds no geometry. Rule 5 (fog) belongs to
   the scene: the [camera](../game/camera.md) page sets it.
+
+- 2026-10-27 · round 2 · The human shortened the lane to 300 m. `LANE_LENGTH_M` is the one place
+  that says it; the scene now draws 15 segments, the last with the regulation markings ending at the
+  head pin. Unit tests unchanged and green; the 300 m campaign
+  ([record](../records/pilot-vs-blind-300m-20261027.md)) ran on it.
 
 ## Canonical files
 

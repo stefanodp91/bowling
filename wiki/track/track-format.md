@@ -116,6 +116,11 @@ scene draws, the run collides with and the autopilot reads. Same file, same run.
   `?track=does-not-exist` shows «The demo cannot start — Track «does-not-exist» was not found.»
   and a Retry button, no lane.
 
+- 2026-10-27 · round 3 · Re-baked for the 300 m lane: 12, 12, 9, 12, 11 obstacles. The 200-seed
+  test found seed 58 placing a returning ball's meeting point 0.002 m inside the 30 m clear zone: its
+  start is rounded to the centimetre, and the first gap had no slack. The first obstacle now keeps
+  `ROUNDING_SLACK_M` from the zone, as every later gap does from its rule.
+
 ## Canonical files
 
 - Scripts that need the game's TypeScript run under `node --import tsx` with

@@ -3,7 +3,8 @@
 A bowling ball rolls by itself down a 300 m lane full of obstacles and ends against ten pins. Nobody
 plays: an autopilot reads the lane and drives the ball — it changes lane, jumps the sweep bar,
 dodges a house ball rolling back towards it — and you can only tell it how well to drive. Lower its
-skill and it starts hitting things; at the end the pins fall in slow motion and the score appears.
+skill and it starts hitting things; at the end the pins fall in slow motion and the score appears. A run lasts forty seconds, over a
+quiet groove generated, like every sound here, from numbers.
 
 ![The ball rolling down lane-01, a returning house ball and a pair of rental shoes ahead, the run
 information at the top and the three skill buttons at the bottom](docs/screenshot.png)
@@ -90,13 +91,13 @@ From `npm run stats -- --md`, as of the release commit (run it yourself for the 
 |---|---|
 | Spec pages planned / built / approved | 0 / 24 / 0 |
 | Built by the agent, not yet approved by a human | 24 |
-| Review: to judge / approved | 2 / 0 |
-| Self-approval rounds recorded | 33 |
-| Pages that needed more than one round | 9 (game/camera.md, game/impacts.md, game/pins.md, models/obstacles/rental-shoes.md, models/obstacles/sweep-bar.md, models/pins.md, release/open-source.md, tools/shot.md, track/track-format.md) |
-| Commits in total / by a human | 27 / 0 |
-| Commits by Claude Opus 5.5 | 27 |
-| Longest agent streak (no gap over 30 min) | 27 commits in 105 min |
-| Gates | 9 |
+| Review: to judge / approved | 3 / 0 |
+| Self-approval rounds recorded | 42 |
+| Pages that needed more than one round | 15 (audio/sounds.md, game/camera.md, game/hud.md, game/impacts.md, game/pins.md, game/run.md, models/lane.md, models/obstacles/rental-shoes.md, models/obstacles/sweep-bar.md, models/pins.md, pilot/headless-runs.md, release/open-source.md, storybook/catalog.md, tools/shot.md, track/track-format.md) |
+| Commits in total / by a human | 31 / 0 |
+| Commits by Claude Opus 5.5 | 31 |
+| Longest agent streak (no gap over 30 min) | 31 commits in 130 min |
+| Gates | 10 |
 | check-audio | added in 38e47b0 2026-10-27 |
 | check-boundaries | added in 2196bb1 2026-10-26 |
 | check-engines | added in 2196bb1 2026-10-26 |
@@ -106,7 +107,8 @@ From `npm run stats -- --md`, as of the release commit (run it yourself for the 
 | check-notices | added in 87079ab 2026-10-27 |
 | check-pilot | added in c33fca9 2026-10-27 |
 | check-tracks | added in 2541fb4 2026-10-27 |
-| Shots taken | 79 (local, not in git) |
+| check-webgl | added in ded72fe 2026-10-27 |
+| Shots taken | 129 (local, not in git) |
 <!-- stats:end -->
 
 ## Licence

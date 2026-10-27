@@ -69,6 +69,10 @@ browser, driven by the autopilot, many times, and writes down numbers instead of
   [deck tests 2026-10-27](../records/deck-tests-20261027.md). `npm run check:full` passes. What
   the campaign shows about impacts and pins is in [review](../review.md).
 
+- 2026-10-27 · round 2 · New campaign on the 300 m lane, same commands:
+  [pilot vs blind, 300 m](../records/pilot-vs-blind-300m-20261027.md) — 20 runs, all reach the
+  result, 15 of 15 agree with `simulateRun`; perfect strikes on all five tracks.
+
 ## Canonical files
 
 - `scripts/pilot/browser-run.mjs` is shared by the CLI and the gate; it uses the shot tool's

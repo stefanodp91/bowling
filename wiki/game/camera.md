@@ -1,7 +1,7 @@
 ---
 title: Camera — chase, impact view and slow motion
 type: spec
-status: planned
+status: built
 depends_on: [game/run.md]
 canonical: [game/src/config/camera.ts, game/src/scene/camera/, game/src/scene/mountGame.ts, game/src/app/frame-steps.ts]
 verified: 2026-10-27

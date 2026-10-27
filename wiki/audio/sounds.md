@@ -1,7 +1,7 @@
 ---
 title: Sounds — generated from numbers, played by the audio engine
 type: spec
-status: planned
+status: built
 depends_on: [game/pins.md, game/hud.md]
 canonical: [scripts/audio/, scripts/gates/check-audio.mjs, game/public/audio/, game/src/config/audio.ts, game/src/audio/, game/src/app/events.ts, game/src/ui/use-sound.ts, game/src/ui/hud/SoundToggle.tsx]
 verified: 2026-10-27
@@ -80,6 +80,17 @@ comes from a committed script, so an open-source audience gets the source of eve
   no error. Unit tests: the scripted run (one impact, eight pins) gives one thud, six clacks, no
   strike; ten gives the strike; clacks capped at 14 per second; the crossfade ends. Whether it
   sounds like wood and rumble is criterion 3, for a human with speakers.
+
+- 2026-10-27 · round 2 · Rule 6, music, asked for by the human. `scripts/audio/music.mjs` writes a
+  four-bar groove at 100 BPM (I–vi–IV–V in C: plucked bass on beats 1 and 3, a soft detuned pad,
+  kick on 1 and 3, a brushed snare on 2 and 4, eighth-note hats), every note added with
+  wrap-around so the 9.6 s loop has no seam; 423 KB. `normalise` used `Math.max(...samples)`,
+  which overflows the call stack on a buffer this long → a loop; the earlier sounds stay byte for
+  byte the same (`check-audio`). The player starts it with the engine's music controller at the
+  first gesture, at `MUSIC_LEVEL` 0.35, and ducks it for the strike; the toggle mutes it with the
+  rest. In the browser the 9 files load (200) and a run to the result logs no error. How it sounds
+  is criterion 3, for a human with speakers; a criterion for the music is proposed in
+  [review](../review.md).
 
 ## Canonical files
 

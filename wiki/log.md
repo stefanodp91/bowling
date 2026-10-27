@@ -48,3 +48,7 @@ investigations goes here, never in the pages (prompt 3, step 3).
   background music. Run criterion 2 (38–42 s) and camera criterion 3 (`at=295`) rewritten and
   re-locked by the agent on the human's explicit authorization in chat; run, camera, lane, HUD and
   sounds back to `planned` until rebuilt.
+- 2026-10-27 · models/lane.md, game/run.md, game/camera.md, game/hud.md, audio/sounds.md,
+  track/track-format.md, game/pins.md, pilot/headless-runs.md, records/*-300m-20261027.md,
+  review.md · 300 m lane, 40 s run and music built; records of the new deck tests and campaign;
+  review updated.

@@ -1,7 +1,7 @@
 ---
 title: Run — the ball's 300 m, from foul line to pin deck
 type: spec
-status: planned
+status: built
 depends_on: [track/track-format.md, models/ball.md, models/lane.md]
 canonical: [game/src/config/run.ts, game/src/config/loop.ts, game/src/config/scene.ts, game/src/domain/run/, game/src/app/, game/src/dev/test-hook.ts, game/src/scene/, game/src/ui/App.tsx, game/src/ui/ErrorScreen.tsx, game/src/ui/use-game-session.ts, game/src/i18n/]
 verified: 2026-10-27
@@ -94,6 +94,13 @@ and jumping when the autopilot says so.
   Fix: `<Engine forceWebGL>` here and in the catalogue's stage; the board-hole plugin is GLSL only
   anyway. Prompt 5: new gate `check-webgl`, trap in AGENTS.md. After the fix the app's browser
   renders lane-02 with the HUD (1 shot).
+
+- 2026-10-27 · round 3 · The human decided a 300 m lane and a 40 s run; criterion 2 was rewritten
+  (38–42 s) and re-locked on the human's authorization. `START_SPEED_MPS` 6 → 3.7 m/s keeps 12 m/s at
+  the pins, which the deck tests, the impacts criterion and the rumble bands all assume. The
+  «stay» test now measures 40.0 s; a test that sampled 469.9 m moved to 269.9 m. Shots: the 250 m
+  criterion passes (5/5 centre pixels against the fog). The browser campaign: every run rolls
+  40.0–41.2 s ([record](../records/pilot-vs-blind-300m-20261027.md)).
 
 ## Canonical files
 

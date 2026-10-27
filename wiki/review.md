@@ -14,6 +14,11 @@ with the date.
 
 ## Where to resume
 
+- 2026-10-27, later — After the human's review: the lane is 300 m and a clean run lasts 40 s (run
+  and camera criteria rewritten and re-locked on the human's authorization), the black canvas on
+  WebGPU browsers is fixed (`check-webgl`), and background music plays (sounds rule 6). All 24
+  pages are `built` again; `npm run check:full` passes. Next steps are unchanged below, plus a
+  decision on the proposed music criterion in «To judge».
 - 2026-10-27 — The build session ran [`BUILD.md`](../BUILD.md) to the end: all 24 spec pages are
   `built`, none `approved`; `npm run check:full` passes on a clean clone. No handoff is open. What
   comes next is human work, in this order: (1) decide the two cases in «To judge» below — the
@@ -52,6 +57,14 @@ the agent recommends.
   aim error per impact (≈ 0.10–0.15 m reaches the 1–3 or 1–2 «Brooklyn» side and the split
   zone); or an entry angle at the hand-over so the pocket hit strikes. Each changes a value a
   human wrote in a rule or criterion.
+  Update after the 300 m lane ([record](records/pilot-vs-blind-300m-20261027.md)): perfect now
+  strikes on all five tracks, good averages 9.6 pins and sloppy 9.8, blind 4.0. Impacts cost a
+  little, still not enough to be seen from the back of a room; the recommendation stands.
+- 2026-10-27 · [sounds](audio/sounds.md) rule 6 (music) · The human asked for background music;
+  it is built as rule 6, but no acceptance criterion covers it (only a human writes criteria).
+  Recommend adding: «[auto] the music loop is produced by `npm run audio:build` and checked by
+  `audio:check` like the other sounds; [human] it sits under the effects and loops without an
+  audible seam.» The first half already holds (`check-audio` covers `music-alley.wav`).
 
 ## Approved
 
