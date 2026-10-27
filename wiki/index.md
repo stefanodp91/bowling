@@ -12,7 +12,7 @@ once the script exists.
 5. [storybook/catalog.md](storybook/catalog.md) — Storybook catalogue — one story per model · `built`
 6. [tools/shot.md](tools/shot.md) — Shot tool — how an agent looks at its own work · `built`
 7. [models/ball.md](models/ball.md) — Ball — the bowling ball the autopilot rolls · `built`
-8. [models/lane.md](models/lane.md) — Lane — 500 m of maple, three travel lanes, gutters and pin deck · `built`
+8. [models/lane.md](models/lane.md) — Lane — 300 m of maple, three travel lanes, gutters and pin deck · `planned`
 9. [models/obstacles/rental-shoes.md](models/obstacles/rental-shoes.md) — Rental shoes — a pair of two-tone bowling shoes in one travel lane · `built`
 10. [models/obstacles/returning-ball.md](models/obstacles/returning-ball.md) — Returning ball — a house ball rolling back up the lane · `built`
 11. [models/obstacles/sweep-bar.md](models/obstacles/sweep-bar.md) — Sweep bar — the pinsetter's rake across all three travel lanes · `built`
@@ -20,13 +20,13 @@ once the script exists.
 13. [models/pins.md](models/pins.md) — Pins — the ten regulation pins · `built`
 14. [models/obstacles/stray-pins.md](models/obstacles/stray-pins.md) — Stray pins — a group of pins left standing in one travel lane · `built`
 15. [track/track-format.md](track/track-format.md) — Track format — the lane as a JSON file, its bake and its gate · `built`
-16. [game/run.md](game/run.md) — Run — the ball's 500 m, from foul line to pin deck · `built`
-17. [game/camera.md](game/camera.md) — Camera — chase, impact view and slow motion · `built`
+16. [game/run.md](game/run.md) — Run — the ball's 300 m, from foul line to pin deck · `planned`
+17. [game/camera.md](game/camera.md) — Camera — chase, impact view and slow motion · `planned`
 18. [game/impacts.md](game/impacts.md) — Impacts — what an obstacle costs · `built`
 19. [game/pins.md](game/pins.md) — Pins physics — the strike, and the score · `built`
 20. [pilot/autopilot.md](pilot/autopilot.md) — Autopilot — the only player, and its three skill profiles · `built`
-21. [game/hud.md](game/hud.md) — HUD — run information, skill buttons, end screen · `built`
-22. [audio/sounds.md](audio/sounds.md) — Sounds — generated from numbers, played by the audio engine · `built`
+21. [game/hud.md](game/hud.md) — HUD — run information, skill buttons, end screen · `planned`
+22. [audio/sounds.md](audio/sounds.md) — Sounds — generated from numbers, played by the audio engine · `planned`
 23. [pilot/headless-runs.md](pilot/headless-runs.md) — Headless runs — the tester that never gets tired · `built`
 24. [release/open-source.md](release/open-source.md) — Open-source release — ready to hand to the audience · `built`
 

@@ -1,10 +1,10 @@
 ---
 title: Camera — chase, impact view and slow motion
 type: spec
-status: built
+status: planned
 depends_on: [game/run.md]
 canonical: [game/src/config/camera.ts, game/src/scene/camera/, game/src/scene/mountGame.ts, game/src/app/frame-steps.ts]
-verified: 2026-10-26
+verified: 2026-10-27
 ---
 
 # Camera
@@ -22,7 +22,7 @@ Make a one-minute run that nobody plays watchable from a projector at the back o
    above the ball, looking `CHASE_LOOK_AHEAD_M` (6 m) ahead; it follows lane changes with damping
    (`CHASE_DAMPING_S`) and does not follow the jump fully (`CHASE_JUMP_FOLLOW`, a fraction), so the
    jump reads as a jump.
-2. **Impact camera** from `IMPACT_CAMERA_Z` (10 m before the head pin): a smooth blend to a low side
+2. **Impact camera** from `IMPACT_CAMERA_Z` (10 m before the head pin, 290 m): a smooth blend to a low side
    view of the pin deck, which stays until `result`.
 3. **Slow motion:** from the first ball–pin contact for `SLOWMO_S` (1.5 s of simulated time), time
    scale `SLOWMO_SCALE` (0.5). Slow motion stretches how many rendered frames a fixed step covers;
@@ -36,7 +36,7 @@ Make a one-minute run that nobody plays watchable from a projector at the back o
 1. [auto] Unit test: the camera rig is a pure function of the run snapshot (same snapshot, same
    pose), tested at `z` 0, 250 and in the impact zone.
 2. [auto] A deck simulation with and without slow motion gives the same pins down.
-3. [auto] `npm run shot -- game:track=lane-01&at=495&pause=1` frames the pin deck from the side.
+3. [auto] `npm run shot -- game:track=lane-01&at=295&pause=1` frames the pin deck from the side.
 4. [human] From a projector, the ball, the next obstacles and the pins are always readable.
 
 ## References

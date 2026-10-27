@@ -1,10 +1,10 @@
 ---
-title: Lane — 500 m of maple, three travel lanes, gutters and pin deck
+title: Lane — 300 m of maple, three travel lanes, gutters and pin deck
 type: spec
-status: built
+status: planned
 depends_on: [storybook/catalog.md, tools/shot.md]
 canonical: [models/src/measures/lane.ts, models/src/lane/, storybook/src/stories/lane-segment.stories.tsx, storybook/src/stories/pin-deck.stories.tsx, storybook/src/scenes/pin-deck-scene.ts]
-verified: 2026-10-26
+verified: 2026-10-27
 ---
 
 # Lane
@@ -15,14 +15,15 @@ verified: 2026-10-26
 
 ## Purpose
 
-The stage of the whole run. It must look like a real bowling lane stretched to 500 m, and stay cheap
+The stage of the whole run. It must look like a real bowling lane stretched to 300 m, and stay cheap
 to render for its whole length.
 
 ## Rules
 
 1. Measures (`models/src/measures/lane.ts`): one travel lane is 1.054 m wide (the regulation lane
    width, 41.5 in) made of 39 boards; the playing surface is three travel lanes side by side, centred
-   on `x = 0` (travel-lane centres at −1.054, 0, +1.054 m), 500 m long. Gutters 0.235 m wide run
+   on `x = 0` (travel-lane centres at −1.054, 0, +1.054 m), 300 m long (a human's decision of
+   2026-10-27; it was 500 m). Gutters 0.235 m wide run
    along the two outer edges only, so the ball can move between travel lanes.
 2. Look: light maple boards with visible grain and seams, glossy oil sheen near the camera;
    the three travel lanes separated by a subtle darker board line. Regulation markings repeated
@@ -31,7 +32,7 @@ to render for its whole length.
 3. Pin deck at the end of the centre travel lane, with the ten pin spots marked; a dark masking
    wall behind it with a soft spotlight on the deck.
 4. Built in segments (`SEGMENT_LENGTH_M`, 20 m) that the scene instances and recycles: the factory
-   creates one segment, not 500 m of geometry. The pin deck is a separate factory.
+   creates one segment, not 300 m of geometry. The pin deck is a separate factory.
 5. Fog or a fade hides where the lane ends in the distance (the distance is a tunable owned by
    [camera](../game/camera.md)).
 

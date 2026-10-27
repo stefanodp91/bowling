@@ -4,7 +4,7 @@ type: spec
 status: built
 depends_on: [workspace/monorepo.md, method/gates.md]
 canonical: [game/src/config/track.ts, game/src/domain/track/, game/src/domain/random.ts, game/src/domain/run/speed.ts, game/public/tracks/, scripts/tracks/, scripts/gates/check-tracks.mjs]
-verified: 2026-10-26
+verified: 2026-10-27
 ---
 
 # Track format
@@ -31,7 +31,7 @@ scene draws, the run collides with and the autopilot reads. Same file, same run.
      "schemaVersion": 1,
      "trackId": "lane-01",
      "seed": 1001,
-     "lengthM": 500,
+     "lengthM": 300,
      "lanes": 3,
      "obstacles": [
        { "kind": "stray-pins",      "lane": 0, "z": 42 },

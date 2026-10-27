@@ -1,10 +1,10 @@
 ---
 title: HUD — run information, skill buttons, end screen
 type: spec
-status: built
+status: planned
 depends_on: [game/pins.md, pilot/autopilot.md]
 canonical: [game/src/config/hud.ts, game/src/ui/, game/src/i18n/, game/src/app/snapshot.ts]
-verified: 2026-10-26
+verified: 2026-10-27
 ---
 
 # HUD
@@ -20,7 +20,7 @@ change how well the autopilot drives, live, with one click.
 
 ## Rules
 
-1. **Run information** (top): distance `0–500 m` as a progress bar with the number, current speed,
+1. **Run information** (top): distance `0–300 m` as a progress bar with the number, current speed,
    impacts so far, current track id.
 2. **Skill buttons** (always visible, bottom): `Perfect`, `Good`, `Sloppy`. One is active (default
    `Good`, or `?skill=`). Clicking one switches the autopilot's skill immediately, even mid-run;

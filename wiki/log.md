@@ -43,3 +43,8 @@ investigations goes here, never in the pages (prompt 3, step 3).
 - 2026-10-27 · pilot/headless-runs.md, records/pilot-vs-blind-20261027.md, review.md, game/pins.md · headless runs built; campaign recorded; impacts-to-pins finding written in «To judge».
 - 2026-10-27 · release/open-source.md, review.md · release built (notices, build, preview, README, changelog); check:full green on a clean clone; «Where to resume» says what is left for a human.
 - 2026-10-27 · game/run.md, storybook/catalog.md, method/gates.md, AGENTS.md · black canvas on WebGPU fixed (forceWebGL); check-webgl gate and trap added.
+- 2026-10-27 · models/lane.md, game/run.md, game/camera.md, game/hud.md, track/track-format.md,
+  audio/sounds.md, acceptance.lock.json · the human decided: a 300 m lane and a 40 s run, and
+  background music. Run criterion 2 (38–42 s) and camera criterion 3 (`at=295`) rewritten and
+  re-locked by the agent on the human's explicit authorization in chat; run, camera, lane, HUD and
+  sounds back to `planned` until rebuilt.
