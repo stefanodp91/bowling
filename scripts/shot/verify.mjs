@@ -74,7 +74,7 @@ async function checkHud() {
     await page.goto(`${server.base}/?${GAME_AT_250.replace(/^game:/, '')}`);
     await page.waitForFunction(() => window.__bowling?.ready === true, undefined, { timeout: 20_000 });
     const bar = await page.locator('progress').isVisible();
-    const buttons = await page.locator('button[aria-pressed]').evaluateAll((all) => all.filter((b) => b.getBoundingClientRect().height > 0).length);
+    const buttons = await page.getByRole('navigation', { name: 'Autopilot skill' }).locator('button[aria-pressed]').evaluateAll((all) => all.filter((b) => b.getBoundingClientRect().height > 0).length);
     record(`${GAME_AT_250}: progress bar and three skill buttons visible`, bar && buttons === 3, `progress ${bar ? 'visible' : 'missing'}, ${buttons} skill buttons`);
   } finally {
     await browser.close();

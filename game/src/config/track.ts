@@ -9,7 +9,7 @@ import { LANE_LENGTH_M } from '@models/measures/lane';
 export const START_CLEAR_M = 30;
 /** No obstacle in the last 40 m: the approach to the pins is free (rule 5). */
 export const APPROACH_CLEAR_M = 40;
-/** Where the approach zone starts: 460 m. */
+/** Where the approach zone starts: 40 m before the head pin. */
 export const APPROACH_START_Z_M = LANE_LENGTH_M - APPROACH_CLEAR_M;
 
 /** The gap between consecutive obstacles shrinks linearly from 25 m to 15 m (rule 5)… */

@@ -13,7 +13,7 @@ import {
   LANE_INDICES,
 } from '../measures/lane';
 
-/** Markings float this far above the boards, enough to avoid z-fighting at 500 m of depth range. */
+/** Markings float this far above the boards, enough to avoid z-fighting over the lane's whole depth range. */
 const MARKING_LIFT_M = 0.001;
 /** Arrows: about 6 in long and one board wide; the centre arrow is the farthest, 1 ft beyond the outer ones. */
 const ARROW_LENGTH_M = 0.15;

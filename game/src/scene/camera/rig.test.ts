@@ -7,7 +7,7 @@ import { cameraPose, impactPose, timeScaleAt, type RigInput } from './rig';
 const at = (z: number, extra: Partial<RigInput> = {}): RigInput => ({ x: 0, y: 0, z, lastLaneChange: null, ...extra });
 
 describe('camera rig', () => {
-  it.each([0, 250, 495])('is a pure function of the run at z = %i: same input, same pose', (z) => {
+  it.each([0, 250, LANE_LENGTH_M - 5])('is a pure function of the run at z = %i: same input, same pose', (z) => {
     const input = at(z, { y: 0.2, lastLaneChange: { from: 1, to: 0, elapsedS: 0.1 } });
     expect(cameraPose(input)).toEqual(cameraPose({ ...input }));
   });
@@ -31,7 +31,7 @@ describe('camera rig', () => {
 
   it('is the impact side view from the impact zone on, chase before it', () => {
     expect(cameraPose(at(IMPACT_CAMERA_Z - 1)).position[2]).toBeLessThan(IMPACT_CAMERA_Z);
-    expect(cameraPose(at(498))).toEqual(impactPose());
+    expect(cameraPose(at(LANE_LENGTH_M - 2))).toEqual(impactPose());
     expect(impactPose().position[0]).toBeGreaterThan(1);
     expect(impactPose().target[2]).toBeGreaterThan(LANE_LENGTH_M);
   });

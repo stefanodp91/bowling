@@ -5,6 +5,8 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { finding, runGate, withTempDir } from '../lib/gate.mjs';
+import { LANE_LENGTH_M } from '../../models/src/measures/lane.ts';
+import { APPROACH_START_Z_M } from '../../game/src/config/track.ts';
 import { parseTrack } from '../../game/src/domain/track/parse.ts';
 import { trackViolations } from '../../game/src/domain/track/rules.ts';
 import { trackIndexSchema } from '../../game/src/domain/track/schema.ts';
@@ -40,7 +42,7 @@ export function checkTracks(dir, { compareWithBake = true } = {}) {
 
 /** The four wrong cases of criterion 3, each in its own file. */
 const WRONG_CASES = {
-  'approach-zone': [{ kind: 'stray-pins', lane: 0, z: 470 }],
+  'approach-zone': [{ kind: 'stray-pins', lane: 0, z: APPROACH_START_Z_M + 10 }],
   'three-lanes-same-z': [0, 1, 2].map((lane) => ({ kind: 'stray-pins', lane, z: 100 })),
   'sweep-after-pins': [{ kind: 'stray-pins', lane: 0, z: 100 }, { kind: 'sweep-bar', z: 103 }],
   'unknown-kind': [{ kind: 'bowling-bag', lane: 1, z: 100 }],
@@ -51,7 +53,7 @@ function selftest() {
     mkdirSync(dir, { recursive: true });
     const ids = Object.keys(WRONG_CASES);
     for (const [id, obstacles] of Object.entries(WRONG_CASES)) {
-      writeFileSync(join(dir, `${id}.json`), toFileText({ schemaVersion: 1, trackId: id, seed: 0, lengthM: 500, lanes: 3, obstacles }));
+      writeFileSync(join(dir, `${id}.json`), toFileText({ schemaVersion: 1, trackId: id, seed: 0, lengthM: LANE_LENGTH_M, lanes: 3, obstacles }));
     }
     writeFileSync(join(dir, INDEX_FILE), toFileText({ tracks: ids }));
     const found = checkTracks(dir, { compareWithBake: false });

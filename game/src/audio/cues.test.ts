@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { GameEvent } from '../app/events';
-import { MAX_CLACKS_PER_S, ROLL_MAX_VOLUME } from '../config/audio';
+import { MAX_CLACKS_PER_S, ROLL_FAST_AT_MPS, ROLL_MAX_VOLUME, ROLL_SLOW_AT_MPS } from '../config/audio';
 import { cuesFor, freshBudget, rollMix } from './cues';
 
 describe('event → cue mapping', () => {
@@ -27,8 +27,8 @@ describe('event → cue mapping', () => {
   });
 
   it('crossfades the rumble from the slow to the fast band', () => {
-    expect(rollMix(6, true)).toEqual({ slow: ROLL_MAX_VOLUME, fast: 0 });
-    expect(rollMix(12, true).fast).toBeCloseTo(ROLL_MAX_VOLUME);
-    expect(rollMix(12, false)).toEqual({ slow: 0, fast: 0 });
+    expect(rollMix(ROLL_SLOW_AT_MPS, true)).toEqual({ slow: ROLL_MAX_VOLUME, fast: 0 });
+    expect(rollMix(ROLL_FAST_AT_MPS, true).fast).toBeCloseTo(ROLL_MAX_VOLUME);
+    expect(rollMix(ROLL_FAST_AT_MPS, false)).toEqual({ slow: 0, fast: 0 });
   });
 });

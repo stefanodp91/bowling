@@ -10,7 +10,7 @@ export interface Extent {
   readonly lanes: readonly LaneIndex[] | 'all';
 }
 
-/** Bisection steps for the meeting point: 60 halvings of 500 m is far below a millimetre. */
+/** Bisection steps for the meeting point: 60 halvings of any lane length are far below a millimetre. */
 const BISECTION_STEPS = 60;
 
 /**

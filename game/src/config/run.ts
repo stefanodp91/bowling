@@ -8,8 +8,11 @@ import { APPROACH_START_Z_M } from './track';
 
 /** The countdown before rolling starts by itself (rule 1). */
 export const READY_S = 1.5;
-/** Speed at the foul line (rule 3). */
-export const START_SPEED_MPS = 6;
+/**
+ * Speed at the foul line (rule 3): 3.7 m/s makes a clean run on the 300 m lane last 40 s —
+ * 260 / (12 − 3.7) · ln(12 / 3.7) ≈ 36.9 s of acceleration plus 38 m at 12 m/s.
+ */
+export const START_SPEED_MPS = 3.7;
 /** Speed from the start of the approach zone on (rule 3). */
 export const MAX_SPEED_MPS = 12;
 /** Target speed grows linearly with distance up to here: the start of the approach zone. */

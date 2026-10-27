@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { CENTRE_LANE, laneCentreX } from '@models/measures/lane';
+import { CENTRE_LANE, laneCentreX, LANE_LENGTH_M } from '@models/measures/lane';
 import { describe, expect, it } from 'vitest';
 import { SKILL_PROFILES, SKILLS } from '../config/pilot';
 import { SIM_STEP_S } from '../config/run';
@@ -22,7 +22,7 @@ const committedTracks = (): Track[] =>
       return parsed.value;
     });
 const SEED = 1;
-const trackWith = (...obstacles: Obstacle[]): Track => ({ schemaVersion: 1, trackId: 't', seed: 3, lengthM: 500, lanes: 3, obstacles });
+const trackWith = (...obstacles: Obstacle[]): Track => ({ schemaVersion: 1, trackId: 't', seed: 3, lengthM: LANE_LENGTH_M, lanes: 3, obstacles });
 
 /** Drives a constructed case with the perfect pilot from `startZ` until the ball passes `untilZ`. */
 function drive(track: Track, startZ: number, untilZ: number, lane: 0 | 1 | 2 = CENTRE_LANE): World {

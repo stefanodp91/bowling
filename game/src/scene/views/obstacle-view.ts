@@ -42,7 +42,7 @@ export interface ObstacleView {
 
 /**
  * The track's obstacles near the camera, created when they come within the fog and disposed once
- * behind it: a 500 m track never holds more than a handful of models.
+ * behind it: a whole track never holds more than a handful of models.
  */
 export function createObstacleView(scene: Scene, track: Track): ObstacleView {
   const live = new Map<number, ModelHandle>();

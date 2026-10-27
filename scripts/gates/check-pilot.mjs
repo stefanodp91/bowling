@@ -3,6 +3,7 @@
 // result, a console error, more active meshes than ACTIVE_MESH_BUDGET, or a disagreement with
 // simulateRun on impacts. Thresholds are imported from the game's config.
 import { ACTIVE_MESH_BUDGET } from '../../game/src/config/render.ts';
+import { LANE_LENGTH_M } from '../../models/src/measures/lane.ts';
 import { launchBrowser } from '../headless/browser.mjs';
 import { ensureServer } from '../headless/servers.mjs';
 import { finding, runGate } from '../lib/gate.mjs';
@@ -41,7 +42,7 @@ const IMPOSSIBLE = {
   schemaVersion: 1,
   trackId: 'lane-01',
   seed: 1,
-  lengthM: 500,
+  lengthM: LANE_LENGTH_M,
   lanes: 3,
   obstacles: [0, 1, 2].map((lane) => ({ kind: 'stray-pins', lane, z: 100 })),
 };

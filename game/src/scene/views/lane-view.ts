@@ -7,7 +7,7 @@ const LAST_SEGMENT = LANE_LENGTH_M / SEGMENT_LENGTH_M - 1;
 const POOL_SIZE = SEGMENTS_BEHIND + SEGMENTS_AHEAD;
 
 /**
- * The 500 m lane drawn as a few recycled 20 m segments around the camera (wiki/models/lane.md,
+ * The lane drawn as a few recycled 20 m segments around the camera (wiki/models/lane.md,
  * rule 4): the first and last segments carry their markings, the rest are instances of a plain one.
  */
 export function createLaneView(scene: Scene): { update(cameraZ: number): void; dispose(): void } {

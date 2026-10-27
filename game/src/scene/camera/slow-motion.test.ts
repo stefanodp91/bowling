@@ -1,3 +1,4 @@
+import { LANE_LENGTH_M } from '@models/measures/lane';
 import { NullEngine } from '@babylonjs/core/Engines/nullEngine';
 import { Scene } from '@babylonjs/core/scene';
 import { createBall } from '@models';
@@ -12,7 +13,7 @@ import { createPhysicsWorld } from '../physics/physics-world';
 import { createPinsView } from '../views/pins-view';
 import { timeScaleAt } from './rig';
 
-const EMPTY_TRACK: Track = { schemaVersion: 1, trackId: 'empty', seed: 1, lengthM: 500, lanes: 3, obstacles: [] };
+const EMPTY_TRACK: Track = { schemaVersion: 1, trackId: 'empty', seed: 1, lengthM: LANE_LENGTH_M, lanes: 3, obstacles: [] };
 /** A 60 Hz display. */
 const FRAME_S = 1 / 60;
 const MAX_FRAMES = 2000;

@@ -1,3 +1,5 @@
+import { LANE_LENGTH_M } from '@models/measures/lane';
+
 /** Camera and draw-distance tunables (wiki/game/camera.md, rule 5). Metres and seconds. */
 
 /** Chase camera: 3 m behind, 1.2 m above the ball, looking 6 m ahead (rule 1). */
@@ -19,7 +21,8 @@ export const FOG_HEX = '#121218';
 export const CHASE_DAMPING_S = 0.25;
 
 /** The impact view starts 10 m before the head pin (rule 2)… */
-export const IMPACT_CAMERA_Z = 490;
+export const IMPACT_CAMERA_BEFORE_PIN_M = 10;
+export const IMPACT_CAMERA_Z = LANE_LENGTH_M - IMPACT_CAMERA_BEFORE_PIN_M;
 /** …and the blend from chase to impact view is complete this many metres later. */
 export const IMPACT_BLEND_M = 4;
 /**

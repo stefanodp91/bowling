@@ -25,7 +25,8 @@ export function envelope(length, sampleRate, attackS, decayS) {
 
 /** Scales a signal so its loudest sample reaches `peak`. */
 export function normalise(samples, peak) {
-  const max = Math.max(...samples.map(Math.abs));
+  // A loop, not Math.max(...): a music-length buffer would overflow the call stack.
+  const max = samples.reduce((m, s) => Math.max(m, Math.abs(s)), 0);
   return max === 0 ? samples : samples.map((s) => (s / max) * peak);
 }
 

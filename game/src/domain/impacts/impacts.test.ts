@@ -1,4 +1,4 @@
-import { laneCentreX, type LaneIndex } from '@models/measures/lane';
+import { laneCentreX, type LaneIndex, LANE_LENGTH_M } from '@models/measures/lane';
 import { describe, expect, it } from 'vitest';
 import { ACCEL_MPS2, JUMP_APEX_M, MAX_SPEED_MPS, SIM_STEP_S } from '../../config/run';
 import { runStateAt } from '../run/step';
@@ -7,7 +7,7 @@ import { initialWorld, worldStep, type World } from '../simulation';
 import type { Obstacle, Track } from '../track/schema';
 import { aimErrorOf, applyImpacts, initialImpacts } from './impacts';
 
-const trackWith = (...obstacles: Obstacle[]): Track => ({ schemaVersion: 1, trackId: 't', seed: 7, lengthM: 500, lanes: 3, obstacles });
+const trackWith = (...obstacles: Obstacle[]): Track => ({ schemaVersion: 1, trackId: 't', seed: 7, lengthM: LANE_LENGTH_M, lanes: 3, obstacles });
 const ballAt = (z: number, lane: LaneIndex, y = 0, runS = 0): RunState => ({ ...runStateAt(z), lane, x: laneCentreX(lane), y, runS });
 const hits = (track: Track, ball: RunState) => applyImpacts(ball, initialImpacts(track), track).impacts.count;
 
@@ -62,8 +62,8 @@ describe('impacts, one obstacle kind at a time', () => {
 
 describe('impact cost', () => {
   it('drops 12 m/s to 9 m/s and recovers to the target at 1.5 m/s²', () => {
-    const track = trackWith({ kind: 'stray-pins', lane: 1, z: 470 });
-    let world: World = { ...initialWorld(track, 469.9), run: { ...runStateAt(469.9), speedMps: MAX_SPEED_MPS } };
+    const track = trackWith({ kind: 'stray-pins', lane: 1, z: 270 });
+    let world: World = { ...initialWorld(track, 269.9), run: { ...runStateAt(269.9), speedMps: MAX_SPEED_MPS } };
     let speedAfter = 0;
     for (let i = 0; i < 10 && speedAfter === 0; i += 1) {
       const result = worldStep(world, track, 'stay', SIM_STEP_S);

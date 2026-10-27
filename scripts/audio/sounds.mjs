@@ -1,6 +1,7 @@
 // The sound set (wiki/audio/sounds.md, rule 1): every sound as numbers. Each constant names the
 // part of the sound it shapes. Imports the domain's seeded generator, so run under tsx.
 import { seededRandom } from '../../game/src/domain/random.ts';
+import { musicLoop } from './music.mjs';
 import { envelope, highPass, lowPass, noise, normalise, seamless } from './synth.mjs';
 
 /** 22 050 Hz is plenty for rumble, thuds and clacks, and halves the committed bytes. */
@@ -97,5 +98,6 @@ export function soundSet() {
     impact: impact(random),
     ...Object.fromEntries(CLACK_VARIANTS.map((modes, i) => [`pin-clack-${i + 1}`, clack(modes, random)])),
     strike: strike(),
+    'music-alley': musicLoop(random, SAMPLE_RATE),
   };
 }

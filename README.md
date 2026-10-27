@@ -1,6 +1,6 @@
 # Bowling
 
-A bowling ball rolls by itself down a 500 m lane full of obstacles and ends against ten pins. Nobody
+A bowling ball rolls by itself down a 300 m lane full of obstacles and ends against ten pins. Nobody
 plays: an autopilot reads the lane and drives the ball — it changes lane, jumps the sweep bar,
 dodges a house ball rolling back towards it — and you can only tell it how well to drive. Lower its
 skill and it starts hitting things; at the end the pins fall in slow motion and the score appears.

@@ -1,4 +1,4 @@
-import { LANE_INDICES } from '@models/measures/lane';
+import { LANE_INDICES, LANE_LENGTH_M } from '@models/measures/lane';
 import { describe, expect, it } from 'vitest';
 import { APPROACH_START_Z_M, START_CLEAR_M } from '../../config/track';
 import { seededRandom } from '../random';
@@ -8,7 +8,7 @@ import { parseTrack } from './parse';
 import { trackViolations } from './rules';
 import type { Track } from './schema';
 
-const base = { schemaVersion: 1, trackId: 'test', seed: 1, lengthM: 500, lanes: 3 } as const;
+const base = { schemaVersion: 1, trackId: 'test', seed: 1, lengthM: LANE_LENGTH_M, lanes: 3 } as const;
 const generated = (seed: number): Track => generateTrack(`t-${seed}`, seed, seededRandom(seed));
 
 describe('track schema', () => {
@@ -60,8 +60,9 @@ describe('track generator', () => {
       extents.slice(1).forEach((e, i) => gaps.push([e.startZ, e.startZ - (extents[i]?.endZ ?? 0)]));
     }
     const mean = (items: Array<[number, number]>) => items.reduce((s, [, g]) => s + g, 0) / items.length;
-    const early = mean(gaps.filter(([z]) => z < 150));
-    const late = mean(gaps.filter(([z]) => z > 350));
+    const third = (APPROACH_START_Z_M - START_CLEAR_M) / 3;
+    const early = mean(gaps.filter(([z]) => z < START_CLEAR_M + third));
+    const late = mean(gaps.filter(([z]) => z > APPROACH_START_Z_M - third));
     expect(early).toBeGreaterThan(late + 5);
   });
 
@@ -74,7 +75,7 @@ describe('track rules', () => {
   const at = (obstacles: Track['obstacles']): Track => ({ ...base, obstacles });
 
   it('rejects an obstacle in the approach zone', () => {
-    expect(trackViolations(at([{ kind: 'stray-pins', lane: 0, z: 470 }])).map((v) => v.rule)).toContain('clear-zone');
+    expect(trackViolations(at([{ kind: 'stray-pins', lane: 0, z: APPROACH_START_Z_M + 10 }])).map((v) => v.rule)).toContain('clear-zone');
   });
 
   it('rejects three lane obstacles at the same z, one per lane', () => {

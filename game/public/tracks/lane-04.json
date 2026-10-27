@@ -2,118 +2,72 @@
   "schemaVersion": 1,
   "trackId": "lane-04",
   "seed": 1004,
-  "lengthM": 500,
+  "lengthM": 300,
   "lanes": 3,
   "obstacles": [
     {
       "kind": "stray-pins",
       "lane": 1,
-      "z": 31.27
+      "z": 31.32
     },
     {
       "kind": "rental-shoes",
       "lane": 0,
-      "z": 56.77
+      "z": 56.79
     },
     {
       "kind": "returning-ball",
       "lane": 2,
-      "z": 115.71,
+      "z": 126.44,
       "speedMps": 2.75
     },
     {
       "kind": "widening-gutter",
       "lane": 0,
-      "z": 104.21,
+      "z": 102.67,
       "lengthM": 10.01
     },
     {
       "kind": "stray-pins",
       "lane": 0,
-      "z": 138.02
+      "z": 134.85
     },
     {
       "kind": "rental-shoes",
       "lane": 0,
-      "z": 160.52
+      "z": 155.31
     },
     {
       "kind": "rental-shoes",
       "lane": 1,
-      "z": 181.95
+      "z": 174.33
     },
     {
       "kind": "returning-ball",
       "lane": 2,
-      "z": 291.03,
+      "z": 289.19,
       "speedMps": 3.2
     },
     {
       "kind": "returning-ball",
       "lane": 2,
-      "z": 304.87,
+      "z": 296.95,
       "speedMps": 2.68
     },
     {
       "kind": "stray-pins",
       "lane": 2,
-      "z": 242.45
+      "z": 225.74
     },
     {
       "kind": "stray-pins",
       "lane": 0,
-      "z": 260.75
+      "z": 240.47
     },
     {
       "kind": "stray-pins",
       "lane": 2,
-      "z": 279.4
-    },
-    {
-      "kind": "widening-gutter",
-      "lane": 1,
-      "z": 300.27,
-      "lengthM": 15.66
-    },
-    {
-      "kind": "rental-shoes",
-      "lane": 2,
-      "z": 333.37
-    },
-    {
-      "kind": "returning-ball",
-      "lane": 2,
-      "z": 465.49,
-      "speedMps": 2.59
-    },
-    {
-      "kind": "sweep-bar",
-      "z": 371.44
-    },
-    {
-      "kind": "stray-pins",
-      "lane": 1,
-      "z": 389.26
-    },
-    {
-      "kind": "stray-pins",
-      "lane": 1,
-      "z": 407.76
-    },
-    {
-      "kind": "stray-pins",
-      "lane": 2,
-      "z": 423.28
-    },
-    {
-      "kind": "stray-pins",
-      "lane": 2,
-      "z": 438.68
-    },
-    {
-      "kind": "rental-shoes",
-      "lane": 0,
-      "z": 454.75
+      "z": 255.33
     }
   ]
 }

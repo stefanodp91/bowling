@@ -64,7 +64,8 @@ function place(kind: ObstacleKind, z: number, random: RandomSource): { obstacle:
 export function generateTrack(trackId: string, seed: number, random: RandomSource): Track {
   const obstacles: Obstacle[] = [];
   const jitter = (): number => uniform(random, -(GAP_JITTER_M - ROUNDING_SLACK_M), GAP_JITTER_M - ROUNDING_SLACK_M);
-  let z = START_CLEAR_M + Math.abs(jitter());
+  // The first obstacle keeps the rounding slack from the clear zone, as every gap does from its rule.
+  let z = START_CLEAR_M + ROUNDING_SLACK_M + Math.abs(jitter());
   for (;;) {
     const { obstacle, endZ } = place(drawKind(random), z, random);
     if (endZ > APPROACH_START_Z_M) break;

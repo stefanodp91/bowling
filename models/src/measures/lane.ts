@@ -31,8 +31,8 @@ export const GUTTER_DEPTH_M = 1.875 * METRES_PER_INCH;
 /** Whole playing surface: three travel lanes and the two outer gutters. */
 export const PLAYING_SURFACE_WIDTH_M = BOARDS_SURFACE_WIDTH_M + 2 * GUTTER_WIDTH_M;
 
-/** The run: 500 m from the foul line to the head pin (design: wiki/models/lane.md). */
-export const LANE_LENGTH_M = 500;
+/** The run: 300 m from the foul line to the head pin (a human's decision, wiki/models/lane.md). */
+export const LANE_LENGTH_M = 300;
 /** The lane is built in 20 m segments that the scene instances and recycles. */
 export const SEGMENT_LENGTH_M = 20;
 

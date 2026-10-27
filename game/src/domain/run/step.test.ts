@@ -1,4 +1,4 @@
-import { laneCentreX } from '@models/measures/lane';
+import { LANE_LENGTH_M, laneCentreX } from '@models/measures/lane';
 import { describe, expect, it } from 'vitest';
 import { JUMP_AIRTIME_S, LANE_CHANGE_S, MAX_SPEED_AT_Z_M, SIM_STEP_S } from '../../config/run';
 import { targetSpeed } from './speed';
@@ -23,8 +23,8 @@ describe('run step', () => {
   });
 
   it('has a target speed monotonic in z', () => {
-    for (let z = 0; z < 500; z += 0.5) expect(targetSpeed(z + 0.5)).toBeGreaterThanOrEqual(targetSpeed(z));
-    expect(targetSpeed(MAX_SPEED_AT_Z_M)).toBe(targetSpeed(499));
+    for (let z = 0; z < LANE_LENGTH_M; z += 0.5) expect(targetSpeed(z + 0.5)).toBeGreaterThanOrEqual(targetSpeed(z));
+    expect(targetSpeed(MAX_SPEED_AT_Z_M)).toBe(targetSpeed(LANE_LENGTH_M - 1));
   });
 
   it('is deterministic: the same commands from the same state give bit-identical states', () => {
@@ -55,10 +55,10 @@ describe('run step', () => {
     expect(states.slice(1, -1).every((s) => s.laneChange === null)).toBe(true);
   });
 
-  it('rolls for 50–65 s on an empty track with «stay» only (≈ 56 s expected)', () => {
+  it('rolls for 38–42 s on an empty track with «stay» only (≈ 40 s expected)', () => {
     const states = run(initialRunState(), 'stay', stepsFor(80));
     const rollingS = states.filter((s) => s.phase === 'rolling').length * SIM_STEP_S;
-    expect(rollingS).toBeGreaterThan(50);
-    expect(rollingS).toBeLessThan(65);
+    expect(rollingS).toBeGreaterThan(38);
+    expect(rollingS).toBeLessThan(42);
   });
 });

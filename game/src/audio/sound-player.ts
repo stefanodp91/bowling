@@ -1,5 +1,5 @@
 import { createAudioEngine, type AudioEngine } from 'obsidian-eclipse-audio-engine';
-import { AUDIO_BASE, ROLL_FALL_S, ROLL_RISE_S } from '../config/audio';
+import { AUDIO_BASE, MUSIC_DUCK_AMOUNT, MUSIC_DUCK_MS, MUSIC_ID, MUSIC_LEVEL, ROLL_FALL_S, ROLL_RISE_S } from '../config/audio';
 import { CUE_IDS, ROLL_IDS, type Cue } from './cues';
 
 /** The game's sound, played by the audio engine (wiki/audio/sounds.md, rule 3). */
@@ -16,6 +16,8 @@ export interface SoundPlayer {
 }
 
 const path = (id: string): string => `${AUDIO_BASE}/${id}.wav`;
+/** The cue the music makes room for. */
+const STRIKE_CUE = 'strike';
 
 export function createSoundPlayer(engine: AudioEngine = createAudioEngine({ onError: (error, context) => console.error('audio engine', context, error) })): SoundPlayer {
   // The engine decodes only once its audio context runs, i.e. after the first gesture; nothing
@@ -30,9 +32,19 @@ export function createSoundPlayer(engine: AudioEngine = createAudioEngine({ onEr
       })
       .catch((error: unknown) => console.error('audio warm-up failed', error));
   };
+  // The music starts with the first gesture too, and loops until the page goes (rule 6).
+  let musicStarted = false;
+  const startMusic = (): void => {
+    if (musicStarted) return;
+    musicStarted = true;
+    engine.music.setLevel(MUSIC_LEVEL);
+    engine.music.play(MUSIC_ID, path(MUSIC_ID), { crossfadeMs: 0 }).catch((error: unknown) => console.error('music failed to start', error));
+  };
   return {
     play: (cue) => {
-      if (warmed) engine.cues.play(cue.id, { volume: cue.volume });
+      if (!warmed) return;
+      if (cue.id === STRIKE_CUE) engine.music.duck(MUSIC_DUCK_AMOUNT, MUSIC_DUCK_MS);
+      engine.cues.play(cue.id, { volume: cue.volume });
     },
     roll: ({ slow, fast }) => {
       if (!warmed) return;
@@ -43,6 +55,7 @@ export function createSoundPlayer(engine: AudioEngine = createAudioEngine({ onEr
     unlock: () => {
       engine.unlock();
       warm();
+      startMusic();
     },
     setMuted: (muted) => engine.setMuted(muted),
     isOn: () => {
@@ -51,6 +64,7 @@ export function createSoundPlayer(engine: AudioEngine = createAudioEngine({ onEr
     },
     dispose: () => {
       engine.cues.releaseHolds();
+      void engine.music.stop();
       void engine.dispose();
     },
   };
