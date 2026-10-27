@@ -14,6 +14,15 @@ with the date.
 
 ## Where to resume
 
+- 2026-10-27 — The build session ran [`BUILD.md`](../BUILD.md) to the end: all 24 spec pages are
+  `built`, none `approved`; `npm run check:full` passes on a clean clone. No handoff is open. What
+  comes next is human work, in this order: (1) decide the two cases in «To judge» below — the
+  impacts-to-pins one changes what the demo shows on stage; (2) look at the `[human]` criteria of
+  each page, starting with the ones the agent could not judge: the sounds (criterion 3 of
+  [sounds](audio/sounds.md), needs speakers), the pilot's mistakes ([autopilot](pilot/autopilot.md)
+  criterion 5) and the README walk-through ([release](release/open-source.md) criterion 5); (3)
+  approve pages one by one (`status: approved`, `approved_on`, an entry under «Approved»). The
+  points each page left for the human are at the end of its latest «Rounds» entry.
 - 2026-10-26 — Round zero committed: rules, prompts and every page `planned`. Nothing is built.
   First step: start from [`BUILD.md`](../BUILD.md) with [workspace](workspace/monorepo.md).
 

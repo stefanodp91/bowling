@@ -41,3 +41,4 @@ investigations goes here, never in the pages (prompt 3, step 3).
 - 2026-10-27 · game/hud.md · HUD built: run info, skill buttons, countdown, end screen, loading screen; UI rules test.
 - 2026-10-27 · audio/sounds.md, method/gates.md, AGENTS.md · sounds generated from numbers, check-audio gate, playback through the audio engine; warm-after-unlock trap recorded.
 - 2026-10-27 · pilot/headless-runs.md, records/pilot-vs-blind-20261027.md, review.md, game/pins.md · headless runs built; campaign recorded; impacts-to-pins finding written in «To judge».
+- 2026-10-27 · release/open-source.md, review.md · release built (notices, build, preview, README, changelog); check:full green on a clean clone; «Where to resume» says what is left for a human.

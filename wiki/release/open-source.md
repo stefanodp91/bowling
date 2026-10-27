@@ -1,9 +1,9 @@
 ---
 title: Open-source release — ready to hand to the audience
 type: spec
-status: planned
+status: built
 depends_on: [pilot/headless-runs.md, audio/sounds.md, method/stats.md]
-canonical: []
+canonical: [README.md, THIRD_PARTY_NOTICES.md, CHANGELOG.md, docs/screenshot.png, scripts/release/, scripts/gates/check-notices.mjs, scripts/tests/readme-links.test.mjs, package.json]
 verified: 2026-10-26
 ---
 
@@ -45,8 +45,28 @@ demo, understand how it was built, and rebuild it with their own agent.
 
 ## References
 
-_Filled by the agent (prompt 1, step 2): licences of each dependency._
+- Licences of the shipped packages, read from `package-lock.json` and each package's own files
+  (26 packages, all MIT except Babylon.js core and GUI, Apache-2.0); Apache-2.0 §4(d) asks to carry
+  a package's NOTICE file along, so Babylon's `NOTICE.md` is included
+  (https://www.apache.org/licenses/LICENSE-2.0#redistribution).
+- Reactylon's author, from its own `package.json`: Simone De Vittorio (https://www.reactylon.com).
+- Vite static build and preview (https://vite.dev/guide/static-deploy).
 
 ## Rounds
 
-_Filled by the agent (prompt 1, step 5)._
+- 2026-10-27 · round 1 · Built `npm run notices` (the production tree from `game/package.json`
+  through the lockfile, required peers included: 26 packages; Reactylon ships no licence file, so
+  its declared MIT is quoted), the `check-notices` gate (its selftest adds an invented dependency
+  to the lockfile in memory and is rejected by name), `npm run build` / `npm run preview` (the
+  build carries the Havok WASM, the tracks and the sounds), the README (screenshot by the shot tool
+  from the production build: the ball, a returning ball and the shoes ahead, the HUD), its link
+  test, and the changelog. Checks: `npm run pilot -- --tracks lane-01 --skill perfect` against
+  `npm run preview` — 0 impacts, agrees with `simulateRun`, no console error, exit 0; README links
+  all resolve; `npm run check:full` on a clean clone after `npm ci` — see round 2. The bundle is one
+  3 MB chunk (Vite warns above 500 kB); code-splitting was not asked and is not done. Rule 5: no
+  `planned` page is left; two cases wait in [review](../review.md) «To judge».
+- 2026-10-27 · round 2 · Criterion 1: `git clone` of commit `87079ab` into an empty folder, with no
+  server running on ports 3000 or 6006, then `npm ci` (exit 0) and `npm run check:full` (exit 0:
+  tests, script tests, the nine gates and their selftests, wiki lint and selftests, and
+  `check-pilot` playing the five tracks with `perfect` in headless Chromium). The README's stats
+  table was filled from `npm run stats -- --md` just before the closing commit.

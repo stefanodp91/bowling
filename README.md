@@ -86,6 +86,27 @@ git checkout 547be39
 From `npm run stats -- --md`, as of the release commit (run it yourself for the current values):
 
 <!-- stats:start -->
+| Measure | Value |
+|---|---|
+| Spec pages planned / built / approved | 0 / 24 / 0 |
+| Built by the agent, not yet approved by a human | 24 |
+| Review: to judge / approved | 2 / 0 |
+| Self-approval rounds recorded | 33 |
+| Pages that needed more than one round | 9 (game/camera.md, game/impacts.md, game/pins.md, models/obstacles/rental-shoes.md, models/obstacles/sweep-bar.md, models/pins.md, release/open-source.md, tools/shot.md, track/track-format.md) |
+| Commits in total / by a human | 27 / 0 |
+| Commits by Claude Opus 5.5 | 27 |
+| Longest agent streak (no gap over 30 min) | 27 commits in 105 min |
+| Gates | 9 |
+| check-audio | added in 38e47b0 2026-10-27 |
+| check-boundaries | added in 2196bb1 2026-10-26 |
+| check-engines | added in 2196bb1 2026-10-26 |
+| check-file-size | added in 2196bb1 2026-10-26 |
+| check-magic-numbers | added in 2196bb1 2026-10-26 |
+| check-no-foreign-refs | added in 2196bb1 2026-10-26 |
+| check-notices | added in 87079ab 2026-10-27 |
+| check-pilot | added in c33fca9 2026-10-27 |
+| check-tracks | added in 2541fb4 2026-10-27 |
+| Shots taken | 79 (local, not in git) |
 <!-- stats:end -->
 
 ## Licence
