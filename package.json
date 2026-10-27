@@ -32,7 +32,10 @@
     "audio:build": "TSX_TSCONFIG_PATH=game/tsconfig.json node --import tsx scripts/audio/generate.mjs",
     "audio:check": "TSX_TSCONFIG_PATH=game/tsconfig.json node --import tsx scripts/gates/check-audio.mjs",
     "wiki:selftest": "node scripts/wiki/lint.mjs --selftest && node scripts/wiki/index.mjs --selftest && node scripts/wiki/check-acceptance.mjs --selftest && node scripts/wiki/agents-lint.mjs --selftest && node scripts/wiki/context.mjs --selftest && node scripts/wiki/touched.mjs --selftest && node scripts/wiki/acceptance-lock.mjs --selftest",
-    "shot:verify": "node scripts/shot/verify.mjs"
+    "shot:verify": "node scripts/shot/verify.mjs",
+    "notices": "node scripts/release/notices.mjs",
+    "build": "npm run build -w game",
+    "preview": "npm run build && npm run preview -w game"
   },
   "devDependencies": {
     "@types/node": "^24.10.0",
