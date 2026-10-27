@@ -134,3 +134,7 @@ Traps found on the field go here, each with the symptom that reveals it.
 - **The audio engine decodes nothing before the first gesture.** Symptom: `cues.warm` resolves,
   no `.wav` request is made, and every `hold` logs «held voice … was never warmed». Warm after
   `unlock()` ([sounds](wiki/audio/sounds.md)).
+- **Music that is muted when it loads never plays.** On Web Audio the engine records the track and
+  returns if sound is muted when the file is ready, and unmuting does not restart it. Symptom:
+  `status().playing` names the track but nothing is heard. The player restarts the music whenever
+  sound becomes audible; mute lives in memory, and a new run never reloads the page.

@@ -52,3 +52,4 @@ investigations goes here, never in the pages (prompt 3, step 3).
   track/track-format.md, game/pins.md, pilot/headless-runs.md, records/*-300m-20261027.md,
   review.md · 300 m lane, 40 s run and music built; records of the new deck tests and campaign;
   review updated.
+- 2026-10-27 · audio/sounds.md, game/hud.md, AGENTS.md · music silent and effects lost after a new run, fixed: sound rules 4 and 6 and HUD rule 4 sharpened, in-page Run again, player restarts the music; trap recorded.

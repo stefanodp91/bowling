@@ -29,8 +29,9 @@ change how well the autopilot drives, live, with one click.
 3. **Countdown** during `ready`: 3-2-1, then «Roll».
 4. **End screen** in `result`: the ten-pin diagram (down pins dimmed, standing pins solid, numbered),
    the score `n / 10`, «STRIKE!» when ten, impacts and skill of the run, and «Run again», which
-   starts the next track of `index.json` (wrapping around). It also starts by itself after
-   `AUTO_RESTART_S` (10 s), so the demo can loop unattended on stage.
+   starts the next track of `index.json` (wrapping around) without reloading the page, so the sound
+   the audience already hears goes on. It also starts by itself after `AUTO_RESTART_S` (10 s), so
+   the demo can loop unattended on stage.
 5. **Errors** (invalid track, physics failing to load) replace the HUD with a readable message and
    a «Retry» button; never a blank screen.
 6. **Components:** React function components in `game/src/ui/`, one per file, each with a sibling
@@ -83,6 +84,12 @@ change how well the autopilot drives, live, with one click.
   `shot:verify` for the 300 m lane showed its HUD check counting four `aria-pressed` buttons: the
   sound toggle (added by the sounds page) uses the attribute too, and the check had never run since.
   It now counts the buttons of the «Autopilot skill» group: three, pass.
+
+- 2026-10-27 · round 3 · «Run again» (and the 10 s auto restart) now starts the next track in the
+  same page — new session, new scene (`GameCanvas` keyed by the run), the URL updated with
+  `history.replaceState` — instead of reloading it, which had silenced the sound (rule 4, reported
+  by the human). Havok is loaded once per page. Checked headlessly: after «Run again» the page is
+  the same, lane-02 runs, sound stays on.
 
 ## Canonical files
 
