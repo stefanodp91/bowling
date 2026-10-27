@@ -1,7 +1,7 @@
 ---
 title: Rental shoes — a pair of two-tone bowling shoes in one travel lane
 type: spec
-status: planned
+status: built
 depends_on: [storybook/catalog.md, tools/shot.md]
 canonical: [models/src/measures/obstacles.ts, models/src/obstacles/rental-shoes/, storybook/src/stories/obstacle-rental-shoes.stories.tsx, game/src/domain/obstacles/jump-clearance.test.ts]
 verified: 2026-10-27
@@ -60,6 +60,10 @@ code, which makes it the best example of the self-approval loop on stage.
   laces, grey quarters, blue heels, foxing and tan sole; reads as rental bowling shoes, not boots or
   boxes. Left for the human: the toe ends in a slight vertical crease where the sections close.
   Criterion 2's test exists in `game/` and is skipped, naming the [run](../../game/run.md) page.
+- 2026-10-27 · round 3 · Twice life size: length, width, height and placements × `PROP_SCALE`,
+  and every detail length of the shape (sole, upper profile, collar, eyelets, laces, label).
+  Footprint height 0.24 m, below the 1.0 m jump apex (criterion 2's test green). Story shot: the
+  same pair, twice as big; in the game at 140 m they read at once.
 
 ## Canonical files
 

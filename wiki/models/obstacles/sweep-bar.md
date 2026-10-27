@@ -1,7 +1,7 @@
 ---
 title: Sweep bar — the pinsetter's rake across all three travel lanes
 type: spec
-status: planned
+status: built
 depends_on: [models/lane.md]
 canonical: [models/src/obstacles/sweep-bar/, models/src/measures/obstacles.ts, storybook/src/stories/obstacle-sweep-bar.stories.tsx, game/src/domain/obstacles/jump-clearance.test.ts]
 verified: 2026-10-27
@@ -56,6 +56,10 @@ The only obstacle that blocks every lane: the pilot must jump, so it is where a 
   hazard band), crank plates on the pivots, painted (partly metallic) lighter steel. 1 shot: reads
   as the underside of a pinsetter with its sweep down. Left for the human: the housing floats with
   no visible support, which a 500 m lane cannot give it.
+- 2026-10-27 · round 2 · Twice life size except across the lane: board height 0.60 m, thickness,
+  lip, swing, pivots, arms, housing and stripes × `PROP_SCALE`; the width still spans the playing
+  surface. Footprint height ≈ 0.607 m < 1.0 m apex (criterion 2 green). Story shot: proportions
+  unchanged.
 
 ## Canonical files
 

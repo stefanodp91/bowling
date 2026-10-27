@@ -5,6 +5,21 @@ this file keeps what was done and when. Every page was built and closed inside o
 handoff was opened ([`handoffs/`](handoffs/README.md)); each entry points to the page whose
 «Rounds» section holds the details.
 
+## Second round of human requests — 2026-10-27
+
+The human found the props tiny on the long lane, the scene a black void, the music too slow and the
+skills too alike. Spec first, then one commit per change:
+
+- **Props at twice life size** ([conventions](wiki/models/conventions.md)) — ball, pins, obstacles and
+  deck × `PROP_SCALE` on the regulation lane; the camera follows; the pocket ball now strikes in
+  the deck test.
+- **The alley** ([lane](wiki/models/lane.md), rule 6) — neighbouring lanes, mural walls, a ceiling
+  with beams and light strips, a purple haze instead of black; two meshes per recycled segment.
+- **Happier music** ([sounds](wiki/audio/sounds.md)) — eight bars in C major at 126 BPM.
+- **Skills that show** ([impacts](wiki/game/impacts.md), [autopilot](wiki/pilot/autopilot.md)) — an
+  impact costs 40 % of the speed, recovered at 0.5 m/s², and up to 0.5 m of aim; `good` and
+  `sloppy` ignore more obstacles. Measured in the [skills record](wiki/records/skills-20261027.md).
+
 ## Build session — 2026-10-26 / 2026-10-27
 
 One agent session (Claude Opus 5.5) ran [`BUILD.md`](BUILD.md) from round zero, one page at a

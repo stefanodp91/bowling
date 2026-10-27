@@ -14,6 +14,14 @@ with the date.
 
 ## Where to resume
 
+- 2026-10-27, third pass — The human's second round of requests is built: props at twice life
+  size ([conventions](models/conventions.md)), the alley around the lane ([lane](models/lane.md)
+  rule 6), happier music ([sounds](audio/sounds.md) rule 6) and skills that show
+  ([impacts](game/impacts.md), [autopilot](pilot/autopilot.md);
+  [skills record](records/skills-20261027.md): perfect 10, good 7.3, sloppy 2.5, blind 1.7). Every
+  spec page is `built`, none `approved`. For the human, in «To judge»: whether to accept the
+  proposed criteria for the alley and the music, and whether sloppy is now too close to blind. To
+  look at with eyes and ears: the alley from a projector, the music on speakers, a sloppy run.
 - 2026-10-27, later — After the human's review: the lane is 300 m and a clean run lasts 40 s (run
   and camera criteria rewritten and re-locked on the human's authorization), the black canvas on
   WebGPU browsers is fixed (`check-webgl`), and background music plays (sounds rule 6). All 24
@@ -62,7 +70,7 @@ the agent recommends.
   little, still not enough to be seen from the back of a room; the recommendation stands.
   Update of 2026-10-27: the human asked that the skills differ visibly and authorised the change of
   impacts criterion 2. The spec now carries the speed loss to the pins (0.4 loss, recovery at
-  0.5 m/s²), a larger aim error (0.12 m at regulation size) and more ignored obstacles for `good`
+  0.5 m/s²), a larger aim error (0.25 m at regulation size) and more ignored obstacles for `good`
   and `sloppy`; the next record measures whether the pins show it. A human closes this entry.
 - 2026-10-27 · [sounds](audio/sounds.md) rule 6 (music) · The human asked for background music;
   it is built as rule 6, but no acceptance criterion covers it (only a human writes criteria).

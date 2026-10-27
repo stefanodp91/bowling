@@ -1,7 +1,7 @@
 ---
 title: Autopilot — the only player, and its three skill profiles
 type: spec
-status: planned
+status: built
 depends_on: [game/impacts.md, game/pins.md]
 canonical: [game/src/config/pilot.ts, game/src/pilot/, game/src/domain/deck/hand-off.ts]
 verified: 2026-10-27
@@ -45,10 +45,10 @@ be lowered on stage, so the audience sees impacts turn into fewer pins.
    |---|---|---|
    | `perfect` | 1.0 s | 0 |
    | `good` | 0.6 s | 0.25 |
-   | `sloppy` | 0.35 s | 0.55 |
+   | `sloppy` | 0.35 s | 0.70 |
 
    The chances to ignore were 0.10 and 0.30; a human asked on 2026-10-27 that the skills differ
-   visibly, so `good` now hits about one obstacle in four and `sloppy` about one in two.
+   visibly, so `good` now ignores about one obstacle in four and `sloppy` more than two in three.
 
    The ignore draw happens once per obstacle, when it is first noticed, from the seeded source
    keyed by the obstacle's index: same track, seed and skill changes → same run. Changing skill
@@ -100,6 +100,12 @@ be lowered on stage, so the audience sees impacts turn into fewer pins.
   `check-boundaries` stopped a pilot test importing `node:fs`; test files may now import `node:`
   built-ins. 1 shot. For the human: impacts cost few pins (sloppy 10 vs perfect 9 on lane-01) —
   see the [headless runs](headless-runs.md) record before judging.
+- 2026-10-27 · round 4 · Rule 5: good ignores 0.25 of the obstacles it notices, sloppy 0.70
+  (were 0.10 and 0.30); sloppy's notice time stays at the track gate's 0.35 s. Criteria 2 and 3:
+  perfect has 0 impacts and the centre lane at the hand-over on every track, sloppy 2.7 impacts a
+  run, the same summary twice; tests green. Browser campaign: good 1.0 impacts and 7.3 pins, sloppy
+  2.7 and 2.5 ([skills record](../records/skills-20261027.md)). For the human (criterion 5): sloppy
+  now misses often enough to look careless rather than unlucky.
 
 ## Canonical files
 

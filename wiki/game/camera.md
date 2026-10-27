@@ -1,7 +1,7 @@
 ---
 title: Camera — chase, impact view and slow motion
 type: spec
-status: planned
+status: built
 depends_on: [game/run.md]
 canonical: [game/src/config/camera.ts, game/src/scene/camera/, game/src/scene/mountGame.ts, game/src/app/frame-steps.ts]
 verified: 2026-10-27
@@ -67,3 +67,8 @@ Make a one-minute run that nobody plays watchable from a projector at the back o
   advances once per simulation step, so slow motion only changes how many frames the steps take.
   The game applies `timeScaleAt(deck.sinceContactS)` to every frame. Record:
   [deck tests 2026-10-27](../records/deck-tests-20261027.md).
+- 2026-10-27 · round 4 · Props twice life size: chase 4.5 m behind, 1.9 m up, looking 9 m ahead,
+  so the ball keeps its share of the frame and the next obstacles show above it; the impact view's
+  offsets × `PROP_SCALE`. The fog is now the room's haze (`#3B2D4A`), not black. Shots: 140 m and
+  0 m show the ball, the next obstacles and the alley; 295 m frames the deck from the side
+  (criterion 3); slow-motion test green (10 and 10).

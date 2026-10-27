@@ -3,11 +3,14 @@
 A bowling ball rolls by itself down a 300 m lane full of obstacles and ends against ten pins. Nobody
 plays: an autopilot reads the lane and drives the ball — it changes lane, jumps the sweep bar,
 dodges a house ball rolling back towards it — and you can only tell it how well to drive. Lower its
-skill and it starts hitting things; at the end the pins fall in slow motion and the score appears. A run lasts forty seconds, over a
-quiet groove generated, like every sound here, from numbers.
+skill and it starts hitting things, and the pins show it; at the end they fall in slow motion and
+the score appears. A run lasts forty seconds, in a retro alley built from code, over a cheerful
+groove generated, like every sound here, from numbers. The ball, the pins and the obstacles are
+twice life size, so they read from the back of a room.
 
-![The ball rolling down lane-01, a returning house ball and a pair of rental shoes ahead, the run
-information at the top and the three skill buttons at the bottom](docs/screenshot.png)
+![The ball rolling down lane-01 between neighbouring lanes and mural walls under a lit ceiling, a
+pair of rental shoes and a returning house ball ahead, the run information at the top and the three
+skill buttons at the bottom](docs/screenshot.png)
 
 **The game is the excuse.** This repository shows a way of building software with AI agents: a wiki
 that is the specification and that the agent must read before acting, a loop in which the agent

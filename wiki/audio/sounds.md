@@ -1,7 +1,7 @@
 ---
 title: Sounds — generated from numbers, played by the audio engine
 type: spec
-status: planned
+status: built
 depends_on: [game/pins.md, game/hud.md]
 canonical: [scripts/audio/, scripts/gates/check-audio.mjs, game/public/audio/, game/src/config/audio.ts, game/src/audio/, game/src/app/events.ts, game/src/ui/use-sound.ts, game/src/ui/hud/SoundToggle.tsx]
 verified: 2026-10-27
@@ -111,6 +111,12 @@ comes from a committed script, so an open-source audience gets the source of eve
   silent). In the browser, read through `window.__bowling.soundStatus()`: running with
   `music-alley` after the first press, still after «Run again» in the same page, muted and back
   with the toggle; 9 files, no errors.
+- 2026-10-27 · round 4 · Happier music (rule 6 rewritten): eight bars in C major at 126 BPM — a
+  walking bass, offbeat chord stabs with a soft square tone, a lead hook with vibrato, kick on every
+  beat, handclaps on 2 and 4, hi-hats on the eighths. Measured on the WAV: 15.24 s, peak 0.75,
+  tempo from the onset autocorrelation 126.0 BPM, the jump at the loop point (0.0076) below the
+  signal's own sample-to-sample step (0.019). `audio:check` passes. Not judged: how it sounds —
+  that is criterion 3's human, with speakers.
 
 ## Canonical files
 

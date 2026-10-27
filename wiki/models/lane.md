@@ -1,9 +1,9 @@
 ---
 title: Lane — 300 m of maple, three travel lanes, gutters and pin deck
 type: spec
-status: planned
+status: built
 depends_on: [storybook/catalog.md, tools/shot.md]
-canonical: [models/src/measures/lane.ts, models/src/lane/, storybook/src/stories/lane-segment.stories.tsx, storybook/src/stories/pin-deck.stories.tsx, storybook/src/scenes/pin-deck-scene.ts]
+canonical: [models/src/measures/lane.ts, models/src/measures/alley.ts, models/src/lane/, models/src/alley/, storybook/src/stories/alley-segment.stories.tsx, storybook/src/stories/lane-segment.stories.tsx, storybook/src/stories/pin-deck.stories.tsx, storybook/src/scenes/pin-deck-scene.ts]
 verified: 2026-10-27
 ---
 
@@ -88,6 +88,20 @@ to render for its whole length.
   that says it; the scene now draws 15 segments, the last with the regulation markings ending at the
   head pin. Unit tests unchanged and green; the 300 m campaign
   ([record](../records/pilot-vs-blind-300m-20261027.md)) ran on it.
+- 2026-10-27 · round 4 · Props twice life size: the deck's margins, pit, wall and spotlight are
+  sized for the pins, × `PROP_SCALE`; the lane itself is unchanged. Rule 6, the alley:
+  `createAlleySegment` (`models/src/alley/`, measures in `measures/alley.ts`) builds a 20 m segment
+  in two meshes — the four neighbouring lanes' boards with the lane's material (one lane's third of
+  the board texture each), and a single unlit vertex-coloured mesh for cappings, neighbouring
+  gutters, purple carpet, teal-and-cream walls with orange, pink, teal and mustard discs, a pink
+  neon line, the ceiling with a beam every 5 m and a warm light strip over every lane. The scene
+  recycles it with the lane segments (`segment-window.ts`, shared by both views), one segment past
+  the head pin; the masking wall now spans the room and reaches the ceiling. Shots: at 140 m the
+  first try showed the neighbouring boards black — their quads faced down; winding flipped. At 0 m,
+  140 m and 295 m the frame has no black left: walls, ceiling, the far end fades into purple haze.
+  Story `models-alley-segment` reaches ready; unit tests: wall to wall, floor to ceiling, two
+  meshes, instancing shares geometry. Rule 6 has no acceptance criterion yet: a proposal is in
+  [review](../review.md) «To judge».
 
 ## Canonical files
 

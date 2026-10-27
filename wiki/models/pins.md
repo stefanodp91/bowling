@@ -1,7 +1,7 @@
 ---
 title: Pins — the ten regulation pins
 type: spec
-status: planned
+status: built
 depends_on: [storybook/catalog.md, tools/shot.md]
 canonical: [models/src/measures/pins.ts, models/src/pins/, storybook/src/stories/pin.stories.tsx, storybook/src/scenes/pin-deck-scene.ts]
 verified: 2026-10-27
@@ -66,6 +66,11 @@ they tumble, so it must be the regulation profile.
   ±1 mm apart, pin 1 nearest to z = 0, rows numbered left to right.
 - 2026-10-26 · round 2 · (from the stray pins round) the coat showed a red seam line; u now comes
   from the lathe column, the crown turned back to face −z. 2 shots: no seam.
+- 2026-10-27 · round 3 · Twice life size: the profile is still written in regulation inches, an
+  inch now being 0.0254 m × `PROP_SCALE`; spacing and spot diameter follow, mass × 8. The coat
+  texture works in regulation inches (`PIN_HEIGHT_IN`), so stripes and crown stay where they were.
+  Unit tests updated to criterion 2 as rewritten (spacing 0.3048 m × `PROP_SCALE`): green. Shots:
+  the deck from the side at 295 m, pins 0.76 m tall next to the 0.44 m ball.
 
 ## Canonical files
 

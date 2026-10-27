@@ -1,7 +1,7 @@
 ---
 title: Run — the ball's 300 m, from foul line to pin deck
 type: spec
-status: planned
+status: built
 depends_on: [track/track-format.md, models/ball.md, models/lane.md]
 canonical: [game/src/config/run.ts, game/src/config/loop.ts, game/src/config/scene.ts, game/src/domain/run/, game/src/app/, game/src/dev/test-hook.ts, game/src/scene/, game/src/ui/App.tsx, game/src/ui/ErrorScreen.tsx, game/src/ui/use-game-session.ts, game/src/i18n/]
 verified: 2026-10-27
@@ -104,6 +104,12 @@ and jumping when the autopilot says so.
   «stay» test now measures 40.0 s; a test that sampled 469.9 m moved to 269.9 m. Shots: the 250 m
   criterion passes (5/5 centre pixels against the fog). The browser campaign: every run rolls
   40.0–41.2 s ([record](../records/pilot-vs-blind-300m-20261027.md)).
+- 2026-10-27 · round 5 · Rule 3: `ACCEL_MPS2` 1.5 → 0.5 m/s², above the 0.38 m/s² a clean run
+  asks of it at 12 m/s, so a clean run is unchanged (the «stay» test still measures 40.0 s) while a
+  ball slowed by an impact recovers over ≈ 10 s. Rule 5: `JUMP_APEX_M` = 0.5 m × `PROP_SCALE`, so
+  the jump clears the twice-life-size shoes (0.24 m) and sweep bar (≈ 0.61 m). The scene draws the
+  alley around the lane (`views/alley-view.ts`, `views/segment-window.ts`). Unit tests green;
+  shots at 0, 140, 250 and 295 m show the ball, the obstacles, the alley and the deck.
 
 ## Canonical files
 

@@ -1,9 +1,9 @@
 ---
 title: Ball — the bowling ball the autopilot rolls
 type: spec
-status: planned
+status: built
 depends_on: [storybook/catalog.md, tools/shot.md]
-canonical: [models/src/measures/ball.ts, models/src/ball/, models/src/procedural/, models/src/materials/scene-cache.ts, storybook/src/stories/ball.stories.tsx, storybook/src/stories/ball-house.stories.tsx]
+canonical: [models/src/measures/scale.ts, models/src/measures/ball.ts, models/src/ball/, models/src/procedural/, models/src/materials/scene-cache.ts, storybook/src/stories/ball.stories.tsx, storybook/src/stories/ball-house.stories.tsx]
 verified: 2026-10-27
 ---
 
@@ -70,6 +70,12 @@ immediately as a real bowling ball.
   reflections; the house ball is plain scuffed red with «16» beside the grip. Unit tests:
   diameter within ±2 mm on three axes for both variants, ≥ 3 separate recesses, lowest point at
   y = 0. Stories ready in 2.2 s and 1.6 s.
+- 2026-10-27 · round 3 · Twice life size ([conventions](conventions.md)): `measures/ball.ts` keeps
+  the regulation 0.218 m and 7.26 kg and exports them × `PROP_SCALE` (0.436 m) and × `PROP_SCALE`³
+  (58.08 kg); finger holes and the hole rim scale too. Unit tests unchanged and green (they compare
+  with the measure). `measures/scale.ts`, the factor every prop shares, is listed here, the first
+  prop in build order. Shots in the game at 140 m and 250 m: the ball reads twice as big against the
+  boards, the holes still readable.
 
 ## Canonical files
 

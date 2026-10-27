@@ -61,3 +61,7 @@ investigations goes here, never in the pages (prompt 3, step 3).
   cost more speed and aim, the speed loss reaches the pins, good and sloppy ignore more obstacles).
   Impacts criterion 2, models/pins criterion 2 and pins physics criterion 1 rewritten and re-locked
   by the agent on the human's explicit authorization in chat; the changed pages back to `planned`.
+- 2026-10-27 · models/*, game/run.md, game/camera.md, game/impacts.md, game/pins.md,
+  pilot/autopilot.md, audio/sounds.md, records/skills-20261027.md, review.md · twice-life-size
+  props, the alley, the 126 BPM music and the new impact cost built; impacts now push the aim to one
+  side per run (three campaigns recorded); every changed page back to `built`.

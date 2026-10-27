@@ -1,7 +1,7 @@
 ---
 title: Pins physics — the strike, and the score
 type: spec
-status: planned
+status: built
 depends_on: [game/impacts.md, models/pins.md]
 canonical: [game/src/config/pins.ts, game/src/config/physics.ts, game/src/domain/scoring/, game/src/domain/deck/, game/src/app/deck-port.ts, game/src/app/deck-step.ts, game/src/scene/physics/, game/src/scene/views/pins-view.ts, models/src/measures/lane.ts]
 verified: 2026-10-27
@@ -99,6 +99,13 @@ Havok decides how many pins fall.
 - 2026-10-27 · round 3 · Lane at 300 m: deck tests unchanged and green — pocket 9, off-pocket 2 —
   [deck tests, 300 m](../records/deck-tests-300m-20261027.md). In the browser the same pocket hit
   now strikes (the hand-over lands a fraction of a step later), which shows how sensitive one hit is.
+- 2026-10-27 · round 4 · Props twice life size: ball 58 kg, pins 12 kg and 0.76 m, the pocket
+  2.5 boards × `PROP_SCALE` off the head pin, the centre of mass at 38 % of the pin's height, the
+  deck, pit and wall grown with them. Criterion 1 rewritten on the human's authorisation (moved
+  0.2 m × `PROP_SCALE` → down); test green. Deck tests: pocket **10** down (was 9), 0.5 m to the
+  side 5, deterministic; slow motion neutral. A sweep of the hand-over offset is in the
+  [skills record](../records/skills-20261027.md): strikes from 0.3 m left to 0.1 m right of the
+  pocket, speed hardly matters.
 
 ## Canonical files
 

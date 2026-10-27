@@ -1,7 +1,7 @@
 ---
 title: Impacts — what an obstacle costs
 type: spec
-status: planned
+status: built
 depends_on: [game/run.md, models/obstacles/stray-pins.md, models/obstacles/returning-ball.md, models/obstacles/rental-shoes.md, models/obstacles/sweep-bar.md, models/obstacles/widening-gutter.md]
 canonical: [game/src/config/impacts.ts, game/src/domain/impacts/, game/src/domain/simulation.ts, game/src/scene/views/knock-away.ts, game/src/scene/views/obstacle-view.ts, game/src/scene/physics/]
 verified: 2026-10-27
@@ -28,9 +28,12 @@ pins, because it costs speed and aim.
    - speed is multiplied by `1 − IMPACT_SPEED_LOSS` (0.4), then recovers at the run's `ACCEL_MPS2`
      (0.5 m/s², [run](run.md)), slowly enough that an impact in the last ≈ 100 m still reaches the
      pins slower;
-   - the aim error grows by a seeded uniform value in ±`IMPACT_AIM_ERROR_M` (0.24 m: 0.12 m at
-     regulation size, the distance that moves a pocket hit to the Brooklyn side or the split zone,
-     × `PROP_SCALE`), applied to the ball's `x` when it reaches the pin deck;
+   - the aim error grows by a seeded value between `IMPACT_AIM_ERROR_MIN_M` and `IMPACT_AIM_ERROR_M`
+     (0.3–0.6 m: 0.15–0.3 m at regulation size × `PROP_SCALE`), always to the same side within a
+     run (the side drawn once from the track seed), so impacts add up instead of cancelling; it is
+     applied to the ball's `x` when it reaches the pin deck. At this scale a ball strikes from
+     0.3 m left to 0.1 m right of the pocket ([skills record](../records/skills-20261027.md)), so one
+     impact leaves a split or a few pins, two or three leave little or a gutter;
    - the impact count grows by one, and an impact event is emitted (for the scene and the audio).
 3. **Widening gutter:** a ball inside its lane and range counts one impact and is steered to the
    nearest free adjacent lane by a forced lane change.
@@ -80,6 +83,16 @@ pins, because it costs speed and aim.
   jumpable, but rule 1 only compared heights. Now `JUMPABLE_KINDS` (`config/impacts.ts`: rental
   shoes and sweep bar) decides: any other obstacle is hit at any height. New unit test; perfect
   still has 0 impacts on every track.
+- 2026-10-27 · round 4 · The human asked that the skills differ visibly and authorised rewriting
+  criterion 2. Speed loss 0.25 → 0.4, recovery at the run's 0.5 m/s². The aim error took three
+  campaigns ([skills record](../records/skills-20261027.md)): ± 0.24 m and then ± 0.5 m, of a random
+  side each time, changed little — sloppy still struck 10 runs in 15, because errors of opposite
+  sides cancel. A deck sweep showed why the size alone could not do it: at twice life size the ball
+  strikes anywhere from 0.3 m left to 0.1 m right of the pocket. Now each impact pushes 0.3–0.6 m
+  to the side drawn once per run (`aimSideOf`), so impacts add up: perfect 10 pins, good 7.3,
+  sloppy 2.5, blind 1.7 over 60 browser runs. Unit tests: criterion 2 as rewritten (12 → 7.2 m/s,
+  +0.5 m/s in one second, back to the target), the same side and bounds for every impact of a run,
+  criterion 3 unchanged. Left for the human: sloppy is close to blind in pins.
 
 ## Canonical files
 
