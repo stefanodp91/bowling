@@ -126,6 +126,11 @@ Traps found on the field go here, each with the symptom that reveals it.
   behaves as if every uniform were zero. `hardBindForSubMesh` is an «extra event»: set
   `registerForExtraEvents = true` before enabling the plugin, and mark the material's defines dirty
   if it was already compiled ([widening gutter](wiki/models/obstacles/widening-gutter.md)).
+- **WebGPU draws a black canvas.** Reactylon's `<Engine>` picks WebGPU when the browser has it; in
+  development the engine is mounted twice and the console fills with «TextureView … associated with
+  BabylonWebGPUDevice1, cannot be used with BabylonWebGPUDevice0» while the HUD keeps running.
+  Headless shots never see it (no WebGPU adapter). Every `<Engine>` has `forceWebGL`;
+  `check-webgl` enforces it.
 - **The audio engine decodes nothing before the first gesture.** Symptom: `cues.warm` resolves,
   no `.wav` request is made, and every `hold` logs «held voice … was never warmed». Warm after
   `unlock()` ([sounds](wiki/audio/sounds.md)).

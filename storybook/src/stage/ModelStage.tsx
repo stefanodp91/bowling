@@ -28,9 +28,10 @@ export function ModelStage<Options>({ factory, options, angle = 'default', frame
       mountStage(scene, { factory, options, angle, onReady: () => setReady(true), ...(frame === undefined ? {} : { frame }) }),
     [factory, options, angle, frame],
   );
+  // WebGL, never WebGPU: see AGENTS.md traps (the board-hole material plugin is GLSL only).
   return (
     <div className={styles.stage} data-ready={ready ? 'true' : 'false'}>
-      <Engine>
+      <Engine forceWebGL>
         <Scene onSceneReady={createStageCamera}>
           <ReactylonSceneBridge mount={mount} />
         </Scene>

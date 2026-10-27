@@ -84,6 +84,15 @@ and jumping when the autopilot says so.
   fog colour. Left for the [camera](camera.md) page: the ball reads small at 3 m with a 0.9 rad
   field of view, and the obstacles are small until close.
 
+- 2026-10-27 · round 2 · Reported by the human: after «Run again» the canvas was black while the
+  HUD ran (91 m, 1 impact). Reproduced in the app's browser on a real GPU — on any load, not only
+  after «Run again» — and never in headless shots. Cause: Reactylon's `<Engine>` chose WebGPU, and
+  React's double mount in development crossed two WebGPU devices («TextureView … associated with
+  BabylonWebGPUDevice1, cannot be used with BabylonWebGPUDevice0»), so every frame was rejected.
+  Fix: `<Engine forceWebGL>` here and in the catalogue's stage; the board-hole plugin is GLSL only
+  anyway. Prompt 5: new gate `check-webgl`, trap in AGENTS.md. After the fix the app's browser
+  renders lane-02 with the HUD (1 shot).
+
 ## Canonical files
 
 - `game/src/app/` is the composition layer (no Babylon, no React): `query.ts`, `load-track.ts`

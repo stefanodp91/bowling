@@ -43,6 +43,7 @@ A gate is that memory, executed on every commit.
 | `check-file-size` | no source file over 300 lines | single responsibility |
 | `check-audio` | the committed WAV files equal, byte for byte, what `scripts/audio/generate.mjs` produces (see [sounds](../audio/sounds.md)) | every sound has its source in the repository |
 | `check-notices` | `THIRD_PARTY_NOTICES.md` has a section for every production dependency of the game (see [release](../release/open-source.md)) | every shipped package is credited with its licence |
+| `check-webgl` | every Reactylon `<Engine>` in `game/src` and `storybook/src` has `forceWebGL` | paid on 2026-10-27: with WebGPU available the game drew a black canvas (two WebGPU devices crossed by React's double mount in development) while headless shots, which have no WebGPU, looked fine |
 | `check-tracks` | see [track format](../track/track-format.md): schema, rules, index, and equality with the baked seed | every track is solvable |
 | `check-pilot` (full) | see [headless runs](../pilot/headless-runs.md): `perfect` on every track in the browser — no impact, a result, no console error, active meshes within budget, impacts equal to `simulateRun` | the pilot really plays |
 

@@ -1,0 +1,14 @@
+import { launchBrowser, openPage } from './browser.mjs';
+const browser = await launchBrowser();
+const { page, errors } = await openPage(browser, { width: 1280, height: 720 });
+page.on('console', (m) => { if (m.type() === 'warning') errors.push('warn: ' + m.text().slice(0, 200)); });
+await page.goto('http://localhost:3000/?track=lane-01&at=294&skill=sloppy');
+await page.waitForFunction(() => window.__bowling?.snapshot().phase === 'result', undefined, { timeout: 60000 });
+await page.mouse.click(100, 400);
+await page.getByRole('button', { name: 'Run again' }).click();
+await page.waitForURL(/lane-02/);
+await page.waitForFunction(() => window.__bowling?.ready === true, undefined, { timeout: 30000 });
+await page.waitForTimeout(3000);
+await page.screenshot({ path: 'shots/after-run-again.png' });
+console.log(page.url(), JSON.stringify(await page.evaluate(() => window.__bowling.snapshot())).slice(0, 200), errors.filter((e) => !e.includes('GL Driver')).slice(0, 10));
+await browser.close();
