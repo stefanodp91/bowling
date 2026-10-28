@@ -87,3 +87,5 @@ investigations goes here, never in the pages (prompt 3, step 3).
   wall closes every room; the pause silences the music.
 - 2026-10-28 · models/lane.md · the scoreboard over the pins and the ball return at the start of
   the lanes; the approach segment before the foul line.
+- 2026-10-28 · game/run.md, AGENTS.md · a blank scene after the dev server re-bundled Babylon: the
+  missing camera is now an error, and the trap is recorded.

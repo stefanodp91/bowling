@@ -49,6 +49,11 @@ export interface MountOptions {
 
 /** Mounts a session into the Reactylon scene: lights, lane, ball, obstacles, camera, the frame loop. */
 export function mountGame(scene: Scene, session: Session, options: MountOptions): () => void {
+  const camera = scene.activeCamera;
+  // Without its camera the scene shows only the haze: say so instead of drawing nothing. It happens
+  // when the page mixes two copies of Babylon (a dev server that re-bundled its dependencies under
+  // an open page): reload the page.
+  if (!(camera instanceof FreeCamera)) throw new Error('the game camera is missing: createGameCamera runs when the scene is ready');
   // The far end of the room fades into its theme's haze (wiki/models/lane.md, rule 6).
   const scenery = sceneryOf(session.track.trackId);
   const fog = Color3.FromHexString(SCENERY_THEMES[scenery].haze);
@@ -72,7 +77,6 @@ export function mountGame(scene: Scene, session: Session, options: MountOptions)
   const deck = createDeck(scene, { ball: ball.root, pins: pins.pins, pinMesh: pins.pinMesh });
   const detach = session.attach({ physics, deck });
   const obstacles = createObstacleView(scene, session.track);
-  const camera = scene.activeCamera;
 
   let frames = 0;
   const render = (frameS: number): void => {
@@ -88,10 +92,8 @@ export function mountGame(scene: Scene, session: Session, options: MountOptions)
     const held = swing === null ? pose : { ...pose, y: pose.y + swing.liftM, z: pose.z - swing.backM };
     if (!session.world().deck.handedOff) ball.update(held, lerp(previous.rollRad, current.rollRad));
     const { position, target } = cameraPose({ ...pose, lastLaneChange: current.lastLaneChange });
-    if (camera instanceof FreeCamera) {
-      camera.position.set(...position);
-      camera.setTarget(new Vector3(...target));
-    }
+    camera.position.set(...position);
+    camera.setTarget(new Vector3(...target));
     lane.update(Math.min(position[2], pose.z));
     alley.update(Math.min(position[2], pose.z));
     obstacles.update(Math.min(position[2], pose.z), lerp(previous.runS, current.runS));

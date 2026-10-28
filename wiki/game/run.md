@@ -150,6 +150,13 @@ losing speed like a real ball, changing lane and jumping when the autopilot says
   A 3 s recording shows the ball held, swung up towards the camera, brought down to the line and
   rolled away. Criterion 2's explanation in parentheses still names the old 0.8 s throw; its
   24–27 s range holds — written in «To judge», not edited.
+- 2026-10-28 · round 8 · Reported by the human on Chrome: the HUD and countdown ran over a plain
+  purple screen. Not reproduced in a fresh Chrome on the same Mac's GPU; the dev server's log showed
+  it had re-bundled Babylon («new dependencies optimized: …dynamicTexture … reloading») under the
+  open page, which then mixed two copies of Babylon, so the mount's `camera instanceof FreeCamera`
+  was false and the camera was silently never placed — only the haze showed. The mount now throws
+  «the game camera is missing» at once instead of drawing nothing; the trap is in AGENTS.md. The dev
+  server was restarted with `--force`; a headed Chrome on Metal renders lane-01, 0 console errors.
 
 ## Canonical files
 
