@@ -1,10 +1,10 @@
 /** Audio tunables (wiki/audio/sounds.md, rule 5). Volumes are 0…1 on the engine's cue bus. */
-import { MIN_ROLL_SPEED_MPS, RELEASE_SPEED_MPS } from './run';
+import { PIN_SPEED_MPS, RELEASE_SPEED_MPS } from './run';
 
 /** Where the generated sounds are served (game/public/audio, built by npm run audio:build). */
 export const AUDIO_BASE = 'audio';
 /** The rolling loops: the slow band fades out and the fast band in between these speeds. */
-export const ROLL_SLOW_AT_MPS = MIN_ROLL_SPEED_MPS;
+export const ROLL_SLOW_AT_MPS = PIN_SPEED_MPS;
 export const ROLL_FAST_AT_MPS = RELEASE_SPEED_MPS;
 /** Loudest the rolling rumble gets, and how quickly a held voice follows changes, seconds. */
 export const ROLL_MAX_VOLUME = 0.7;

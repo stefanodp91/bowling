@@ -3,17 +3,17 @@ import { LANE_INDICES, LANE_LENGTH_M, TRAVEL_LANES } from '@models/measures/lane
 import { TRACK_SCHEMA_VERSION } from '../../config/track';
 
 /** The five obstacle kinds, a closed set (wiki/track/track-format.md, rule 3). */
-export const OBSTACLE_KINDS = ['stray-pins', 'rental-shoes', 'returning-ball', 'sweep-bar', 'widening-gutter'] as const;
+export const OBSTACLE_KINDS = ['wet-floor-sign', 'rental-shoes', 'returning-ball', 'soda-cans', 'widening-gutter'] as const;
 export type ObstacleKind = (typeof OBSTACLE_KINDS)[number];
 
 const lane = z.union(LANE_INDICES.map((l) => z.literal(l)));
 const along = z.number().nonnegative();
 
 export const obstacleSchema = z.discriminatedUnion('kind', [
-  z.object({ kind: z.literal('stray-pins'), lane, z: along }).strict(),
+  z.object({ kind: z.literal('wet-floor-sign'), lane, z: along }).strict(),
   z.object({ kind: z.literal('rental-shoes'), lane, z: along }).strict(),
   z.object({ kind: z.literal('returning-ball'), lane, z: along, speedMps: z.number().positive() }).strict(),
-  z.object({ kind: z.literal('sweep-bar'), z: along }).strict(),
+  z.object({ kind: z.literal('soda-cans'), z: along }).strict(),
   z.object({ kind: z.literal('widening-gutter'), lane, z: along, lengthM: z.number().positive() }).strict(),
 ]);
 

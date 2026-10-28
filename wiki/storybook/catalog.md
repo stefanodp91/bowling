@@ -4,7 +4,7 @@ type: spec
 status: built
 depends_on: [workspace/monorepo.md]
 canonical: [storybook/src/stage/, storybook/src/stories/, storybook/src/no-geometry.test.ts, storybook/.storybook/main.ts, models/src/stage/stage-floor.ts, models/src/environment/]
-verified: 2026-10-26
+verified: 2026-10-28
 ---
 
 # Storybook catalogue
@@ -25,7 +25,7 @@ the visual source of truth: the game must show a model exactly as its story does
    orbit camera with a fixed default pose framing the model's bounding box) renders any model
    factory from `@models`. Stories differ only in which factory they pass and its parameters.
 3. Story ids are stable: `models-<name>` (for example `models-ball`, `models-pins`,
-   `models-obstacle-sweep-bar`), plus `scenes-pin-deck` (lane end + ten pins).
+   `models-obstacle-soda-cans`), plus `scenes-pin-deck` (lane end + ten pins).
 4. A story signals readiness for screenshots by setting `data-ready="true"` on its root element after
    the scene has rendered two frames.
 5. A story uses the same factory call as the game: no catalogue-only geometry.
@@ -66,6 +66,8 @@ the visual source of truth: the game must show a model exactly as its story does
   Fix: `<Engine forceWebGL>` here and in the catalogue's stage; the board-hole plugin is GLSL only
   anyway. Prompt 5: new gate `check-webgl`, trap in AGENTS.md. After the fix the app's browser
   renders lane-02 with the HUD (1 shot).
+- 2026-10-28 · round 3 · Stories `models-obstacle-wet-floor-sign` and `models-obstacle-soda-cans`
+  replace the stray pins and the sweep bar; both reach ready (2 shots each).
 
 ## Canonical files
 

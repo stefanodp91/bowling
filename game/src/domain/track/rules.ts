@@ -8,7 +8,7 @@ import {
   MIN_REACTION_S,
   PASSABLE_WINDOW_M,
   START_CLEAR_M,
-  SWEEP_BAR_CLEAR_M,
+  SODA_CANS_CLEAR_M,
 } from '../../config/track';
 import { extentOf, type Extent } from './extent';
 import type { Obstacle, Track } from './schema';
@@ -16,7 +16,7 @@ import type { Obstacle, Track } from './schema';
 /** One broken rule: which obstacle (index in the file) and what is wrong. */
 export interface Violation {
   readonly index: number;
-  readonly rule: 'clear-zone' | 'spacing' | 'passable' | 'sweep-clearance' | 'time-to-act' | 'order';
+  readonly rule: 'clear-zone' | 'spacing' | 'passable' | 'cans-clearance' | 'time-to-act' | 'order';
   readonly message: string;
 }
 
@@ -80,14 +80,14 @@ function passable(placed: readonly Placed[]): Violation[] {
   });
 }
 
-function sweepClearance(placed: readonly Placed[]): Violation[] {
+function cansClearance(placed: readonly Placed[]): Violation[] {
   return placed
-    .filter((p) => p.obstacle.kind === 'sweep-bar')
-    .flatMap((sweep) =>
+    .filter((p) => p.obstacle.kind === 'soda-cans')
+    .flatMap((cans) =>
       placed
-        .filter((other) => other !== sweep)
-        .filter((other) => other.extent.endZ > sweep.extent.startZ - SWEEP_BAR_CLEAR_M + EPSILON_M && other.extent.startZ < sweep.extent.endZ + SWEEP_BAR_CLEAR_M - EPSILON_M)
-        .map((other) => ({ index: sweep.index, rule: 'sweep-clearance' as const, message: `obstacle ${other.index} is within ${SWEEP_BAR_CLEAR_M} m of the sweep bar` })),
+        .filter((other) => other !== cans)
+        .filter((other) => other.extent.endZ > cans.extent.startZ - SODA_CANS_CLEAR_M + EPSILON_M && other.extent.startZ < cans.extent.endZ + SODA_CANS_CLEAR_M - EPSILON_M)
+        .map((other) => ({ index: cans.index, rule: 'cans-clearance' as const, message: `obstacle ${other.index} is within ${SODA_CANS_CLEAR_M} m of the soda cans` })),
     );
 }
 
@@ -98,5 +98,5 @@ export function trackViolations(track: Track): Violation[] {
   const order = placed.some((p, i) => ordered[i] !== p)
     ? [{ index: 0, rule: 'order' as const, message: 'obstacles are not listed in the order the ball meets them' }]
     : [];
-  return [...order, ...clearZones(ordered), ...spacing(ordered), ...passable(ordered), ...sweepClearance(ordered)];
+  return [...order, ...clearZones(ordered), ...spacing(ordered), ...passable(ordered), ...cansClearance(ordered)];
 }

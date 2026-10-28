@@ -34,16 +34,16 @@ scene draws, the run collides with and the autopilot reads. Same file, same run.
      "lengthM": 200,
      "lanes": 3,
      "obstacles": [
-       { "kind": "stray-pins",      "lane": 0, "z": 42 },
+       { "kind": "wet-floor-sign",  "lane": 0, "z": 42 },
        { "kind": "rental-shoes",    "lane": 1, "z": 61 },
        { "kind": "returning-ball",  "lane": 2, "z": 80, "speedMps": 3 },
-       { "kind": "sweep-bar",                  "z": 104 },
+       { "kind": "soda-cans",                  "z": 104 },
        { "kind": "widening-gutter", "lane": 2, "z": 130, "lengthM": 18 }
      ]
    }
    ```
 
-   `kind` is a closed union of the five obstacle kinds. `sweep-bar` has no `lane` (it spans all
+   `kind` is a closed union of the five obstacle kinds. `soda-cans` has no `lane` (it spans all
    three). `returning-ball` requires `speedMps`; `widening-gutter` requires `lengthM`. Lane width,
    ball and pin measures are not in the file: they are constants in `game/src/config/` and
    `models/`, because they never change between tracks.
@@ -63,7 +63,7 @@ scene draws, the run collides with and the autopilot reads. Same file, same run.
    - spacing and clear zones of rule 5;
    - at every `z`, at least one lane is passable: lane obstacles never block all three lanes within
      `PASSABLE_WINDOW_M` (8 m), and a widening gutter's lane counts as blocked over its whole length;
-   - a `sweep-bar` has no other obstacle within `SWEEP_BAR_CLEAR_M` (8 m) before or after it, so a
+   - a `soda-cans` row has no other obstacle within `SODA_CANS_CLEAR_M` (8 m) before or after it, so a
      jump has room to take off and land;
    - there is time to act at the highest speed: the gap to the previous obstacle, divided by
      `RELEASE_SPEED_MPS`, is at least the longest manoeuvre time (lane change or jump) plus
@@ -77,7 +77,7 @@ scene draws, the run collides with and the autopilot reads. Same file, same run.
 1. [auto] `npm run bake:tracks` twice in a row leaves `git status` clean on `game/public/tracks/`.
 2. [auto] `check-tracks` passes on the five committed tracks.
 3. [auto] `check-tracks --selftest` rejects: an obstacle in the approach zone; three lane
-   obstacles at the same `z`, one per lane; a sweep bar 3 m after a stray-pins group; a file with an
+   obstacles at the same `z`, one per lane; soda cans 3 m after a wet floor sign; a file with an
    unknown `kind`.
 4. [auto] Unit tests cover the schema (valid, missing field, wrong kind) and the generator (seeded
    determinism, clear zones, spacing trend).
@@ -124,6 +124,10 @@ scene draws, the run collides with and the autopilot reads. Same file, same run.
   4, 6, 6 obstacles. The time-to-act rule now divides by `RELEASE_SPEED_MPS` (10 m/s), the fastest
   a ball goes, instead of the old 12 m/s; returning balls are placed with the new clean-run clock,
   so the tracks were baked again after the speed changed. `check-tracks` and its selftest pass.
+- 2026-10-28 · round 5 · Kinds renamed: `wet-floor-sign` replaces `stray-pins`, `soda-cans`
+  replaces `sweep-bar` (a human's decision); `SODA_CANS_CLEAR_M` keeps the 8 m to take off and land.
+  Criterion 3 rewritten and re-locked on the human's authorization; the selftest's case is
+  `cans-after-sign`. Re-baked: 7, 7, 4, 6, 6 obstacles, one row of cans (lane-02 at 97 m).
 
 ## Canonical files
 

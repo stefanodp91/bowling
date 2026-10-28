@@ -5,6 +5,15 @@ this file keeps what was done and when. Every page was built and closed inside o
 handoff was opened ([`handoffs/`](handoffs/README.md)); each entry points to the page whose
 «Rounds» section holds the details.
 
+## Fourth round of human requests — 2026-10-28
+
+- **A run as long for the dummy as for the perfect player** ([impacts](wiki/game/impacts.md)) — an
+  impact still costs 20 % of the speed, then the ball recovers at 1.5 m/s² to the clean curve.
+- **The bowler's throw** ([run](wiki/game/run.md), rule 3) — during the countdown an arm swings the
+  ball back and lays it on the foul line at 10 m/s.
+- **New obstacles** — a [wet floor sign](wiki/models/obstacles/wet-floor-sign.md) replaces the
+  stray pins, a row of [soda cans](wiki/models/obstacles/soda-cans.md) replaces the sweep bar.
+
 ## Third round of human requests — 2026-10-28
 
 The human found the run forced and long, and wanted a perfect game against a beginner:
@@ -60,8 +69,8 @@ time, a commit per finished step.
 - **[Track format](wiki/track/track-format.md)** — five seeded tracks, zod schema, `check-tracks`.
 - **Models** — [ball](wiki/models/ball.md), [lane](wiki/models/lane.md),
   [rental shoes](wiki/models/obstacles/rental-shoes.md), [returning ball](wiki/models/obstacles/returning-ball.md),
-  [sweep bar](wiki/models/obstacles/sweep-bar.md), [widening gutter](wiki/models/obstacles/widening-gutter.md),
-  [pins](wiki/models/pins.md), [stray pins](wiki/models/obstacles/stray-pins.md): all built from
+  sweep bar (since replaced by the [soda cans](wiki/models/obstacles/soda-cans.md)), [widening gutter](wiki/models/obstacles/widening-gutter.md),
+  [pins](wiki/models/pins.md), stray pins (since replaced by the [wet floor sign](wiki/models/obstacles/wet-floor-sign.md)): all built from
   code, each judged from shots of its Storybook story.
 - **Tooling** — [workspace](wiki/workspace/monorepo.md), [gates](wiki/method/gates.md),
   [wiki tooling](wiki/method/wiki-tooling.md), [stats](wiki/method/stats.md),

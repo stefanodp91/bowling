@@ -6,7 +6,7 @@
   "lanes": 3,
   "obstacles": [
     {
-      "kind": "stray-pins",
+      "kind": "wet-floor-sign",
       "lane": 2,
       "z": 30.7
     },

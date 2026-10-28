@@ -4,14 +4,14 @@ type: spec
 status: built
 depends_on: [storybook/catalog.md, tools/shot.md]
 canonical: [models/src/measures/pins.ts, models/src/pins/, storybook/src/stories/pin.stories.tsx, storybook/src/scenes/pin-deck-scene.ts]
-verified: 2026-10-27
+verified: 2026-10-28
 ---
 
 # Pins
 
 > Boundary: the pin model, its measures and the ten-pin layout. NOT covered: their physics and the
-> knocked-down rule ([pins physics](../game/pins.md)); stray pins as an obstacle reuse this model
-> ([stray pins](obstacles/stray-pins.md)).
+> knocked-down rule ([pins physics](../game/pins.md)). Pins are no longer an obstacle on the lane:
+> the [wet floor sign](obstacles/wet-floor-sign.md) replaced them.
 
 ## Purpose
 
@@ -77,6 +77,6 @@ they tumble, so it must be the regulation profile.
 - `PIN_PROFILE` (height, radius pairs, metres) is exported for the physics collider of
   [pins physics](../game/pins.md); `pinRadiusAt(h)` is the smoothed profile the mesh uses.
 - UVs: v = height / 15 in; u from the lathe column (`assignUvs`), not from an angle, so there is no
-  seam where u would jump from 1 to 0 (found on the [stray pins](obstacles/stray-pins.md)).
+  seam where u would jump from 1 to 0 (found on the stray pins, an obstacle since replaced by the [wet floor sign](obstacles/wet-floor-sign.md)).
 - `createPin` returns a `PinHandle` whose `instantiate` places another pin sharing geometry and
   material; the deck scene hides the source pin and places ten instances.

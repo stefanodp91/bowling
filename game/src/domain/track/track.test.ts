@@ -16,10 +16,10 @@ describe('track schema', () => {
     const result = parseTrack({
       ...base,
       obstacles: [
-        { kind: 'stray-pins', lane: 0, z: 42 },
+        { kind: 'wet-floor-sign', lane: 0, z: 42 },
         { kind: 'rental-shoes', lane: 1, z: 61 },
         { kind: 'returning-ball', lane: 2, z: 80, speedMps: 3 },
-        { kind: 'sweep-bar', z: 104 },
+        { kind: 'soda-cans', z: 104 },
         { kind: 'widening-gutter', lane: 2, z: 130, lengthM: 18 },
       ],
     });
@@ -75,17 +75,17 @@ describe('track rules', () => {
   const at = (obstacles: Track['obstacles']): Track => ({ ...base, obstacles });
 
   it('rejects an obstacle in the approach zone', () => {
-    expect(trackViolations(at([{ kind: 'stray-pins', lane: 0, z: APPROACH_START_Z_M + 10 }])).map((v) => v.rule)).toContain('clear-zone');
+    expect(trackViolations(at([{ kind: 'wet-floor-sign', lane: 0, z: APPROACH_START_Z_M + 10 }])).map((v) => v.rule)).toContain('clear-zone');
   });
 
   it('rejects three lane obstacles at the same z, one per lane', () => {
-    const rules = trackViolations(at(LANE_INDICES.map((lane) => ({ kind: 'stray-pins' as const, lane, z: 100 })))).map((v) => v.rule);
+    const rules = trackViolations(at(LANE_INDICES.map((lane) => ({ kind: 'wet-floor-sign' as const, lane, z: 100 })))).map((v) => v.rule);
     expect(rules).toContain('passable');
   });
 
-  it('rejects a sweep bar 3 m after a stray-pins group', () => {
-    const rules = trackViolations(at([{ kind: 'stray-pins', lane: 0, z: 100 }, { kind: 'sweep-bar', z: 103 }])).map((v) => v.rule);
-    expect(rules).toContain('sweep-clearance');
+  it('rejects soda cans 3 m after a wet floor sign', () => {
+    const rules = trackViolations(at([{ kind: 'wet-floor-sign', lane: 0, z: 100 }, { kind: 'soda-cans', z: 103 }])).map((v) => v.rule);
+    expect(rules).toContain('cans-clearance');
   });
 
   it('places a returning ball where a clean run meets it', () => {

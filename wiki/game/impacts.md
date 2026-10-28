@@ -2,7 +2,7 @@
 title: Impacts — what an obstacle costs
 type: spec
 status: built
-depends_on: [game/run.md, models/obstacles/stray-pins.md, models/obstacles/returning-ball.md, models/obstacles/rental-shoes.md, models/obstacles/sweep-bar.md, models/obstacles/widening-gutter.md]
+depends_on: [game/run.md, models/obstacles/wet-floor-sign.md, models/obstacles/returning-ball.md, models/obstacles/rental-shoes.md, models/obstacles/soda-cans.md, models/obstacles/widening-gutter.md]
 canonical: [game/src/config/impacts.ts, game/src/domain/impacts/, game/src/domain/simulation.ts, game/src/scene/views/knock-away.ts, game/src/scene/views/obstacle-view.ts, game/src/scene/physics/]
 verified: 2026-10-28
 ---
@@ -25,9 +25,10 @@ pins, because it costs speed and aim.
    that moment (`z(t) = z0 − speedMps · t`, from when the run started). An airborne ball clears an
    obstacle if its lowest point is above the obstacle's height.
 2. **Each obstacle can be hit once.** On impact:
-   - speed is multiplied by `1 − IMPACT_SPEED_LOSS` (0.2), never below the run's
-     `MIN_ROLL_SPEED_MPS`, and **never recovered**: afterwards only the lane's drag acts on it
-     ([run](run.md), rule 3 — a human's decision of 2026-10-28; it recovered before);
+   - speed is multiplied by `1 − IMPACT_SPEED_LOSS` (0.2) — a dip the eye catches — then the ball
+     recovers to the clean curve at the run's `RECOVERY_MPS2` (1.5 m/s², [run](run.md) rule 3), in
+     about 1.3 s. A beginner's run therefore lasts about as long as a perfect one: the skills differ
+     in what they hit and how the pins fall, not in time (a human's decision of 2026-10-28);
    - the aim error grows by a seeded value between `IMPACT_AIM_ERROR_MIN_M` and `IMPACT_AIM_ERROR_M`
      (0.02–0.04 m: 1–2 cm at regulation size × `PROP_SCALE`), always to the same side within a
      run (the side drawn once from the track seed), so impacts add up instead of cancelling; it is
@@ -44,10 +45,10 @@ pins, because it costs speed and aim.
 ## Acceptance criteria
 
 1. [auto] Unit tests, one per obstacle kind: a ball in the obstacle's lane at its `z` registers one
-   impact; a ball in another lane registers none; for rental shoes and sweep bar, a ball at jump
+   impact; a ball in another lane registers none; for rental shoes and soda cans, a ball at jump
    apex registers none; a returning ball is hit where it is at that time, not where it started.
-2. [auto] Unit test: after an impact at 8 m/s the speed is 6.4 m/s and is never recovered: one
-   second later it is what the lane's drag alone leaves of 6.4 m/s over the metres rolled.
+2. [auto] Unit test: after an impact at 8 m/s the speed is 6.4 m/s, and within 1.5 s it is back
+   on the target speed.
 3. [auto] Unit test: the same track, seed and command sequence produce the same aim error.
 4. [human] An impact is visible and readable: the obstacle flies, the ball visibly slows.
 
@@ -99,6 +100,11 @@ pins, because it costs speed and aim.
   shrinks to 0.02–0.04 m: the beginner's miss at the pins is now the dummy's own
   ([autopilot](../pilot/autopilot.md), rule 5). Criterion 2 rewritten (8 → 6.4 m/s, then the
   lane's drag only) and re-locked on the human's authorization; its test and criteria 1 and 3 green.
+- 2026-10-28 · round 6 · Rule 2: the 20 % loss is recovered at the run's 1.5 m/s² (the human asked
+  that a beginner's run last as long as a perfect one); criterion 2 rewritten (back on the target
+  within 1.5 s) and criterion 1 renamed for the new obstacles — the wet floor sign and the soda
+  cans replace the stray pins and the sweep bar — both re-locked on the human's authorization.
+  `simulateRun`: dummy runs last 25.9–26.2 s against perfect's 25.8 s.
 
 ## Canonical files
 

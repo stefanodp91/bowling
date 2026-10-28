@@ -6,7 +6,7 @@ import { cuesFor, freshBudget, rollMix } from './cues';
 describe('event → cue mapping', () => {
   it('a scripted run with one impact and eight pins down: one thud, clacks, no strike', () => {
     const events: GameEvent[] = [
-      { kind: 'impact', obstacle: 'stray-pins', speedMps: 9, atS: 12 },
+      { kind: 'impact', obstacle: 'wet-floor-sign', speedMps: 9, atS: 12 },
       ...Array.from({ length: 6 }, (_, i): GameEvent => ({ kind: 'pin-contact', speedMps: 3, atS: 56 + i * 0.05 })),
       { kind: 'pin-contact', speedMps: 0.1, atS: 56.4 },
       { kind: 'result', score: 8, atS: 59 },

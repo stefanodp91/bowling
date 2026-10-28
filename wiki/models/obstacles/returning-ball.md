@@ -4,7 +4,7 @@ type: spec
 status: built
 depends_on: [models/ball.md]
 canonical: [models/src/obstacles/returning-ball/, models/src/measures/obstacles.ts, storybook/src/stories/obstacle-returning-ball.stories.tsx]
-verified: 2026-10-26
+verified: 2026-10-28
 ---
 
 # Returning ball
@@ -23,7 +23,7 @@ only where it is now.
    lane at the track's `speedMps`; the run moves it, the model only spins it consistently with its
    speed.
 2. Footprint: the ball's diameter, in its lane, at its current `z`.
-3. Overcome by: changing lane. Not jumpable (same reason as stray pins).
+3. Overcome by: changing lane. Not jumpable (same reason as the [wet floor sign](wet-floor-sign.md): taller than the jump apex).
 
 ## Acceptance criteria
 

@@ -1,12 +1,12 @@
 # Bowling
 
-A bowling ball is thrown by itself down a 200 m lane full of obstacles and ends against ten pins.
-Nobody plays: an autopilot reads the lane and drives the ball — it changes lane, jumps the sweep
-bar, dodges a house ball rolling back towards it — and you can only choose who it plays like: a
-perfect player, who dodges everything and strikes, or a dummy, a beginner who stares at obstacles
-until it hits them, slows down and leaves pins standing. The ball leaves the hand fast and loses
-speed as it rolls; at the end the pins fall in slow motion and the score appears. A clean run lasts
-about twenty-five seconds, in a retro alley built from code, over a cheerful
+A bowler's arm swings a ball onto a 200 m lane full of obstacles, and it ends against ten pins.
+Nobody plays: an autopilot reads the lane and drives the ball — it steers round a wet floor sign,
+jumps a row of spilled drink cans, dodges a house ball rolling back towards it — and you can only
+choose who it plays like: a perfect player, who dodges everything and strikes, or a dummy, a
+beginner who stares at obstacles until it hits them and leaves pins standing. The ball leaves the
+hand fast and loses speed as it rolls; at the end the pins fall in slow motion and the score
+appears. A run lasts about twenty-six seconds, in a retro alley built from code, over a cheerful
 groove generated, like every sound here, from numbers. The ball, the pins and the obstacles are
 twice life size, so they read from the back of a room.
 

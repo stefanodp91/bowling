@@ -8,11 +8,11 @@
     {
       "kind": "returning-ball",
       "lane": 1,
-      "z": 40.84,
+      "z": 40.13,
       "speedMps": 3.09
     },
     {
-      "kind": "stray-pins",
+      "kind": "wet-floor-sign",
       "lane": 0,
       "z": 56.1
     },
@@ -29,14 +29,14 @@
       "lengthM": 12.68
     },
     {
-      "kind": "stray-pins",
+      "kind": "wet-floor-sign",
       "lane": 1,
       "z": 137.87
     },
     {
       "kind": "returning-ball",
       "lane": 0,
-      "z": 216.5,
+      "z": 216.12,
       "speedMps": 3.27
     }
   ]

@@ -2,14 +2,14 @@ import type { Scene } from '@babylonjs/core/scene';
 import {
   createRentalShoes,
   createReturningBall,
-  createStrayPins,
-  createSweepBar,
+  createWetFloorSign,
+  createSodaCans,
   createWideningGutter,
   laneCentreX,
   type ModelHandle,
 } from '@models';
 import { FOG_END_M } from '../../config/camera';
-import { OBSTACLES_BEHIND_M, SWEEP_SWING_PERIOD_S } from '../../config/scene';
+import { OBSTACLES_BEHIND_M } from '../../config/scene';
 import { obstacleZAt, placedBox } from '../../domain/impacts/footprints';
 import { extentOf } from '../../domain/track/extent';
 import type { Obstacle, Track } from '../../domain/track/schema';
@@ -18,14 +18,14 @@ import { knockAway, type Knocked } from './knock-away';
 /** The model of one obstacle, placed where the track says (the factory call the catalogue uses). */
 function createObstacleModel(scene: Scene, obstacle: Obstacle, trackSeed: number, index: number): ModelHandle {
   switch (obstacle.kind) {
-    case 'stray-pins':
-      return createStrayPins(scene, { seed: trackSeed + index });
+    case 'wet-floor-sign':
+      return createWetFloorSign(scene, {});
     case 'rental-shoes':
       return createRentalShoes(scene, {});
     case 'returning-ball':
       return createReturningBall(scene, { speedMps: obstacle.speedMps });
-    case 'sweep-bar':
-      return createSweepBar(scene, { swingPeriodS: SWEEP_SWING_PERIOD_S });
+    case 'soda-cans':
+      return createSodaCans(scene, { seed: trackSeed + index });
     case 'widening-gutter':
       return createWideningGutter(scene, { lengthM: obstacle.lengthM, lane: obstacle.lane });
   }
@@ -65,7 +65,7 @@ export function createObstacleView(scene: Scene, track: Track): ObstacleView {
         return;
       }
       if (model === undefined) return;
-      if (obstacle.kind !== 'sweep-bar' && obstacle.kind !== 'widening-gutter') model.root.position.x = laneCentreX(obstacle.lane);
+      if (obstacle.kind !== 'soda-cans' && obstacle.kind !== 'widening-gutter') model.root.position.x = laneCentreX(obstacle.lane);
       model.root.position.z = z;
       model.animate?.(runS);
     });

@@ -1,6 +1,6 @@
 import { LANE_LENGTH_M, laneCentreX } from '@models/measures/lane';
 import { describe, expect, it } from 'vitest';
-import { DECK_HANDOFF_Z, JUMP_AIRTIME_S, LANE_CHANGE_S, LAUNCH_S, MIN_ROLL_SPEED_MPS, PIN_SPEED_MPS, RELEASE_SPEED_MPS, SIM_STEP_S } from '../../config/run';
+import { DECK_HANDOFF_Z, JUMP_AIRTIME_S, LANE_CHANGE_S, PIN_SPEED_MPS, RECOVERY_MPS2, RELEASE_SPEED_MPS, SIM_STEP_S } from '../../config/run';
 import { cleanRunTimeTo, targetSpeed } from './speed';
 import type { Command, RunState } from './state';
 import { initialRunState, runStateAt, step } from './step';
@@ -27,21 +27,21 @@ describe('run step', () => {
     for (let z = 0; z < LANE_LENGTH_M; z += 0.5) expect(targetSpeed(z + 0.5)).toBeLessThanOrEqual(targetSpeed(z));
   });
 
-  it('throws the ball: from rest to the release speed in LAUNCH_S, then slows to the pin speed', () => {
+  it('releases the ball at the release speed when the swing ends, then slows to the pin speed', () => {
     const states = run(initialRunState(), 'stay', stepsFor(60)).filter((s) => s.phase === 'rolling');
-    const thrown = states.find((s) => s.runS >= LAUNCH_S);
-    expect(states[0]?.speedMps).toBeLessThan(RELEASE_SPEED_MPS / 10);
-    expect(thrown?.speedMps).toBeCloseTo(RELEASE_SPEED_MPS, 1);
-    const speeds = states.filter((s) => s.runS >= LAUNCH_S).map((s) => s.speedMps);
+    expect(states[0]?.speedMps).toBeCloseTo(RELEASE_SPEED_MPS, 1);
+    const speeds = states.map((s) => s.speedMps);
     expect(speeds.every((v, i) => i === 0 || v <= (speeds[i - 1] ?? v))).toBe(true);
     expect(states[states.length - 1]?.speedMps).toBeCloseTo(PIN_SPEED_MPS, 1);
   });
 
-  it('never lets the drag of the lane take a slowed ball below MIN_ROLL_SPEED_MPS', () => {
-    const slowed = { ...runStateAt(60), speedMps: MIN_ROLL_SPEED_MPS + 0.1 };
-    const states = run(slowed, 'stay', stepsFor(60));
-    expect(Math.min(...states.map((s) => s.speedMps))).toBeCloseTo(MIN_ROLL_SPEED_MPS, 9);
-    expect(states[states.length - 1]?.phase).toBe('deck');
+  it('brings a slowed ball back to the target at RECOVERY_MPS2, never past it', () => {
+    const slowed = { ...runStateAt(60), speedMps: targetSpeed(60) - 1.5 };
+    const states = run(slowed, 'stay', stepsFor(2));
+    const afterHalf = states[stepsFor(0.5)];
+    expect((afterHalf?.speedMps ?? 0) - slowed.speedMps).toBeCloseTo(RECOVERY_MPS2 * 0.5, 1);
+    const last = states[states.length - 1];
+    expect(last?.speedMps).toBeCloseTo(targetSpeed(last?.z ?? 0), 6);
   });
 
   it('starts a run at z where a clean run would be: its clock and its speed', () => {

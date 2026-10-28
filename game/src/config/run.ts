@@ -6,25 +6,24 @@ import { BALL_RADIUS_M } from '@models/measures/ball';
 import { LANE_LENGTH_M } from '@models/measures/lane';
 import { PROP_SCALE } from '@models/measures/scale';
 
-/** The countdown before rolling starts by itself (rule 1). */
+/** The countdown before rolling starts by itself, while the arm swings the ball (rule 1). */
 export const READY_S = 1.5;
 /**
  * The throw (rule 3): the ball leaves the hand at 10 m/s, 36 km/h — the «slow» profile a human
  * chose on 2026-10-28, near a real bowler's 7.6–8.5 m/s release (see the page's references).
  */
 export const RELEASE_SPEED_MPS = 10;
-/** The arm swing: from rest to the release speed in 0.8 s, eased out (rule 3; design). */
-export const LAUNCH_S = 0.8;
 /**
  * A clean ball reaches the pin deck at 6 m/s, 22 km/h (rule 3, the human's «slow» profile): the
  * lane's drag takes 4 m/s over the run, as a real ball loses a few mph before the pins.
  */
 export const PIN_SPEED_MPS = 6;
 /**
- * The lane's drag stops slowing a ball below 3 m/s, so a ball slowed by impacts still reaches the
- * pins instead of stopping on the lane (rule 3; design).
+ * A ball slowed by an impact regains speed at 1.5 m/s² until it is back on the clean curve (rule 3):
+ * a 20 % dip is made up in about 1.3 s, so a beginner's run lasts about as long as a perfect one —
+ * a human's decision of 2026-10-28.
  */
-export const MIN_ROLL_SPEED_MPS = 3;
+export const RECOVERY_MPS2 = 1.5;
 /** A lane change to the adjacent travel lane takes 0.25 s, eased (rule 4). */
 export const LANE_CHANGE_S = 0.25;
 /** A jump lasts 0.6 s (rule 5)… */

@@ -14,6 +14,12 @@ with the date.
 
 ## Where to resume
 
+- 2026-10-28, later — The human's fourth round: impacts dip and recover, so a dummy run lasts as
+  long as a perfect one; the throw is an arm swing during the countdown ([run](game/run.md) rule
+  3); the wet floor sign and the soda cans replace the stray pins and the sweep bar
+  ([wet floor sign](models/obstacles/wet-floor-sign.md), [soda cans](models/obstacles/soda-cans.md)).
+  Criteria rewritten and re-locked on the human's authorization. To look at: the swing and the two
+  new obstacles from the back of a room.
 - 2026-10-28 — The human's third round is built: a 200 m lane ([lane](models/lane.md)), a run
   that is a throw then a drag ([run](game/run.md) rule 3), impacts that cost speed for good
   ([impacts](game/impacts.md)), and two skills, `perfect` and `dummy`
@@ -52,6 +58,14 @@ with the date.
 Each entry: date · page · what the agent built or could not build · why it needs a human · what
 the agent recommends.
 
+- 2026-10-28 · [run](game/run.md) criterion 2 · The criterion's explanation in parentheses
+  derives ≈ 26 s from «the 0.8 s throw covers 5.3 m»; the throw is now the arm swing during the
+  countdown and rolling starts at 10 m/s, so the expected value is `(10 / 6 − 1) / (k · 10)` with
+  `k = ln(10 / 6) / 198`, ≈ 25.8 s (measured 25.8 s). The 24–27 s range still holds, so nothing
+  fails; only a human edits the criterion. Recommend replacing the parenthesis with the new
+  derivation. Also proposed, for the swing (rule 3): «[auto] a unit test: the swing lays the ball
+  on the foul line at the release speed when `ready` ends; [human] the entrance reads as a bowler's
+  throw».
 - 2026-10-27 · [pins physics](game/pins.md) rule 3, [impacts](game/impacts.md) · The rule says
   physics uses «the graphic engine's Havok adapter». The published graphic engine 0.2.3 exports no
   such adapter: its `adapters/havok` module is empty (`dist/adapters/havok/index.d.ts` is

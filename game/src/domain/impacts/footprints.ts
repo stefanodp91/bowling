@@ -2,8 +2,8 @@ import { laneCentreX } from '@models/measures/lane';
 import {
   RENTAL_SHOES_FOOTPRINT,
   RETURNING_BALL_FOOTPRINT,
-  STRAY_PINS_FOOTPRINT,
-  SWEEP_BAR_FOOTPRINT,
+  WET_FLOOR_SIGN_FOOTPRINT,
+  SODA_CANS_FOOTPRINT,
   wideningGutterFootprint,
   type Footprint,
 } from '@models/measures/obstacles';
@@ -23,14 +23,14 @@ export interface PlacedBox {
 
 function footprintOf(obstacle: Obstacle): Footprint {
   switch (obstacle.kind) {
-    case 'stray-pins':
-      return STRAY_PINS_FOOTPRINT;
+    case 'wet-floor-sign':
+      return WET_FLOOR_SIGN_FOOTPRINT;
     case 'rental-shoes':
       return RENTAL_SHOES_FOOTPRINT;
     case 'returning-ball':
       return RETURNING_BALL_FOOTPRINT;
-    case 'sweep-bar':
-      return SWEEP_BAR_FOOTPRINT;
+    case 'soda-cans':
+      return SODA_CANS_FOOTPRINT;
     case 'widening-gutter':
       return wideningGutterFootprint(obstacle.lengthM);
   }
@@ -44,7 +44,7 @@ export function obstacleZAt(obstacle: Obstacle, runS: number): number {
 export function placedBox(obstacle: Obstacle, runS: number): PlacedBox {
   const footprint = footprintOf(obstacle);
   return {
-    x: obstacle.kind === 'sweep-bar' ? 0 : laneCentreX(obstacle.lane),
+    x: obstacle.kind === 'soda-cans' ? 0 : laneCentreX(obstacle.lane),
     z: obstacleZAt(obstacle, runS) + footprint.centreZM,
     halfWidthM: footprint.halfWidthM,
     halfDepthM: footprint.halfDepthM,

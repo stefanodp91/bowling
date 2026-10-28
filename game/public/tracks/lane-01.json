@@ -6,32 +6,32 @@
   "lanes": 3,
   "obstacles": [
     {
-      "kind": "stray-pins",
+      "kind": "wet-floor-sign",
       "lane": 0,
       "z": 31.45
     },
     {
       "kind": "returning-ball",
       "lane": 1,
-      "z": 80.13,
+      "z": 79.34,
       "speedMps": 3.95
     },
     {
       "kind": "returning-ball",
       "lane": 0,
-      "z": 104.57,
+      "z": 104.11,
       "speedMps": 2.7
     },
     {
       "kind": "returning-ball",
       "lane": 2,
-      "z": 134.32,
+      "z": 133.86,
       "speedMps": 3.01
     },
     {
       "kind": "returning-ball",
       "lane": 2,
-      "z": 161.32,
+      "z": 160.92,
       "speedMps": 2.91
     },
     {
@@ -42,7 +42,7 @@
     {
       "kind": "returning-ball",
       "lane": 0,
-      "z": 213.96,
+      "z": 213.61,
       "speedMps": 3.03
     }
   ]

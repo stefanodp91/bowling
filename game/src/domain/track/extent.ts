@@ -6,7 +6,7 @@ import type { Obstacle } from './schema';
 export interface Extent {
   readonly startZ: number;
   readonly endZ: number;
-  /** The travel lanes it blocks; the sweep bar blocks every lane but can be jumped. */
+  /** The travel lanes it blocks; a row of soda cans blocks every lane but can be jumped. */
   readonly lanes: readonly LaneIndex[] | 'all';
 }
 
@@ -35,7 +35,7 @@ export function returningBallStartZ(meetZ: number, speedMps: number): number {
 
 export function extentOf(obstacle: Obstacle): Extent {
   switch (obstacle.kind) {
-    case 'sweep-bar':
+    case 'soda-cans':
       return { startZ: obstacle.z, endZ: obstacle.z, lanes: 'all' };
     case 'widening-gutter':
       return { startZ: obstacle.z, endZ: obstacle.z + obstacle.lengthM, lanes: [obstacle.lane] };
@@ -43,7 +43,7 @@ export function extentOf(obstacle: Obstacle): Extent {
       const met = meetingZ(obstacle.z, obstacle.speedMps);
       return { startZ: met, endZ: met, lanes: [obstacle.lane] };
     }
-    case 'stray-pins':
+    case 'wet-floor-sign':
     case 'rental-shoes':
       return { startZ: obstacle.z, endZ: obstacle.z, lanes: [obstacle.lane] };
   }

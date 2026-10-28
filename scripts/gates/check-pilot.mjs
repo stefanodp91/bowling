@@ -37,14 +37,14 @@ async function checkTracks(tracks, route) {
   }
 }
 
-/** An impossible track: stray pins across all three lanes at the same z, so even `perfect` hits. */
+/** An impossible track: wet floor signs across all three lanes at the same z, so even `perfect` hits. */
 const IMPOSSIBLE = {
   schemaVersion: 1,
   trackId: 'lane-01',
   seed: 1,
   lengthM: LANE_LENGTH_M,
   lanes: 3,
-  obstacles: [0, 1, 2].map((lane) => ({ kind: 'stray-pins', lane, z: 100 })),
+  obstacles: [0, 1, 2].map((lane) => ({ kind: 'wet-floor-sign', lane, z: 100 })),
 };
 
 // runGate is synchronous: run the async check first, then hand its findings over.

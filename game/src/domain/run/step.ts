@@ -1,10 +1,10 @@
 import { CENTRE_LANE, laneCentreX, LANE_INDICES, type LaneIndex } from '@models/measures/lane';
-import { BALL_ROLL_RADIUS_M, DECK_HANDOFF_Z, JUMP_AIRTIME_S, JUMP_APEX_M, LANE_CHANGE_S, LAUNCH_S, MIN_ROLL_SPEED_MPS, READY_S } from '../../config/run';
+import { BALL_ROLL_RADIUS_M, DECK_HANDOFF_Z, JUMP_AIRTIME_S, JUMP_APEX_M, LANE_CHANGE_S, READY_S, RECOVERY_MPS2, RELEASE_SPEED_MPS } from '../../config/run';
 import { smoothstep } from '../math/ease';
-import { cleanRunTimeTo, launchSpeed, ROLL_DRAG_PER_M, targetSpeed } from './speed';
+import { cleanRunTimeTo, targetSpeed } from './speed';
 import type { Command, Jump, LaneChange, RunState } from './state';
 
-/** A fresh run on the foul line, the ball at rest in the hand, counting down (rule 1). */
+/** A fresh run on the foul line, the ball in the bowler's swing, counting down (rule 1). */
 export function initialRunState(): RunState {
   return {
     phase: 'ready',
@@ -27,8 +27,7 @@ export function initialRunState(): RunState {
  * clock (the `at` query parameter), so returning balls stand where they would.
  */
 export function runStateAt(z: number): RunState {
-  const runS = cleanRunTimeTo(z);
-  return { ...initialRunState(), phase: 'rolling', z, runS, speedMps: runS < LAUNCH_S ? launchSpeed(runS) : targetSpeed(z) };
+  return { ...initialRunState(), phase: 'rolling', z, runS: cleanRunTimeTo(z), speedMps: targetSpeed(z) };
 }
 
 /** A lane change starts and stops with zero lateral speed. */
@@ -73,18 +72,11 @@ function advanceJump(jump: Jump | null, dtS: number): { y: number; jump: Jump | 
 }
 
 /**
- * Speed after one step (rule 3): the throw's eased curve for LAUNCH_S, then the lane's drag, which
- * takes the share ROLL_DRAG_PER_M of the speed for every metre rolled (v · dt of them) and stops at
- * MIN_ROLL_SPEED_MPS. Nothing gives speed back: an impact's loss is for good (wiki/game/impacts.md).
+ * Speed after one step (rule 3): a clean ball follows the target curve, the lane's drag; a ball an
+ * impact slowed regains RECOVERY_MPS2 · dt per step until it is back on that curve, never past it.
  */
 export function nextSpeed(state: RunState, dtS: number): number {
-  if (state.runS < LAUNCH_S) {
-    // The throw never outruns the curve the drag takes over from, wherever this step ends.
-    const thrown = launchSpeed(state.runS + dtS);
-    return Math.min(thrown, targetSpeed(state.z + thrown * dtS));
-  }
-  const dragged = state.speedMps * (1 - ROLL_DRAG_PER_M * state.speedMps * dtS);
-  return Math.max(Math.min(state.speedMps, MIN_ROLL_SPEED_MPS), dragged);
+  return Math.min(targetSpeed(state.z + state.speedMps * dtS), state.speedMps + RECOVERY_MPS2 * dtS);
 }
 
 function stepRolling(state: RunState, command: Command, dtS: number): RunState {
@@ -122,7 +114,8 @@ function stepRolling(state: RunState, command: Command, dtS: number): RunState {
 export function step(state: RunState, command: Command, dtS: number): RunState {
   switch (state.phase) {
     case 'ready':
-      return state.phaseS + dtS >= READY_S ? { ...state, phase: 'rolling', phaseS: 0 } : { ...state, phaseS: state.phaseS + dtS };
+      // The swing ends at the foul line: the ball leaves the hand at the release speed.
+      return state.phaseS + dtS >= READY_S ? { ...state, phase: 'rolling', phaseS: 0, speedMps: RELEASE_SPEED_MPS } : { ...state, phaseS: state.phaseS + dtS };
     case 'rolling':
       return stepRolling(state, command, dtS);
     case 'deck':

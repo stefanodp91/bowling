@@ -63,14 +63,14 @@ describe('constructed cases', () => {
   });
 
   it('two obstacles in two lanes at the same z lead to the third lane', () => {
-    const track = trackWith({ kind: 'stray-pins', lane: 1, z: 120 }, { kind: 'stray-pins', lane: 2, z: 120 });
+    const track = trackWith({ kind: 'wet-floor-sign', lane: 1, z: 120 }, { kind: 'wet-floor-sign', lane: 2, z: 120 });
     // At the crossing the ball is in lane 0; once past, the approach takes it back to the centre.
     expect(drive(track, 100, 120).run.lane).toBe(0);
     expect(drive(track, 100, 125).impacts.count).toBe(0);
   });
 
-  it('a sweep bar leads to a jump that clears it', () => {
-    const track = trackWith({ kind: 'sweep-bar', z: 120 });
+  it('a row of soda cans leads to a jump that clears it', () => {
+    const track = trackWith({ kind: 'soda-cans', z: 120 });
     const pilot = createAutopilot(SEED);
     let world: World = { ...initialWorld(track), run: runStateAt(100) };
     let jumped = false;

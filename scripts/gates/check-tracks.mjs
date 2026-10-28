@@ -42,9 +42,9 @@ export function checkTracks(dir, { compareWithBake = true } = {}) {
 
 /** The four wrong cases of criterion 3, each in its own file. */
 const WRONG_CASES = {
-  'approach-zone': [{ kind: 'stray-pins', lane: 0, z: APPROACH_START_Z_M + 10 }],
-  'three-lanes-same-z': [0, 1, 2].map((lane) => ({ kind: 'stray-pins', lane, z: 100 })),
-  'sweep-after-pins': [{ kind: 'stray-pins', lane: 0, z: 100 }, { kind: 'sweep-bar', z: 103 }],
+  'approach-zone': [{ kind: 'wet-floor-sign', lane: 0, z: APPROACH_START_Z_M + 10 }],
+  'three-lanes-same-z': [0, 1, 2].map((lane) => ({ kind: 'wet-floor-sign', lane, z: 100 })),
+  'cans-after-sign': [{ kind: 'wet-floor-sign', lane: 0, z: 100 }, { kind: 'soda-cans', z: 103 }],
   'unknown-kind': [{ kind: 'bowling-bag', lane: 1, z: 100 }],
 };
 

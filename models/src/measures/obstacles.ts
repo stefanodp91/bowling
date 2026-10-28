@@ -16,7 +16,6 @@ export interface Footprint {
 
 import { BALL_DIAMETER_M, BALL_RADIUS_M } from './ball';
 import { PLAYING_SURFACE_WIDTH_M, TRAVEL_LANE_WIDTH_M } from './lane';
-import { PIN_HEIGHT_M, PIN_MAX_DIAMETER_M } from './pins';
 import { PROP_SCALE } from './scale';
 
 /** Box containing every rotated rectangle (centre x/z, half extents, yaw) of a group. */
@@ -64,34 +63,31 @@ export const RETURNING_BALL_FOOTPRINT: Footprint = {
   centreZM: 0,
 };
 
-// --- Sweep bar (wiki/models/obstacles/sweep-bar.md) ---
-
-/** Top edge of the board above the lane: 0.30 m at regulation size, below the jump apex (rule 2). */
-export const SWEEP_BAR_HEIGHT_M = 0.3 * PROP_SCALE;
-/** Board thickness (design: a pressed steel board, ≈ 3 cm), and its folded top lip, the deepest part. */
-export const SWEEP_BOARD_THICKNESS_M = 0.03 * PROP_SCALE;
-export const SWEEP_LIP_DEPTH_M = 0.05 * PROP_SCALE;
-/** The board overhangs the gutters by this much on each side, so it spans the whole surface. */
-export const SWEEP_OVERHANG_M = 0.06;
-/** Half the swing along z, at the board's bottom edge (design: a gentle sway, readable but never wide). */
-export const SWEEP_SWING_AMPLITUDE_M = 0.12 * PROP_SCALE;
-/** The arms hang the board from pivots this high above the lane (design: inside the machine). */
-export const SWEEP_PIVOT_HEIGHT_M = 1.4 * PROP_SCALE;
-
-/** The pendulum's largest angle: the bottom edge, farthest from the pivot, moves ± the amplitude. */
-export const SWEEP_SWING_ANGLE_RAD = Math.asin(SWEEP_SWING_AMPLITUDE_M / SWEEP_PIVOT_HEIGHT_M);
+// --- Soda cans (wiki/models/obstacles/soda-cans.md) ---
 
 /**
- * The footprint contains the whole swing: depth = lip + amplitude; height = the lip's top corner
- * at the largest angle, which rises a few millimetres above SWEEP_BAR_HEIGHT_M.
+ * A 12 fl oz drink can: 122 mm tall, 66 mm across (the standard 211 can body), × PROP_SCALE. No
+ * brand: plain red cans (open-source hygiene, AGENTS.md rule 6).
  */
-export const SWEEP_BAR_FOOTPRINT: Footprint = {
-  halfWidthM: PLAYING_SURFACE_WIDTH_M / 2 + SWEEP_OVERHANG_M,
-  halfDepthM: SWEEP_LIP_DEPTH_M / 2 + SWEEP_SWING_AMPLITUDE_M,
-  heightM:
-    SWEEP_PIVOT_HEIGHT_M -
-    (SWEEP_PIVOT_HEIGHT_M - SWEEP_BAR_HEIGHT_M) * Math.cos(SWEEP_SWING_ANGLE_RAD) +
-    (SWEEP_LIP_DEPTH_M / 2) * Math.sin(SWEEP_SWING_ANGLE_RAD),
+export const SODA_CAN_HEIGHT_M = 0.122 * PROP_SCALE;
+export const SODA_CAN_DIAMETER_M = 0.066 * PROP_SCALE;
+/** Cans across the whole playing surface, this far apart (design: gaps narrower than the ball). */
+export const SODA_CAN_SPACING_M = 0.15 * PROP_SCALE;
+/** As many cans as fit across the surface at that spacing. */
+export const SODA_CAN_COUNT = Math.floor(PLAYING_SURFACE_WIDTH_M / SODA_CAN_SPACING_M);
+/** Largest seeded offset of each can from its place in the row, along x and z (design: spilled, not lined up). */
+export const SODA_CAN_JITTER_M = 0.03 * PROP_SCALE;
+/** Share of the cans lying on their side, rolled any way (design). */
+export const SODA_CAN_LYING_SHARE = 0.35;
+
+/**
+ * The row's footprint: the whole surface wide, deep enough for a lying can turned any way at its
+ * largest offset; height = a standing can, below the jump apex.
+ */
+export const SODA_CANS_FOOTPRINT: Footprint = {
+  halfWidthM: PLAYING_SURFACE_WIDTH_M / 2,
+  halfDepthM: SODA_CAN_JITTER_M + SODA_CAN_HEIGHT_M / 2,
+  heightM: SODA_CAN_HEIGHT_M,
   centreZM: 0,
 };
 
@@ -108,23 +104,20 @@ export function wideningGutterFootprint(lengthM: number): Footprint {
   return { halfWidthM: TRAVEL_LANE_WIDTH_M / 2, halfDepthM: lengthM / 2, heightM: 0, centreZM: lengthM / 2 };
 }
 
-// --- Stray pins (wiki/models/obstacles/stray-pins.md) ---
+// --- Wet floor sign (wiki/models/obstacles/wet-floor-sign.md) ---
 
-/** Three pins in a small triangle (design: closer than deck spacing, so it reads as left-over pins). */
-export const STRAY_PIN_SPACING_M = 0.22 * PROP_SCALE;
-/** Largest seeded offset of each pin from its triangle point, along x and z. */
-export const STRAY_PIN_JITTER_M = 0.03 * PROP_SCALE;
-/** The triangle's points, centred on the obstacle: one in front (towards the ball), two behind. */
-export const STRAY_PIN_POINTS: ReadonlyArray<readonly [number, number]> = [
-  [0, -STRAY_PIN_SPACING_M * Math.sin(Math.PI / 3) / 2],
-  [-STRAY_PIN_SPACING_M / 2, STRAY_PIN_SPACING_M * Math.sin(Math.PI / 3) / 2],
-  [STRAY_PIN_SPACING_M / 2, STRAY_PIN_SPACING_M * Math.sin(Math.PI / 3) / 2],
-];
+/**
+ * A folding A-frame «wet floor» sign: 0.62 m tall, panels 0.30 m wide, its two feet 0.30 m apart
+ * when open (common janitorial signs, ≈ 24–25 in tall), × PROP_SCALE: taller than the jump apex.
+ */
+export const WET_FLOOR_SIGN_HEIGHT_M = 0.62 * PROP_SCALE;
+export const WET_FLOOR_SIGN_WIDTH_M = 0.3 * PROP_SCALE;
+export const WET_FLOOR_SIGN_SPREAD_M = 0.3 * PROP_SCALE;
 
-/** The box containing every pin at any jitter, out to its belly; height = pin height. */
-export const STRAY_PINS_FOOTPRINT: Footprint = {
-  halfWidthM: Math.max(...STRAY_PIN_POINTS.map(([x]) => Math.abs(x))) + STRAY_PIN_JITTER_M + PIN_MAX_DIAMETER_M / 2,
-  halfDepthM: Math.max(...STRAY_PIN_POINTS.map(([, z]) => Math.abs(z))) + STRAY_PIN_JITTER_M + PIN_MAX_DIAMETER_M / 2,
-  heightM: PIN_HEIGHT_M,
+/** The open sign's box; one panel faces the approaching ball. */
+export const WET_FLOOR_SIGN_FOOTPRINT: Footprint = {
+  halfWidthM: WET_FLOOR_SIGN_WIDTH_M / 2,
+  halfDepthM: WET_FLOOR_SIGN_SPREAD_M / 2,
+  heightM: WET_FLOOR_SIGN_HEIGHT_M,
   centreZM: 0,
 };

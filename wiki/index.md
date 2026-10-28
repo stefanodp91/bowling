@@ -15,10 +15,10 @@ once the script exists.
 8. [models/lane.md](models/lane.md) — Lane — 200 m of maple, three travel lanes, gutters and pin deck · `built`
 9. [models/obstacles/rental-shoes.md](models/obstacles/rental-shoes.md) — Rental shoes — a pair of two-tone bowling shoes in one travel lane · `built`
 10. [models/obstacles/returning-ball.md](models/obstacles/returning-ball.md) — Returning ball — a house ball rolling back up the lane · `built`
-11. [models/obstacles/sweep-bar.md](models/obstacles/sweep-bar.md) — Sweep bar — the pinsetter's rake across all three travel lanes · `built`
-12. [models/obstacles/widening-gutter.md](models/obstacles/widening-gutter.md) — Widening gutter — the gutter eats one travel lane for a stretch · `built`
-13. [models/pins.md](models/pins.md) — Pins — the ten regulation pins · `built`
-14. [models/obstacles/stray-pins.md](models/obstacles/stray-pins.md) — Stray pins — a group of pins left standing in one travel lane · `built`
+11. [models/obstacles/soda-cans.md](models/obstacles/soda-cans.md) — Soda cans — a row of drink cans spilled across all three travel lanes · `built`
+12. [models/obstacles/wet-floor-sign.md](models/obstacles/wet-floor-sign.md) — Wet floor sign — a yellow folding sign standing in one travel lane · `built`
+13. [models/obstacles/widening-gutter.md](models/obstacles/widening-gutter.md) — Widening gutter — the gutter eats one travel lane for a stretch · `built`
+14. [models/pins.md](models/pins.md) — Pins — the ten regulation pins · `built`
 15. [track/track-format.md](track/track-format.md) — Track format — the lane as a JSON file, its bake and its gate · `built`
 16. [game/run.md](game/run.md) — Run — the ball's 200 m, from foul line to pin deck · `built`
 17. [game/camera.md](game/camera.md) — Camera — chase, impact view and slow motion · `built`

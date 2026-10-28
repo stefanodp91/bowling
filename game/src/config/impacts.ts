@@ -2,16 +2,16 @@
 
 /**
  * The obstacles a jump can clear (wiki/models/obstacles/*, «Overcome by»): rental shoes and the
- * sweep bar. Stray pins and a returning ball must be avoided by changing lane, whatever their
+ * soda cans. A wet floor sign and a returning ball must be avoided by changing lane, whatever their
  * height; a widening gutter is terrain.
  */
-export const JUMPABLE_KINDS: ReadonlySet<string> = new Set(['rental-shoes', 'sweep-bar']);
+export const JUMPABLE_KINDS: ReadonlySet<string> = new Set(['rental-shoes', 'soda-cans']);
 
 /**
- * An impact multiplies speed by 1 − 0.2, for good: at 8 m/s the ball drops to 6.4 m/s and only the
- * lane's drag acts on it afterwards (rule 2). A human asked on 2026-10-28 for a natural run, where a
- * ball never speeds up again once thrown; 0.2 keeps a beginner's run of two to four impacts within
- * 30–50 s (wiki/records/pilot-vs-blind-200m-20261028.md).
+ * An impact multiplies speed by 1 − 0.2: at 8 m/s the ball drops to 6.4 m/s, a dip the eye catches,
+ * then it recovers to the clean curve at the run's RECOVERY_MPS2 (rule 2). A human asked on
+ * 2026-10-28 that a beginner's run last about as long as a perfect one: the skills differ in what
+ * they hit and how the pins fall, not in time.
  */
 export const IMPACT_SPEED_LOSS = 0.2;
 /**

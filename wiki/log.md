@@ -72,3 +72,7 @@ investigations goes here, never in the pages (prompt 3, step 3).
 - 2026-10-28 · records/pilot-vs-blind-200m-20261028.md, pilot/headless-runs.md,
   pilot/autopilot.md, review.md · the 200 m campaign recorded: perfect 10.0 pins, dummy 5.5 with
   no strike and no zero, blind 3.9.
+- 2026-10-28 · game/run.md, game/impacts.md, pilot/autopilot.md, track/track-format.md,
+  models/obstacles/wet-floor-sign.md, models/obstacles/soda-cans.md, storybook/catalog.md · the
+  human's fourth round: the throw is an arm swing, impacts dip and recover, the wet floor sign and
+  the soda cans replace the stray pins and the sweep bar; criteria re-locked on authorization.

@@ -80,7 +80,7 @@ into a slower ball and fewer pins.
    hand-overs (its `x` and speed) knocks down between 1 and 9 pins — never a strike, never nothing.
 4. [auto] Unit tests on constructed cases: a returning ball is avoided even when a still obstacle is
    nearer in distance but later in time; two obstacles in two lanes at the same `z` lead to the third
-   lane; a sweep bar leads to a jump that clears it; a widening gutter is left before it starts.
+   lane; a row of soda cans leads to a jump that clears it; a widening gutter is left before it starts.
 5. [human] Watching `Dummy` runs, the pilot's mistakes look like a beginner's, not glitches.
 
 ## References
@@ -129,6 +129,10 @@ into a slower ball and fewer pins.
   ([pilot vs blind, 200 m](../records/pilot-vs-blind-200m-20261028.md)). For the human
   (criterion 5): whether target fixation reads as a beginner, and whether a 48 s dummy run on
   lane-01 is too long on stage.
+- 2026-10-28 · round 7 · Criterion 4 renamed for the soda cans (they replace the sweep bar) and
+  re-locked on the human's authorization; the constructed case jumps them. The dummy's ball now
+  reaches the deck at 6 m/s like every ball; the deck still leaves 3, 6, 8, 7, 7 pins from its
+  hand-overs on lane-01…05.
 
 ## Canonical files
 

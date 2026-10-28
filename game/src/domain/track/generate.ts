@@ -40,7 +40,7 @@ function drawLane(random: RandomSource): LaneIndex {
 /** One obstacle of `kind` met at z; returns it and where it ends along the lane. */
 function place(kind: ObstacleKind, z: number, random: RandomSource): { obstacle: Obstacle; endZ: number } {
   switch (kind) {
-    case 'sweep-bar':
+    case 'soda-cans':
       return { obstacle: { kind, z: round(z) }, endZ: round(z) };
     case 'widening-gutter': {
       const lengthM = round(uniform(random, WIDENING_GUTTER_LENGTH_M.min, WIDENING_GUTTER_LENGTH_M.max));
@@ -50,7 +50,7 @@ function place(kind: ObstacleKind, z: number, random: RandomSource): { obstacle:
       const speedMps = round(uniform(random, RETURNING_BALL_SPEED_MPS.min, RETURNING_BALL_SPEED_MPS.max));
       return { obstacle: { kind, lane: drawLane(random), z: round(returningBallStartZ(z, speedMps)), speedMps }, endZ: z };
     }
-    case 'stray-pins':
+    case 'wet-floor-sign':
     case 'rental-shoes':
       return { obstacle: { kind, lane: drawLane(random), z: round(z) }, endZ: round(z) };
   }

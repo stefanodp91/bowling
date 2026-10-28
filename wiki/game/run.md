@@ -21,23 +21,29 @@ losing speed like a real ball, changing lane and jumping when the autopilot says
 ## Rules
 
 1. **States** (a closed union): `ready` → `rolling` → `deck` → `settling` → `result`. `ready` lasts
-   `READY_S` (1.5 s, a countdown on screen) and starts by itself — there is no player input.
+   `READY_S` (1.5 s, a countdown on screen while the bowler's arm swings the ball, rule 3) and
+   starts by itself — there is no player input.
    `deck` begins at `DECK_HANDOFF_Z` (2 m before the head pin) where the ball is handed to physics.
 2. **Pure step.** `step(state, command, dtS) → state` in `game/src/domain/run/`, with the command
    from the autopilot (`stay | left | right | jump`). The simulation runs at a fixed step
    (`SIM_STEP_S`, 1/120 s); rendering interpolates. No `Date.now`, no `Math.random` in the domain.
 3. **Speed: a throw, then the lane's drag** (a human asked on 2026-10-28 for a natural run instead
-   of a ball that kept speeding up; the «slow» profile). The ball waits at rest during `ready`.
-   - **The throw:** in the first `LAUNCH_S` (0.8 s) of `rolling` the speed rises from 0 to
-     `RELEASE_SPEED_MPS` (10 m/s, 36 km/h), eased out like an arm swing; it covers ≈ 5.3 m.
-   - **The drag:** from there the ball loses the share `ROLL_DRAG_PER_M` of its speed for every
-     metre it rolls (dv/dz = −k·v, so dv/dt = −k·v²: hard on a fast ball, gentle on a slow one).
-     `k` is derived so a clean ball reaches the hand-over at `PIN_SPEED_MPS` (6 m/s, 22 km/h).
-   - **Target speed** is that clean curve: the release speed, then `v₀·e^(−k·d)` past the throw. It
-     never increases with `z`, and the actual speed never exceeds it: nothing gives speed back,
-     an impact's loss is for good ([impacts](impacts.md)).
-   - The drag stops at `MIN_ROLL_SPEED_MPS` (3 m/s), so a ball slowed by impacts still reaches the
-     pins.
+   of a ball that kept speeding up, the «slow» profile, and for an entrance that shows the throw).
+   - **The throw** (scene only, during `ready`): the bowler's arm swings the ball, a pendulum about
+     the shoulder (`game/src/config/throw.ts`, `scene/views/swing.ts`): held in front for
+     `ADDRESS_S`, a backswing up and towards the camera, then a forward swing that eases in and
+     lays the ball on the lane at the foul line exactly when `ready` ends. The backswing's height
+     is derived so the arm releases the ball at `RELEASE_SPEED_MPS` (10 m/s, 36 km/h); the run then
+     starts `rolling` at that speed. The swing is a pure function of the time into `ready` and
+     never moves the run's own state.
+   - **The drag:** the ball loses the share `ROLL_DRAG_PER_M` of its speed for every metre it rolls
+     (dv/dz = −k·v, so dv/dt = −k·v²: hard on a fast ball, gentle on a slow one). `k` is derived so
+     a clean ball reaches the hand-over at `PIN_SPEED_MPS` (6 m/s, 22 km/h).
+   - **Target speed** is that clean curve, `v₀·e^(−k·z)`. It never increases with `z`, and the
+     actual speed never exceeds it.
+   - **Recovery:** a ball an impact slowed ([impacts](impacts.md)) regains `RECOVERY_MPS2`
+     (1.5 m/s²) until it is back on the target curve, never past it: a 20 % dip is made up in
+     ≈ 1.3 s, so every run lasts about as long (a human's decision of 2026-10-28).
    A clean run lasts ≈ 26 s on the 200 m lane (a human's decision of 2026-10-28; it was 300 m and
    40 s).
 4. **Lane change:** to an adjacent travel lane in `LANE_CHANGE_S` (0.25 s), eased. A command for a
@@ -132,6 +138,17 @@ losing speed like a real ball, changing lane and jumping when the autopilot says
   ends: a discrete throw overshot by 1 mm/s); target never increasing; the throw reaches 10 m/s in
   0.8 s and a clean run ends at 6.0 m/s; a slowed ball stops slowing at 3 m/s; «stay» rolls 25.9 s.
   Shots at 3, 150 and 195 m.
+- 2026-10-28 · round 7 · The human asked for an entrance that simulates the bowler's throw, and
+  for a beginner's run as long as a perfect one. Rule 3: the throw is now the arm's swing during the
+  countdown (`config/throw.ts`, `scene/views/swing.ts`, pure and tested): held in front 0.3 s, a
+  0.6 s backswing to ≈ 88°, a 0.6 s forward swing easing in as u³; the backswing angle is derived
+  so the ball leaves the hand at 10 m/s, and `rolling` starts at that speed (the 0.8 s ramp from
+  rest is gone). A slowed ball recovers to the target at 1.5 m/s². Unit tests: rolling starts at
+  10 m/s and ends at 6.0 m/s; a ball 1.5 m/s under the target regains 0.75 m/s in 0.5 s and sits on
+  the target after 2 s; «stay» rolls 25.8 s; the swing lays the ball on the foul line at 10 m/s.
+  A 3 s recording shows the ball held, swung up towards the camera, brought down to the line and
+  rolled away. Criterion 2's explanation in parentheses still names the old 0.8 s throw; its
+  24–27 s range holds — written in «To judge», not edited.
 
 ## Canonical files
 

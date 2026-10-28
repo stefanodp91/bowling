@@ -20,8 +20,8 @@ export const GAP_JITTER_M = 2;
 
 /** Lane obstacles never block all three lanes within an 8 m window (rule 6). */
 export const PASSABLE_WINDOW_M = 8;
-/** A sweep bar has 8 m free before and after it, to take off and land (rule 6). */
-export const SWEEP_BAR_CLEAR_M = 8;
+/** A row of soda cans has 8 m free before and after it, to take off and land (rule 6). */
+export const SODA_CANS_CLEAR_M = 8;
 
 /**
  * The least time the pilot has between noticing an obstacle and starting to act: 0.35 s, the
@@ -30,12 +30,12 @@ export const SWEEP_BAR_CLEAR_M = 8;
  */
 export const MIN_REACTION_S = 0.35;
 
-/** How often each kind is drawn (design: pins and shoes common, the sweep and gutter rarer). */
+/** How often each kind is drawn (design: signs and shoes common, the cans and gutter rarer). */
 export const OBSTACLE_WEIGHTS = {
-  'stray-pins': 3,
+  'wet-floor-sign': 3,
   'rental-shoes': 2,
   'returning-ball': 2,
-  'sweep-bar': 1,
+  'soda-cans': 1,
   'widening-gutter': 1,
 } as const;
 

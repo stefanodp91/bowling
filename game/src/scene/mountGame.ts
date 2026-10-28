@@ -17,6 +17,7 @@ import { createBallView } from './views/ball-view';
 import { createLaneView } from './views/lane-view';
 import { createObstacleView } from './views/obstacle-view';
 import { createPinsView } from './views/pins-view';
+import { swingOffset } from './views/swing';
 import type { HavokInstance } from './physics/havok-loader';
 import { createPhysicsWorld } from './physics/physics-world';
 
@@ -74,8 +75,10 @@ export function mountGame(scene: Scene, session: Session, options: MountOptions)
     });
     const lerp = (a: number, b: number): number => a + (b - a) * alpha;
     const pose = { x: lerp(previous.x, current.x), y: lerp(previous.y, current.y), z: lerp(previous.z, current.z) };
-    // From the hand-over on, Havok moves the ball.
-    if (!session.world().deck.handedOff) ball.update(pose, lerp(previous.rollRad, current.rollRad));
+    // During the countdown the bowler's arm swings the ball; from the hand-over on, Havok moves it.
+    const swing = current.phase === 'ready' ? swingOffset(lerp(previous.phaseS, current.phaseS)) : null;
+    const held = swing === null ? pose : { ...pose, y: pose.y + swing.liftM, z: pose.z - swing.backM };
+    if (!session.world().deck.handedOff) ball.update(held, lerp(previous.rollRad, current.rollRad));
     const { position, target } = cameraPose({ ...pose, lastLaneChange: current.lastLaneChange });
     if (camera instanceof FreeCamera) {
       camera.position.set(...position);
