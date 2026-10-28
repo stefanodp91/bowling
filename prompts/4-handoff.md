@@ -1,6 +1,6 @@
 # 4 · Write a handoff for whoever resumes without the chat
 
-Instantiated for this repository from procedure 4 of [`original-it.md`](original-it.md).
+Instantiated for this repository from procedure 4 of [`generic-prompts.it.md`](generic-prompts.it.md).
 Placeholders, filled:
 
 | Placeholder | Here |

@@ -5,6 +5,12 @@ this file keeps what was done and when. Every page was built and closed inside o
 handoff was opened ([`handoffs/`](handoffs/README.md)); each entry points to the page whose
 «Rounds» section holds the details.
 
+## The generic procedures in English — 2026-10-28
+
+- **Renamed and translated** — `prompts/original-it.md` is now `prompts/generic-prompts.it.md`,
+  and `prompts/generic-prompts.en.md` is its faithful English translation; AGENTS.md rule 7,
+  BUILD.md, the README and the six prompts point to the new names.
+
 ## Scoreboard and ball return — 2026-10-28
 
 - **A scoreboard** ([lane](wiki/models/lane.md), rule 6) — a screen over every lane; the middle one

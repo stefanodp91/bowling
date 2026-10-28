@@ -1,6 +1,6 @@
 # 5 · Turn a paid error into an automatic check
 
-Instantiated for this repository from procedure 5 of [`original-it.md`](original-it.md).
+Instantiated for this repository from procedure 5 of [`generic-prompts.it.md`](generic-prompts.it.md).
 Placeholders, filled:
 
 | Placeholder | Here |

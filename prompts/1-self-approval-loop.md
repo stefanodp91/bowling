@@ -1,6 +1,6 @@
 # 1 · The self-approval loop
 
-Instantiated for this repository from procedure 1 of [`original-it.md`](original-it.md).
+Instantiated for this repository from procedure 1 of [`generic-prompts.it.md`](generic-prompts.it.md).
 Placeholders, filled:
 
 | Placeholder | Here |

@@ -40,7 +40,8 @@ build is the [wiki](wiki/index.md). The entry point for an agent that starts fro
    `check-no-foreign-refs` scans files, file names and commit messages for terms that must never
    appear; it stores only their hashes. If it fails, remove the term — do not touch the hash list.
 7. **English everywhere** — code, comments, wiki, commits, prompts — except
-   `prompts/original-it.md`, which keeps the six procedures in their original Italian.
+   `prompts/generic-prompts.it.md`, which keeps the six generic procedures in their original
+   Italian; `prompts/generic-prompts.en.md` is their English translation.
 8. **Every commit signs agent and model** with a trailer, e.g.
    `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`. `npm run stats` reads these trailers.
 

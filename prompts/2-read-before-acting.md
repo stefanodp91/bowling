@@ -1,6 +1,6 @@
 # 2 · Read before acting
 
-Instantiated for this repository from procedure 2 of [`original-it.md`](original-it.md).
+Instantiated for this repository from procedure 2 of [`generic-prompts.it.md`](generic-prompts.it.md).
 Placeholders, filled:
 
 | Placeholder | Here |

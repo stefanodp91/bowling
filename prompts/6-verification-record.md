@@ -1,6 +1,6 @@
 # 6 · Write a verification record
 
-Instantiated for this repository from procedure 6 of [`original-it.md`](original-it.md).
+Instantiated for this repository from procedure 6 of [`generic-prompts.it.md`](generic-prompts.it.md).
 Placeholders, filled:
 
 | Placeholder | Here |

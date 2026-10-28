@@ -66,6 +66,9 @@ Every line of code here was written by an AI agent following written procedures,
    [self-approval loop](prompts/1-self-approval-loop.md), [read before acting](prompts/2-read-before-acting.md),
    [update the documentation](prompts/3-update-docs-after-change.md), [handoff](prompts/4-handoff.md),
    [error → gate](prompts/5-error-to-gate.md), [verification record](prompts/6-verification-record.md).
+   Their generic form, reusable in any project, is in
+   [`prompts/generic-prompts.it.md`](prompts/generic-prompts.it.md) (Italian) and
+   [`prompts/generic-prompts.en.md`](prompts/generic-prompts.en.md) (English).
    The rules every agent follows are in [`AGENTS.md`](AGENTS.md).
 3. **The agent judges its own work, a human approves it.** Each page's «Rounds» section says what
    the agent looked at, what was wrong and what changed. Pages go from `planned` to `built` by the

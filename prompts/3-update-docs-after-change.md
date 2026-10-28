@@ -1,6 +1,6 @@
 # 3 · Update the documentation after a change
 
-Instantiated for this repository from procedure 3 of [`original-it.md`](original-it.md).
+Instantiated for this repository from procedure 3 of [`generic-prompts.it.md`](generic-prompts.it.md).
 Placeholders, filled:
 
 | Placeholder | Here |

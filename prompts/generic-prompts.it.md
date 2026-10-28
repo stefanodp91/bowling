@@ -5,7 +5,8 @@ progetto. Sostituisci i segnaposto tra `< >` con le cose del tuo progetto.
 
 > Questo file conserva i sei prompt nella loro forma originale, generica e in italiano. Le
 > versioni istanziate per questo repository, in inglese e con i segnaposto sostituiti, sono gli
-> altri file di questa cartella.
+> altri file di questa cartella. La traduzione inglese fedele è in
+> [`generic-prompts.en.md`](generic-prompts.en.md).
 
 ---
 

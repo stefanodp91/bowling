@@ -11,8 +11,8 @@ the next page you can build.
 
 1. Read AGENTS.md entirely. Its rules hold for the whole session.
 2. Read wiki/index.md, wiki/SCHEMA.md and wiki/method/wiki-as-spec.md.
-3. Read the six procedures in prompts/ (1 to 6; original-it.md is the same text in Italian, for
-   reference only).
+3. Read the six procedures in prompts/ (1 to 6; generic-prompts.it.md is their generic form in
+   Italian and generic-prompts.en.md its English translation, for reference only).
 4. Take the spec pages with status: planned in the order of wiki/index.md («Specification, in
    build order») and run prompts/1-self-approval-loop.md on them, one page at a time, until none is
    left that you can build. Inside every round:
