@@ -146,3 +146,10 @@ Traps found on the field go here, each with the symptom that reveals it.
   lazily kept an old one — in the server and in the browser's cache — so they registered into a
   second copy of the shader store. A clean browser hid it. The game's Vite config excludes
   `@babylonjs/core` from `optimizeDeps`: Babylon is served as its own ES modules, one copy each.
+- **A git hook hands its repository to every git child.** Symptom: after a commit made from a git
+  worktree, the main checkout answers «fatal: this operation must be run in a work tree»,
+  `core.bare` is `true`, and the branch carries commits «step 0…4» by «T». The pre-commit hook
+  runs `npm run check` with `GIT_DIR` and `GIT_INDEX_FILE` set, and the stats test's fixture
+  repository in a temporary folder became the real one. Any script that runs git on a folder of
+  its choosing goes through `scripts/lib/git.mjs`, which drops those variables
+  ([stats](wiki/method/stats.md)).

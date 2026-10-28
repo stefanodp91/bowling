@@ -1,10 +1,10 @@
 // Reads the facts npm run stats needs from git and the wiki of a repository.
-import { execFileSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { gitIn } from '../lib/git.mjs';
 import { loadWiki, specPages, wikiDirOf } from '../wiki/parse.mjs';
 
-const git = (root, ...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8' });
+const git = (root, ...args) => gitIn(root, args);
 
 export function readCommits(root) {
   return git(root, 'log', '--format=%H%x1f%cI%x1f%B%x00')

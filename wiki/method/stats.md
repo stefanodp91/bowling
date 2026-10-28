@@ -4,8 +4,8 @@ type: spec
 status: approved
 approved_on: 2026-10-28
 depends_on: [method/wiki-tooling.md, method/gates.md]
-canonical: [scripts/stats/, scripts/tests/stats.test.mjs]
-verified: 2026-10-26
+canonical: [scripts/stats/, scripts/tests/stats.test.mjs, scripts/lib/git.mjs]
+verified: 2026-10-28
 ---
 
 # Stats
@@ -60,10 +60,19 @@ who clones it can recompute them.
   from front matter. On this repository `npm run stats -- --md` printed a 15-row table. Checked by
   eye: the round zero commit counts as an agent commit because its message carries a
   `Co-Authored-By` trailer — the rule counts trailers, so that is correct, not a bug.
+- 2026-10-28 · fix · Run by the pre-commit hook from a git worktree, the fixture tests built their
+  commits in the real repository (the hook's `GIT_DIR` and `GIT_INDEX_FILE` reached every git
+  child) and its `git init` set `core.bare = true`; two tests failed and the main checkout stopped
+  working. Git now runs through `scripts/lib/git.mjs`. A new test sets those variables on a decoy
+  repository and checks that its `HEAD` and `core.bare` do not change; without the fix it fails.
+  The commit that carries the fix went through the hook from a worktree.
 
 ## Canonical files
 
 - `counts.mjs` holds the pure functions and `STREAK_GAP_MIN`; `read-repo.mjs` reads commits
   (committer date), gates, shots and the wiki; `stats.mjs` assembles rows and prints them.
+- Every git call on a chosen folder goes through `scripts/lib/git.mjs` (`gitIn`), which removes the
+  variables `git rev-parse --local-env-vars` lists, so the folder decides the repository even
+  inside a hook.
 - A streak counts agent commits in time order; a human commit or a gap over `STREAK_GAP_MIN`
   ends it. The first `Co-Authored-By` trailer names the agent and model.

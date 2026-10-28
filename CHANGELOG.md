@@ -5,6 +5,14 @@ this file keeps what was done and when. Every page was built and closed inside o
 handoff was opened ([`handoffs/`](handoffs/README.md)); each entry points to the page whose
 «Rounds» section holds the details.
 
+## A test that wrote into the real repository — 2026-10-28
+
+- **The stats fixture stays in its folder** ([stats](wiki/method/stats.md)) — run by the
+  pre-commit hook from a git worktree, the stats test built its fixture commits in the real
+  repository and set `core.bare = true`. Git now runs through `scripts/lib/git.mjs`, which drops
+  the variables a hook sets; a regression test points git at a decoy repository and checks that it
+  stays untouched. The trap is in AGENTS.md.
+
 ## The generic procedures in English — 2026-10-28
 
 - **Renamed and translated** — `prompts/original-it.md` is now `prompts/generic-prompts.it.md`,

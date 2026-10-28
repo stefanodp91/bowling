@@ -1,10 +1,10 @@
 // wiki/method/stats.md, criterion 1: the counts on a fixture repository built in a temporary folder.
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'node:test';
 import { withTempDir } from '../lib/gate.mjs';
+import { gitIn } from '../lib/git.mjs';
 import { commitsPerAgent, longestAgentStreak, statusCounts } from '../stats/counts.mjs';
 import { readCommits, readWiki } from '../stats/read-repo.mjs';
 
@@ -17,7 +17,7 @@ const page = (status) => `---\ntitle: P\ntype: spec\nstatus: ${status}\ndepends_
 
 /** Builds a git repository whose commits are at `minutes` after START with the given trailers. */
 function fixtureRepo(dir, commits) {
-  const git = (env, ...args) => execFileSync('git', args, { cwd: dir, env: { ...process.env, ...env } });
+  const git = (env, ...args) => gitIn(dir, args, env);
   git({}, 'init', '-q');
   mkdirSync(join(dir, 'wiki'), { recursive: true });
   writeFileSync(join(dir, 'wiki/a.md'), page('planned'));
@@ -51,6 +51,35 @@ test('a streak survives a 29-minute gap and breaks on a 31-minute gap', () =>
     ]);
     assert.deepEqual(longestAgentStreak(readCommits(dir)), { commits: 3, minutes: 58 });
   }));
+
+/** Runs `fn` with `vars` set in this process's environment, as a git hook would have them. */
+function withEnv(vars, fn) {
+  const saved = Object.fromEntries(Object.keys(vars).map((name) => [name, process.env[name]]));
+  Object.assign(process.env, vars);
+  try {
+    return fn();
+  } finally {
+    for (const [name, value] of Object.entries(saved)) {
+      if (value === undefined) delete process.env[name];
+      else process.env[name] = value;
+    }
+  }
+}
+
+test('inside a hook that points git elsewhere, the fixture never touches that repository', () =>
+  withTempDir((decoy) =>
+    withTempDir((dir) => {
+      fixtureRepo(decoy, [{ minutes: 0 }]);
+      const decoyState = () => ({ head: gitIn(decoy, ['rev-parse', 'HEAD']), bare: gitIn(decoy, ['config', 'core.bare']) });
+      const before = decoyState();
+      const hookEnv = { GIT_DIR: join(decoy, '.git'), GIT_INDEX_FILE: join(decoy, '.git/index'), GIT_WORK_TREE: decoy };
+      const counts = withEnv(hookEnv, () => {
+        fixtureRepo(dir, [{ minutes: 0, trailer: OPUS }, { minutes: 5 }]);
+        return commitsPerAgent(readCommits(dir));
+      });
+      assert.deepEqual(counts, { total: 2, human: 1, perAgent: { 'Claude Opus 5.5': 1 } });
+      assert.deepEqual(decoyState(), before);
+    })));
 
 test('a human commit ends a streak', () => {
   const at = (minutes, message) => ({ date: START + minutes * MINUTE_MS, message });
