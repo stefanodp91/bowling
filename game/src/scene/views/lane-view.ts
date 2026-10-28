@@ -22,11 +22,12 @@ export function createLaneView(scene: Scene): { update(cameraZ: number): void; d
 
   const update = (cameraZ: number): void => {
     const first = firstVisibleSegment(cameraZ);
-    start.root.setEnabled(first === 0);
+    start.root.setEnabled(first <= 0 && first + POOL_SIZE > 0);
     final.root.setEnabled(first + POOL_SIZE > LAST_SEGMENT);
     pool.forEach((segment, i) => {
       const index = first + i;
-      const isPlain = index > 0 && index < LAST_SEGMENT;
+      // The start segment carries the foul line; the one before it is the approach, plain boards.
+      const isPlain = index !== 0 && index < LAST_SEGMENT;
       segment.setEnabled(isPlain);
       segment.position.z = index * SEGMENT_LENGTH_M;
     });

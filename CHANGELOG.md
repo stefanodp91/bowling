@@ -5,6 +5,13 @@ this file keeps what was done and when. Every page was built and closed inside o
 handoff was opened ([`handoffs/`](handoffs/README.md)); each entry points to the page whose
 «Rounds» section holds the details.
 
+## Scoreboard and ball return — 2026-10-28
+
+- **A scoreboard** ([lane](wiki/models/lane.md), rule 6) — a screen over every lane; the middle one
+  follows the run: lane and track, skill, impacts, distance, then the score and the pins.
+- **A ball return** — hood, rack and six coloured balls beside the start of the lane; the approach
+  before the foul line is drawn too.
+
 ## Fixes after a look on a real browser — 2026-10-28
 
 - **The end of the room** ([lane](wiki/models/lane.md), rule 6) — a painted masking unit in the

@@ -85,3 +85,5 @@ investigations goes here, never in the pages (prompt 3, step 3).
   own for each track (five themes, a story each), the sound toggle in the menus, the pause.
 - 2026-10-28 · models/lane.md, audio/sounds.md, game/hud.md · the human's reports: a themed end
   wall closes every room; the pause silences the music.
+- 2026-10-28 · models/lane.md · the scoreboard over the pins and the ball return at the start of
+  the lanes; the approach segment before the foul line.

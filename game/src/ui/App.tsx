@@ -68,7 +68,7 @@ export function App() {
   if (state.status === 'loading') return <LoadingScreen />;
   return (
     <>
-      <GameCanvas key={`${attempt}-${state.session.track.trackId}`} session={state.session} pause={query.pause} havok={state.havok} />
+      <GameCanvas key={`${attempt}-${state.session.track.trackId}`} session={state.session} pause={query.pause} havok={state.havok} t={t} />
       {menuOpen ? (
         <StartMenu tracks={state.playOrder} track={state.session.track.trackId} skill={skill} onTrack={chooseTrack} onSkill={chooseSkill} onStart={start} sound={sound} />
       ) : paused ? (

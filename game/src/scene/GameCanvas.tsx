@@ -1,4 +1,5 @@
 import type { Scene as BabylonScene } from '@babylonjs/core/scene';
+import type { TFunction } from 'i18next';
 import { ReactylonSceneBridge } from 'obsidian-eclipse-graphic-engine/reactylon';
 import { useCallback } from 'react';
 import { Scene } from 'reactylon';
@@ -11,11 +12,12 @@ export interface GameCanvasProps {
   readonly session: Session;
   readonly pause: boolean;
   readonly havok: HavokInstance;
+  readonly t: TFunction;
 }
 
 /** Reactylon owns engine, canvas and scene; the bridge mounts the game's imperative scene code. */
-export function GameCanvas({ session, pause, havok }: GameCanvasProps) {
-  const mount = useCallback((scene: BabylonScene) => mountGame(scene, session, { pause, havok }), [session, pause, havok]);
+export function GameCanvas({ session, pause, havok, t }: GameCanvasProps) {
+  const mount = useCallback((scene: BabylonScene) => mountGame(scene, session, { pause, havok, t }), [session, pause, havok, t]);
   // WebGL, never WebGPU: see AGENTS.md traps (the board-hole material plugin is GLSL only).
   return (
     <Engine forceWebGL>

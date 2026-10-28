@@ -6,7 +6,8 @@ jumps a row of spilled drink cans, dodges a house ball rolling back towards it �
 choose who it plays like: a perfect player, who dodges everything and strikes, or a dummy, a
 beginner who stares at obstacles until it hits them and leaves pins standing. The ball leaves the
 hand fast and loses speed as it rolls; at the end the pins fall in slow motion and the score
-appears. A run lasts about twenty-six seconds, in a retro alley built from code, over a cheerful
+appears, on the alley's scoreboard too. A run lasts about twenty-six seconds, in an alley built
+from code — one of five rooms, each with its ball return and its scoreboard — over a cheerful
 groove generated, like every sound here, from numbers. The ball, the pins and the obstacles are
 twice life size, so they read from the back of a room.
 

@@ -4,6 +4,7 @@ import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { Color3, Color4 } from '@babylonjs/core/Maths/math.color';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { Scene } from '@babylonjs/core/scene';
+import type { TFunction } from 'i18next';
 import { applyAlleyEnvironment, SCENERY_THEMES } from '@models';
 import type { Session } from '../app/session';
 import { SIM_STEP_S } from '../config/run';
@@ -18,6 +19,7 @@ import { createBallView } from './views/ball-view';
 import { createLaneView } from './views/lane-view';
 import { createObstacleView } from './views/obstacle-view';
 import { createPinsView } from './views/pins-view';
+import { createScoreboardView } from './views/scoreboard-view';
 import { swingOffset } from './views/swing';
 import type { HavokInstance } from './physics/havok-loader';
 import { createPhysicsWorld } from './physics/physics-world';
@@ -41,6 +43,8 @@ export interface MountOptions {
   /** Freeze after the first rendered frame (the `pause` query parameter). */
   readonly pause: boolean;
   readonly havok: HavokInstance;
+  /** The i18n layer's translate: the scoreboard's words come from it (AGENTS.md). */
+  readonly t: TFunction;
 }
 
 /** Mounts a session into the Reactylon scene: lights, lane, ball, obstacles, camera, the frame loop. */
@@ -62,6 +66,7 @@ export function mountGame(scene: Scene, session: Session, options: MountOptions)
   const physics = createPhysicsWorld(scene, options.havok);
   const lane = createLaneView(scene);
   const alley = createAlleyView(scene, scenery);
+  const disposeScoreboard = createScoreboardView(scene, session, scenery, options.t);
   const ball = createBallView(scene);
   const pins = createPinsView(scene);
   const deck = createDeck(scene, { ball: ball.root, pins: pins.pins, pinMesh: pins.pinMesh });
@@ -112,6 +117,7 @@ export function mountGame(scene: Scene, session: Session, options: MountOptions)
     pins.dispose();
     ball.dispose();
     alley.dispose();
+    disposeScoreboard();
     lane.dispose();
     physics.dispose();
     key.dispose();

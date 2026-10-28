@@ -3,7 +3,7 @@ title: Lane — 200 m of maple, three travel lanes, gutters and pin deck
 type: spec
 status: built
 depends_on: [storybook/catalog.md, tools/shot.md]
-canonical: [models/src/measures/lane.ts, models/src/measures/alley.ts, game/src/config/scenery.ts, game/src/config/scenery.test.ts, models/src/lane/, models/src/alley/, storybook/src/stories/alley-segment.stories.tsx, storybook/src/stories/alley-end-wall.stories.tsx, storybook/src/stories/lane-segment.stories.tsx, storybook/src/stories/pin-deck.stories.tsx, storybook/src/scenes/pin-deck-scene.ts]
+canonical: [models/src/measures/lane.ts, models/src/measures/alley.ts, game/src/config/scenery.ts, game/src/config/scenery.test.ts, models/src/lane/, models/src/alley/, storybook/src/stories/alley-segment.stories.tsx, storybook/src/stories/alley-end-wall.stories.tsx, storybook/src/stories/alley-scoreboard.stories.tsx, storybook/src/stories/alley-ball-return.stories.tsx, storybook/src/stories/lane-segment.stories.tsx, storybook/src/stories/pin-deck.stories.tsx, storybook/src/scenes/pin-deck-scene.ts]
 verified: 2026-10-28
 ---
 
@@ -61,6 +61,20 @@ to render for its whole length.
    `MASKING_UNIT_BOTTOM_M` (above the pins), then the masking unit in the room's theme — a neon
    line, a trim, the mural's pattern centred on the panel, the top band. Story
    `models-alley-end-wall`, one story per theme, seen square on from the lanes.
+   **The scoreboard** (a human's request of 2026-10-28, after a photo of a real alley with a screen
+   over each lane): `createScoreboard(scene, { scenery, content })` hangs a screen over every lane
+   in front of the masking unit — lanes numbered 1 to 5 from the left wall, the playing surface is
+   lane 3. Its screen is live: the lane and track, the autopilot's skill, the impacts, the distance
+   and then the score or «STRIKE!», and the ten pins, down ones dark; the game words it through the
+   i18n layer and redraws it only when it changes (`scene/views/scoreboard-*.ts`). The neighbours'
+   screens wait for players: their lane number and a full rack. Pictures are drawn on canvases at
+   runtime; screens are unlit, as screens shine. Story `models-alley-scoreboard`, one per theme.
+   **The ball return** (same request): `createBallReturn(scene, { scenery })` stands just left of
+   the playing surface at the start of the lanes — a hood painted in the room's colours with the
+   dark opening the balls come out of, a rack of two rails with the theme's neon strip under it,
+   and six coloured house balls waiting, × `PROP_SCALE`. Story `models-alley-ball-return`, one per
+   theme. The scene draws one lane and alley segment before the foul line too — the approach — so
+   the start of a run never looks into the void.
 
 ## Acceptance criteria
 
@@ -136,6 +150,19 @@ to render for its whole length.
   ceiling, every layer on the ball's side within 10 cm, and the masking unit clears the pins.
   Shots: the five end-wall stories, and every track at 160 m — each room now ends in its own
   painted masking unit over the dark openings and the pins.
+- 2026-10-28 · round 8 · The human, with a photo of a real alley: a scoreboard over the pins and
+  the ball return at the start. Built `scoreboard-layout.ts` (pure: five screens, the live one over
+  the playing surface), `scoreboard-canvas.ts` (the pictures, on Babylon's canvas context, which has
+  no `textBaseline`: text is placed from its baseline) and `scoreboard.ts` (bezels, unlit faces with
+  dynamic textures); `ball-return.ts` (hood with a rounded top, rails, leg, glowing strip, six
+  glossy balls resting on both rails). The game feeds the live screen from the store, redrawing only
+  when a shown field changes (`scoreboardContent`, `sameContent`, unit-tested with the real i18n
+  strings), and draws segment −1 before the foul line: the first shot showed the foul-line segment
+  gone — `start` was enabled only when the window began at 0 — fixed. Unit tests: five screens,
+  none touching, the live one over the playing surface, all between the masking unit and the
+  ceiling; the ball return carries six balls and stands on the floor. Shots: scoreboard and ball
+  return stories, the start of lane-02 (the rack and hood at the left, the lane from the foul
+  line), lane-01 at 190 m (the five screens over the pins, «191 m» live).
 
 ## Canonical files
 

@@ -14,6 +14,9 @@ with the date.
 
 ## Where to resume
 
+- 2026-10-28, later still — A scoreboard over the pins (live screen for the run, the neighbours'
+  waiting) and a ball return with coloured balls at the start of the lanes ([lane](models/lane.md)
+  rule 6, two new stories). No criterion changed. To look at: the scoreboard's text from a projector.
 - 2026-10-28, late — Two reports fixed: the pause now silences the music too
   ([sounds](audio/sounds.md) rule 4), and every room ends in a painted masking unit in its theme
   instead of a grey rectangle ([lane](models/lane.md) rule 6, `models-alley-end-wall`).

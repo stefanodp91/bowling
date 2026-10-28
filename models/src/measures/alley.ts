@@ -54,3 +54,39 @@ export const MURAL_DISC_RADII_M = [0.75, 0.5, 0.9, 0.6] as const;
  * the side walls' (from MURAL_TOP_M up).
  */
 export const MASKING_UNIT_BOTTOM_M = 0.7 * PROP_SCALE;
+
+/**
+ * The scoreboard over the pins (rule 6): one screen over the playing surface, one over each
+ * neighbouring lane, hanging in front of the masking unit (design, after alleys whose masking units
+ * are screens). Their bottom edge clears the masking unit's neon line and trim.
+ */
+export const SCOREBOARD_BOTTOM_M = MASKING_UNIT_BOTTOM_M + 0.35;
+export const SCOREBOARD_HEIGHT_M = 1.7;
+/** A screen is this much narrower than the lane it hangs over, so neighbours never touch (design). */
+export const SCOREBOARD_GAP_M = 0.12;
+/** The black bezel round each screen (design). */
+export const SCOREBOARD_BEZEL_M = 0.05;
+/** How far in front of the end wall the screens hang. */
+export const SCOREBOARD_STANDOFF_M = 0.08;
+
+/**
+ * The ball return (rule 6): the hood where the balls come back up, and the rack that brings them to
+ * the bowler, on the capping left of the playing surface at the start of the lanes. A real hood is
+ * about 0.9 m long, 0.45 m wide and 0.6 m tall, its rack about 1.4 m long (design, after common
+ * machines), × PROP_SCALE like the balls it carries.
+ */
+export const BALL_RETURN_HOOD_LENGTH_M = 0.9 * PROP_SCALE;
+export const BALL_RETURN_HOOD_WIDTH_M = 0.45 * PROP_SCALE;
+export const BALL_RETURN_HOOD_HEIGHT_M = 0.6 * PROP_SCALE;
+export const BALL_RETURN_RACK_LENGTH_M = 1.4 * PROP_SCALE;
+/** The rails the balls rest on: this high above the floor, this far apart (design). */
+export const BALL_RETURN_RAIL_HEIGHT_M = 0.25 * PROP_SCALE;
+export const BALL_RETURN_RAIL_GAP_M = 0.12 * PROP_SCALE;
+/** House balls waiting on the rack, each its own colour (design). */
+export const BALL_RETURN_BALLS = 6;
+/**
+ * Where the machine stands: just left of the playing surface, over the capping and the neighbour's
+ * gutter, its hood starting half a metre behind the foul line.
+ */
+export const BALL_RETURN_X_M = -(ALLEY_INNER_X_M + BALL_RETURN_HOOD_WIDTH_M / 2);
+export const BALL_RETURN_HOOD_START_Z_M = -0.5;

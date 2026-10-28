@@ -58,5 +58,8 @@
     "title": "Paused",
     "resume": "Resume",
     "mainMenu": "Main menu"
+  },
+  "scoreboard": {
+    "title": "Lane {{lane}} · {{track}}"
   }
 }
