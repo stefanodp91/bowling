@@ -1,6 +1,6 @@
 // wiki/method/stats.md, criterion 1: the counts on a fixture repository built in a temporary folder.
 import assert from 'node:assert/strict';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'node:test';
 import { withTempDir } from '../lib/gate.mjs';
@@ -79,6 +79,17 @@ test('inside a hook that points git elsewhere, the fixture never touches that re
       });
       assert.deepEqual(counts, { total: 2, human: 1, perAgent: { 'Claude Opus 5.5': 1 } });
       assert.deepEqual(decoyState(), before);
+    })));
+
+test('inside `git commit -a`, whose hook gets a temporary index, the fixture never writes to it', () =>
+  withTempDir((decoy) =>
+    withTempDir((dir) => {
+      fixtureRepo(decoy, [{ minutes: 0 }]);
+      const commitIndex = join(decoy, 'index.commit');
+      copyFileSync(join(decoy, '.git/index'), commitIndex);
+      const before = readFileSync(commitIndex);
+      withEnv({ GIT_INDEX_FILE: commitIndex }, () => fixtureRepo(dir, [{ minutes: 0, trailer: OPUS }]));
+      assert.deepEqual(readFileSync(commitIndex), before);
     })));
 
 test('a human commit ends a streak', () => {

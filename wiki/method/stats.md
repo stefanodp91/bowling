@@ -65,7 +65,10 @@ who clones it can recompute them.
   child) and its `git init` set `core.bare = true`; two tests failed and the main checkout stopped
   working. Git now runs through `scripts/lib/git.mjs`. A new test sets those variables on a decoy
   repository and checks that its `HEAD` and `core.bare` do not change; without the fix it fails.
-  The commit that carries the fix went through the hook from a worktree.
+  The commit that carries the fix went through the hook from a worktree. Before the fix reached
+  main, the same bug struck a `git commit -a` in the main checkout: the hook gets a temporary index
+  in `GIT_INDEX_FILE`, the fixture overwrote it, and `df30119` deleted every file (repaired by
+  `aed76d9`). A second test sets only `GIT_INDEX_FILE` on a decoy index and checks it is unchanged.
 
 ## Canonical files
 

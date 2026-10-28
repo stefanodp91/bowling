@@ -8,10 +8,12 @@ handoff was opened ([`handoffs/`](handoffs/README.md)); each entry points to the
 ## A test that wrote into the real repository — 2026-10-28
 
 - **The stats fixture stays in its folder** ([stats](wiki/method/stats.md)) — run by the
-  pre-commit hook from a git worktree, the stats test built its fixture commits in the real
-  repository and set `core.bare = true`. Git now runs through `scripts/lib/git.mjs`, which drops
-  the variables a hook sets; a regression test points git at a decoy repository and checks that it
-  stays untouched. The trap is in AGENTS.md.
+  pre-commit hook, the stats test worked on the real repository: from a git worktree it built its
+  fixture commits there and set `core.bare = true`; under `git commit -a` it overwrote the commit's
+  index, so `df30119` («Approve the wiki before the talk») deleted every file and was pushed, and
+  `aed76d9` restored the tree with the approvals. Git now runs through `scripts/lib/git.mjs`, which
+  drops the variables a hook sets; two regression tests point git at a decoy repository and at a
+  decoy index and check that both stay untouched. The trap is in AGENTS.md.
 
 ## The generic procedures in English — 2026-10-28
 
