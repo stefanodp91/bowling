@@ -8,7 +8,7 @@ export interface RunInfoProps {
   readonly snapshot: GameSnapshot;
 }
 
-/** Distance as a bar and a number, speed, impacts, track (rule 1). */
+/** Distance as a bar and a number, speed, impacts, track, and who the autopilot plays like (rule 1). */
 export function RunInfo({ snapshot }: RunInfoProps) {
   const { t } = useTranslation();
   const metres = Math.min(LANE_LENGTH_M, Math.round(snapshot.z));
@@ -20,6 +20,7 @@ export function RunInfo({ snapshot }: RunInfoProps) {
         <span>{t('hud.speed', { kmh: Math.round(snapshot.speedMps * KMH_PER_MPS) })}</span>
         <span>{t('hud.impacts', { count: snapshot.impacts })}</span>
         <span>{t('hud.track', { id: snapshot.trackId })}</span>
+        <span>{t('hud.skill', { skill: t(`skill.${snapshot.skill}`) })}</span>
       </div>
     </section>
   );

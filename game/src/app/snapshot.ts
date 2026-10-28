@@ -9,6 +9,8 @@ import type { RunPhase } from '../domain/run/state';
  */
 export interface GameSnapshot {
   readonly ready: boolean;
+  /** The run is held at the foul line while the start menu is open. */
+  readonly waiting: boolean;
   readonly trackId: string;
   readonly phase: RunPhase;
   /** Seconds in the current phase (the countdown reads it). */

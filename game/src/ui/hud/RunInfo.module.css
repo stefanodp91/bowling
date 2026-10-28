@@ -36,8 +36,9 @@
 
 .stats {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.4rem 1rem;
   margin-top: 0.6rem;
   font-size: 1.5rem;
   font-variant-numeric: tabular-nums;

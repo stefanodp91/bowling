@@ -31,12 +31,13 @@ npm ci
 npm run dev
 ```
 
-Open <http://localhost:3000>. The run starts by itself after a countdown. Click a skill button —
-**Perfect** or **Dummy** — or press `1`, `2` to change how the autopilot plays, even mid-run. The first click anywhere switches the sound on; the button at the top right mutes it.
-When the run ends, **Run again** plays the next track (it also starts by itself after 10 s).
+Open <http://localhost:3000>. A start menu over the lane asks who the autopilot plays like —
+**Perfect** or **Dummy** — and which track; **Start** throws the ball and switches the sound on (the
+button at the top right mutes it). When the run ends, **Menu** goes back to the start menu (it also
+does so by itself after 10 s).
 
-Useful addresses: `?track=lane-03` picks a track (`lane-01` … `lane-05`), `?skill=dummy` sets the
-starting skill.
+Useful addresses: `?track=lane-03` skips the menu and plays that track (`lane-01` … `lane-05`),
+`?skill=dummy` with it sets the skill.
 
 Other commands:
 

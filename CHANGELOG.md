@@ -5,6 +5,11 @@ this file keeps what was done and when. Every page was built and closed inside o
 handoff was opened ([`handoffs/`](handoffs/README.md)); each entry points to the page whose
 «Rounds» section holds the details.
 
+## Start menu — 2026-10-28
+
+- **A start menu** ([HUD](wiki/game/hud.md), rule 2) — choose Perfect or Dummy and the track over
+  the lane, then Start; no skill buttons during the run; the end screen goes back to the menu.
+
 ## Fourth round of human requests — 2026-10-28
 
 - **A run as long for the dummy as for the perfect player** ([impacts](wiki/game/impacts.md)) — an

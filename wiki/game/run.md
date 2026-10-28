@@ -22,7 +22,8 @@ losing speed like a real ball, changing lane and jumping when the autopilot says
 
 1. **States** (a closed union): `ready` → `rolling` → `deck` → `settling` → `result`. `ready` lasts
    `READY_S` (1.5 s, a countdown on screen while the bowler's arm swings the ball, rule 3) and
-   starts by itself — there is no player input.
+   starts by itself — there is no player input; on a page opened on the start menu it begins when
+   the menu's «Start» is pressed ([HUD](hud.md), rule 2).
    `deck` begins at `DECK_HANDOFF_Z` (2 m before the head pin) where the ball is handed to physics.
 2. **Pure step.** `step(state, command, dtS) → state` in `game/src/domain/run/`, with the command
    from the autopilot (`stay | left | right | jump`). The simulation runs at a fixed step

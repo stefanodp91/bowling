@@ -15,13 +15,13 @@
     "speedLabel": "Speed",
     "impacts": "Impacts: {{count}}",
     "track": "Track {{id}}",
-    "progress": "Distance travelled"
+    "progress": "Distance travelled",
+    "skill": "Autopilot: {{skill}}"
   },
   "skill": {
     "label": "Autopilot skill",
     "perfect": "Perfect",
-    "dummy": "Dummy",
-    "hint": "Keys 1, 2"
+    "dummy": "Dummy"
   },
   "countdown": {
     "roll": "Roll"
@@ -31,8 +31,8 @@
     "strike": "STRIKE!",
     "impacts": "Impacts: {{count}}",
     "skill": "Skill: {{skill}}",
-    "runAgain": "Run again",
-    "autoRestart": "Next run in {{seconds}} s",
+    "menu": "Menu",
+    "autoMenu": "Back to the menu in {{seconds}} s",
     "pins": "Pins: standing are solid, down are faded",
     "pin": "Pin {{pin}}, {{state}}",
     "pinDown": "down",
@@ -41,5 +41,15 @@
   "sound": {
     "on": "Sound on",
     "off": "Sound off"
+  },
+  "menu": {
+    "label": "Start menu",
+    "title": "Bowling",
+    "trackLabel": "Track",
+    "start": "Start",
+    "skillDescription": {
+      "perfect": "Dodges everything and strikes",
+      "dummy": "A beginner: hits obstacles, leaves pins standing"
+    }
   }
 }

@@ -14,6 +14,10 @@ with the date.
 
 ## Where to resume
 
+- 2026-10-28, evening — The start menu is built ([HUD](game/hud.md) rule 2): skill and track are
+  chosen before the run, the in-game skill buttons are gone, and the end screen goes back to the
+  menu. HUD criteria 1 and 3 rewritten and re-locked on the human's authorization. To look at: the
+  menu from the back of a room (HUD criterion 4).
 - 2026-10-28, later — The human's fourth round: impacts dip and recover, so a dummy run lasts as
   long as a perfect one; the throw is an arm swing during the countdown ([run](game/run.md) rule
   3); the wet floor sign and the soda cans replace the stray pins and the sweep bar

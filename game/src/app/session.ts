@@ -23,6 +23,8 @@ export interface SessionOptions {
   readonly startAtZ?: number;
   readonly speedup?: number;
   readonly commands?: CommandSource;
+  /** Hold the run at the foul line until `start()`: the start menu is open (wiki/game/hud.md, rule 2). */
+  readonly waitForStart?: boolean;
 }
 
 /** The two states a frame renders between, and how far between them (rule 2: rendering interpolates). */
@@ -47,13 +49,24 @@ export interface Session {
   /** The scene's physics and pin deck, stepped with the simulation; returns the detach. */
   attach(ports: { readonly physics: PhysicsPort; readonly deck: DeckPort }): () => void;
   setSkill(skill: Skill): void;
+  /** Lets a held run begin its countdown; does nothing on a run that is not held. */
+  start(): void;
   markReady(): void;
 }
 
-function snapshotOf(world: World, track: Track, skill: Skill, ready: boolean, resultSkill: Skill | null, seed: number, handOffSpeedMps: number | null): GameSnapshot {
+interface SnapshotExtras {
+  readonly ready: boolean;
+  readonly waiting: boolean;
+  readonly resultSkill: Skill | null;
+  readonly seed: number;
+  readonly handOffSpeedMps: number | null;
+}
+
+function snapshotOf(world: World, track: Track, skill: Skill, { ready, waiting, resultSkill, seed, handOffSpeedMps }: SnapshotExtras): GameSnapshot {
   const state = world.run;
   return {
     ready,
+    waiting,
     trackId: track.trackId,
     phase: state.phase,
     phaseS: state.phaseS,
@@ -74,7 +87,7 @@ function snapshotOf(world: World, track: Track, skill: Skill, ready: boolean, re
 }
 
 /** One run of one track: the simulation, its fixed-step clock and the snapshot it publishes. */
-export function createSession({ track, skill: initialSkill, startAtZ, speedup, commands = stayOnly, seed = track.seed }: SessionOptions): Session {
+export function createSession({ track, skill: initialSkill, startAtZ, speedup, commands = stayOnly, seed = track.seed, waitForStart = false }: SessionOptions): Session {
   let world = initialWorld(track, startAtZ);
   let previous = world.run;
   let carryS = 0;
@@ -82,15 +95,18 @@ export function createSession({ track, skill: initialSkill, startAtZ, speedup, c
   let ready = false;
   let resultSkill: Skill | null = null;
   let handOffSpeedMps: number | null = null;
+  let waiting = waitForStart;
   let ports: { readonly physics: PhysicsPort; readonly deck: DeckPort } | null = null;
   const eventListeners = new Set<(events: readonly GameEvent[]) => void>();
-  const snapshot = () => snapshotOf(world, track, skill, ready, resultSkill, seed, handOffSpeedMps);
+  const snapshot = () => snapshotOf(world, track, skill, { ready, waiting, resultSkill, seed, handOffSpeedMps });
   const store = createStore(snapshot());
   const publish = () => store.set(snapshot());
   return {
     track,
     store,
     frame: (frameS, timeScale = 1, onStep) => {
+      // A held run does not move: the frame shows the ball in the bowler's hand.
+      if (waiting) return { previous: world.run, current: world.run, alpha: 0 };
       const plan = frameSteps(carryS, frameS, speedup, timeScale);
       carryS = plan.carryS;
       const events: GameEvent[] = [];
@@ -130,6 +146,11 @@ export function createSession({ track, skill: initialSkill, startAtZ, speedup, c
     },
     setSkill: (next) => {
       skill = next;
+      publish();
+    },
+    start: () => {
+      if (!waiting) return;
+      waiting = false;
       publish();
     },
     markReady: () => {

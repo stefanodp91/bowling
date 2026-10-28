@@ -78,3 +78,6 @@ investigations goes here, never in the pages (prompt 3, step 3).
   the soda cans replace the stray pins and the sweep bar; criteria re-locked on authorization.
 - 2026-10-28 · records/pilot-vs-blind-swing-20261028.md, pilot/headless-runs.md · the fourth
   round's campaign recorded: perfect 10.0 pins, dummy 5.9, every run 25.8–26.2 s.
+- 2026-10-28 · game/hud.md, game/run.md · the start menu built: skill and track before the run,
+  no in-game skill buttons, the end screen returns to the menu; HUD criteria 1 and 3 re-locked on
+  authorization.

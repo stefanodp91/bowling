@@ -48,8 +48,8 @@ try {
 const FOG = readFileSync(join(REPO_ROOT, 'game/src/config/camera.ts'), 'utf8').match(/FOG_HEX = '#([0-9A-F]{6})'/i)[1];
 /** wiki/game/run.md criterion 3: the ball on the lane at 150 m. */
 const GAME_AT_150 = 'game:track=lane-01&at=150&pause=1';
-/** wiki/game/hud.md criterion 3: one button per skill, perfect and dummy. */
-const SKILL_BUTTONS = 2;
+/** wiki/game/hud.md criterion 3: a bare address opens the start menu over the lane. */
+const GAME_MENU = 'game:pause=1';
 
 const run = parseFrontMatter(readFileSync(join(REPO_ROOT, 'wiki/game/run.md'), 'utf8')).frontMatter;
 const runIsBuilt = run.status !== 'planned' || process.argv.includes('--game');
@@ -67,7 +67,10 @@ if (!runIsBuilt) {
   }
 }
 
-/** wiki/game/hud.md criterion 3: the 150 m view shows the progress bar and the two skill buttons. */
+/**
+ * wiki/game/hud.md criterion 3: the 150 m view shows the progress bar and the active skill, and no
+ * menu; the bare address shows the start menu over the lane.
+ */
 async function checkHud() {
   const server = await ensureServer('game');
   const browser = await launchBrowser();
@@ -76,8 +79,14 @@ async function checkHud() {
     await page.goto(`${server.base}/?${GAME_AT_150.replace(/^game:/, '')}`);
     await page.waitForFunction(() => window.__bowling?.ready === true, undefined, { timeout: 20_000 });
     const bar = await page.locator('progress').isVisible();
-    const buttons = await page.getByRole('navigation', { name: 'Autopilot skill' }).locator('button[aria-pressed]').evaluateAll((all) => all.filter((b) => b.getBoundingClientRect().height > 0).length);
-    record(`${GAME_AT_150}: progress bar and two skill buttons visible`, bar && buttons === SKILL_BUTTONS, `progress ${bar ? 'visible' : 'missing'}, ${buttons} skill buttons`);
+    const skill = await page.getByText('Autopilot: Perfect').isVisible();
+    const menuInRun = await page.getByRole('region', { name: 'Start menu' }).count();
+    record(`${GAME_AT_150}: progress bar and active skill visible, no menu`, bar && skill && menuInRun === 0, `progress ${bar ? 'visible' : 'missing'}, skill ${skill ? 'visible' : 'missing'}, ${menuInRun} menu`);
+    await page.goto(`${server.base}/?${GAME_MENU.replace(/^game:/, '')}`);
+    await page.waitForFunction(() => window.__bowling?.ready === true, undefined, { timeout: 20_000 });
+    const menu = await page.getByRole('region', { name: 'Start menu' }).isVisible();
+    const canvas = await page.locator('canvas').isVisible();
+    record(`${GAME_MENU}: start menu over the lane`, menu && canvas, `menu ${menu ? 'visible' : 'missing'}, canvas ${canvas ? 'visible' : 'missing'}`);
   } finally {
     await browser.close();
     server.stop();

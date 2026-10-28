@@ -1,5 +1,5 @@
 ---
-title: HUD — run information, skill buttons, end screen
+title: HUD — start menu, run information, end screen
 type: spec
 status: built
 depends_on: [game/pins.md, pilot/autopilot.md]
@@ -9,7 +9,7 @@ verified: 2026-10-28
 
 # HUD
 
-> Boundary: everything drawn over the 3D scene: run information, the two skill buttons, the
+> Boundary: everything drawn over the 3D scene: the start menu, run information, the
 > countdown, the end screen, errors, localisation. NOT covered: what the skill profiles do
 > ([autopilot](../pilot/autopilot.md)).
 
@@ -21,18 +21,23 @@ change how well the autopilot drives, live, with one click.
 ## Rules
 
 1. **Run information** (top): distance `0–200 m` as a progress bar with the number, current speed,
-   impacts so far, current track id.
-2. **Skill buttons** (always visible, bottom): `Perfect`, `Dummy` (a human's decision of
-   2026-10-28: a perfect game against a beginner; there were three). One is active (default
-   `Perfect`, or `?skill=`). Clicking one switches the autopilot's skill immediately, even mid-run;
-   the active one is highlighted by more than colour (a marker and `aria-pressed`). Keyboard: `1`,
-   `2`. The skill active at the hand-over to the pin deck is the one reported at the end.
+   impacts so far, current track id, and the active skill («Autopilot: Perfect»).
+2. **Start menu** (a human's decision of 2026-10-28; it replaces the in-game skill buttons): a page
+   opened without `?track=` shows, over the chosen track with the ball in the bowler's hand, a menu
+   with the autopilot's skill — `Perfect` or `Dummy`, each with one line saying what it does — the
+   committed tracks of `index.json`, and «Start». The run is held at the foul line
+   (`waitForStart`, `start()` on the session) until «Start», which is also the gesture that lets
+   the browser play sound. Choosing a track loads it under the menu; choosing a skill changes the
+   held session in place. The chosen option of each group is highlighted by more than colour (a
+   marker and `aria-pressed`). An address that names a track — the tools' shots and headless runs —
+   starts at once, with `?skill=` or the default `Perfect`. There are no skill buttons during the
+   run.
 3. **Countdown** during `ready`: 3-2-1, then «Roll».
 4. **End screen** in `result`: the ten-pin diagram (down pins dimmed, standing pins solid, numbered),
-   the score `n / 10`, «STRIKE!» when ten, impacts and skill of the run, and «Run again», which
-   starts the next track of `index.json` (wrapping around) without reloading the page, so the sound
-   the audience already hears goes on. It also starts by itself after `AUTO_RESTART_S` (10 s), so
-   the demo can loop unattended on stage.
+   the score `n / 10`, «STRIKE!» when ten, impacts and skill of the run, and «Menu», which opens the
+   start menu again on the same track and skill without reloading the page, so the sound the
+   audience already hears goes on. It goes back to the menu by itself after `AUTO_MENU_S` (10 s);
+   a new run never starts by itself (a human's decision of 2026-10-28).
 5. **Errors** (invalid track, physics failing to load) replace the HUD with a readable message and
    a «Retry» button; never a blank screen.
 6. **Components:** React function components in `game/src/ui/`, one per file, each with a sibling
@@ -45,13 +50,13 @@ change how well the autopilot drives, live, with one click.
 
 ## Acceptance criteria
 
-1. [auto] Component tests (Vitest + Testing Library): clicking `Dummy` mid-run dispatches the
-   skill change and marks it pressed; keys `1`–`2` do the same; the end screen shows «STRIKE!»
-   only for 10.
+1. [auto] Component tests (Vitest + Testing Library): in the start menu, choosing `Dummy` and a
+   track and pressing «Start» starts that track with that skill; during the run there are no skill
+   buttons and the active skill is written at the top; the end screen shows «STRIKE!» only for 10.
 2. [auto] A test fails if any `.tsx` under `game/src/ui/` contains a string literal rendered as
    text or a `style=` prop (i18n and styles rules).
-3. [auto] `npm run shot -- game:track=lane-01&at=150&pause=1` shows the progress bar and the two
-   buttons.
+3. [auto] `npm run shot -- game:track=lane-01&at=150&pause=1` shows the progress bar and the
+   active skill, and no menu; `npm run shot -- game:pause=1` shows the start menu over the lane.
 4. [human] From the back of a room, the score and the active skill are readable.
 
 ## References
@@ -94,6 +99,17 @@ change how well the autopilot drives, live, with one click.
 - 2026-10-28 · round 4 · Two skill buttons, `Perfect` and `Dummy`, keys 1–2, default `Perfect`
   (a human's decision); criteria 1 and 3 rewritten and re-locked on the human's authorization. The
   bar reads 0–200 m. Component tests green; `shot:verify` counts two buttons at 150 m.
+- 2026-10-28 · round 5 · The human asked for a start menu to choose the skill and the track, in
+  place of the in-game buttons, and for the end of a run to go back to it. Built `ui/menu/StartMenu`
+  over the held scene (the session's new `waitForStart` and `start()`; a held frame does not step),
+  the active skill in the run information, «Menu» on the end screen and the return to the menu
+  after 10 s; a page whose address names a track starts at once, so shots and headless runs are
+  unchanged. Criteria 1 and 3 rewritten and re-locked on the human's authorization. Tests: the
+  menu starts lane-03 with Dummy; no skill buttons in the run; a held session stays at 0 s of
+  `ready` until `start()`. `shot:verify`: the 150 m view has the bar and «Autopilot: Perfect» and
+  no menu; `game:pause=1` shows the menu over the lane. A headless walk through the page: Dummy and
+  lane-02 chosen, held, Start, 4 impacts and 6 pins in 26.2 s, «Menu» back to a held lane-02 with
+  Dummy still chosen, 0 console errors.
 
 ## Canonical files
 
