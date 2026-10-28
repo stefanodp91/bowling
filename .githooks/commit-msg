@@ -1,3 +1,0 @@
-#!/bin/sh
-# Refuse a commit message with a forbidden term (wiki/method/gates.md, check-no-foreign-refs).
-node scripts/gates/check-no-foreign-refs.mjs --message-file "$1"

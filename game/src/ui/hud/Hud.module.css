@@ -1,9 +1,0 @@
-.hud {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-}
-
-.hud button {
-  pointer-events: auto;
-}
