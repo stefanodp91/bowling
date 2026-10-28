@@ -83,3 +83,5 @@ investigations goes here, never in the pages (prompt 3, step 3).
   authorization.
 - 2026-10-28 · models/lane.md, storybook/catalog.md, audio/sounds.md, game/hud.md · a room of its
   own for each track (five themes, a story each), the sound toggle in the menus, the pause.
+- 2026-10-28 · models/lane.md, audio/sounds.md, game/hud.md · the human's reports: a themed end
+  wall closes every room; the pause silences the music.

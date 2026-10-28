@@ -3,7 +3,7 @@ title: Lane — 200 m of maple, three travel lanes, gutters and pin deck
 type: spec
 status: built
 depends_on: [storybook/catalog.md, tools/shot.md]
-canonical: [models/src/measures/lane.ts, models/src/measures/alley.ts, game/src/config/scenery.ts, game/src/config/scenery.test.ts, models/src/lane/, models/src/alley/, storybook/src/stories/alley-segment.stories.tsx, storybook/src/stories/lane-segment.stories.tsx, storybook/src/stories/pin-deck.stories.tsx, storybook/src/scenes/pin-deck-scene.ts]
+canonical: [models/src/measures/lane.ts, models/src/measures/alley.ts, game/src/config/scenery.ts, game/src/config/scenery.test.ts, models/src/lane/, models/src/alley/, storybook/src/stories/alley-segment.stories.tsx, storybook/src/stories/alley-end-wall.stories.tsx, storybook/src/stories/lane-segment.stories.tsx, storybook/src/stories/pin-deck.stories.tsx, storybook/src/scenes/pin-deck-scene.ts]
 verified: 2026-10-28
 ---
 
@@ -55,6 +55,12 @@ to render for its whole length.
    decor, the neighbouring boards), so the draw budget of
    [headless runs](../pilot/headless-runs.md) holds. Measures in `models/src/measures/alley.ts`.
    Story `models-alley-segment`, one story per theme, seen from inside down the lanes.
+   **The end of the room** (a human's report of 2026-10-28: every room ended in a big grey
+   rectangle): `createAlleyEndWall(scene, { scenery })`, one mesh across the whole width, floor to
+   ceiling, standing just in front of the deck's dark wall: near-black pinsetter openings up to
+   `MASKING_UNIT_BOTTOM_M` (above the pins), then the masking unit in the room's theme — a neon
+   line, a trim, the mural's pattern centred on the panel, the top band. Story
+   `models-alley-end-wall`, one story per theme, seen square on from the lanes.
 
 ## Acceptance criteria
 
@@ -121,6 +127,15 @@ to render for its whole length.
   own; every committed track has a room of its own. Stories: `Default` (retro), `Neon`, `Space`,
   `Tropical`, `Diner`, seen from inside (a stage `inside` view); 5 story shots and the game at 40 m
   on lane-02…05 show five different rooms, the obstacles still readable against each.
+- 2026-10-28 · round 7 · Reported by the human on a real Chrome: every room ended in a big grey
+  rectangle — the deck's plain masking wall, which ran to the ceiling. Rule 6: an end wall per
+  theme (`alley-end-wall.ts`), built in a side wall's plane with the same painters and turned a
+  quarter round; the painters take a band length and centre whole repeats, so a 13.3 m panel shows
+  a full pattern. `MASKING_WALL_Z_M` names where the deck's wall stands; the end wall sits 2 cm in
+  front of it. Unit tests: for every theme the end wall spans the room wall to wall and floor to
+  ceiling, every layer on the ball's side within 10 cm, and the masking unit clears the pins.
+  Shots: the five end-wall stories, and every track at 160 m — each room now ends in its own
+  painted masking unit over the dark openings and the pins.
 
 ## Canonical files
 

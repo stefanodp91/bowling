@@ -1,6 +1,6 @@
 import type { AudioEngine } from 'obsidian-eclipse-audio-engine';
 import { describe, expect, it, vi } from 'vitest';
-import { MUSIC_ID } from '../config/audio';
+import { MUSIC_ID, MUSIC_LEVEL } from '../config/audio';
 import { createSoundPlayer } from './sound-player';
 
 /** A fake engine that records what the player asks of it. */
@@ -84,5 +84,20 @@ describe('sound player', () => {
     calls.length = 0;
     player.play({ id: 'impact', volume: 1 });
     expect(calls).toEqual([]);
+  });
+
+  it('a pause silences the music and stops the rumble, and going on gives the music back', () => {
+    const { engine } = fakeEngine();
+    const player = createSoundPlayer(engine);
+    player.unlock();
+    player.setPaused(true);
+    expect(engine.music.setLevel).toHaveBeenLastCalledWith(0);
+    expect(engine.cues.releaseHolds).toHaveBeenCalled();
+    player.toggle();
+    player.toggle();
+    // Sound turned back on during the pause: the music restarts, still silent.
+    expect(engine.music.setLevel).toHaveBeenLastCalledWith(0);
+    player.setPaused(false);
+    expect(engine.music.setLevel).toHaveBeenLastCalledWith(MUSIC_LEVEL);
   });
 });

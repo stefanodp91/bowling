@@ -1,18 +1,22 @@
 import type { Scene } from '@babylonjs/core/scene';
-import { createAlleySegment, LANE_LENGTH_M, SEGMENT_LENGTH_M, type Scenery } from '@models';
+import { createAlleyEndWall, createAlleySegment, LANE_LENGTH_M, MASKING_WALL_Z_M, SEGMENT_LENGTH_M, type Scenery } from '@models';
 import { firstVisibleSegment, SEGMENT_POOL_SIZE } from './segment-window';
 
 /** The room runs one segment past the head pin; the masking wall hides what lies beyond it. */
 const LAST_SEGMENT = LANE_LENGTH_M / SEGMENT_LENGTH_M;
+/** The room's end wall stands just in front of the deck's own dark wall, so the two never fight. */
+const END_WALL_AHEAD_M = 0.02;
 
 /**
- * The alley around the lane (wiki/models/lane.md, rule 6), in the track's theme, drawn as recycled
- * 20 m segments that follow the lane's own window around the camera.
+ * The alley around the lane (wiki/models/lane.md, rule 6), in the track's theme: recycled 20 m
+ * segments that follow the lane's own window around the camera, and the end wall over the pins.
  */
 export function createAlleyView(scene: Scene, scenery: Scenery): { update(cameraZ: number): void; dispose(): void } {
   const segment = createAlleySegment(scene, { scenery });
   segment.root.setEnabled(false);
   const pool = Array.from({ length: SEGMENT_POOL_SIZE }, (_, i) => segment.instantiate(`alley-segment-${i}`));
+  const endWall = createAlleyEndWall(scene, { scenery });
+  endWall.root.position.z = LANE_LENGTH_M + MASKING_WALL_Z_M - END_WALL_AHEAD_M;
   const update = (cameraZ: number): void => {
     const first = firstVisibleSegment(cameraZ);
     pool.forEach((instance, i) => {
@@ -25,6 +29,7 @@ export function createAlleyView(scene: Scene, scenery: Scenery): { update(camera
     update,
     dispose: () => {
       segment.dispose();
+      endWall.dispose();
       for (const instance of pool) instance.dispose();
     },
   };

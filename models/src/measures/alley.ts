@@ -3,6 +3,7 @@
  * measures. x across the room (left negative), y up, z along the lanes; the room is symmetric.
  */
 import { GUTTER_WIDTH_M, PLAYING_SURFACE_WIDTH_M, TRAVEL_LANE_WIDTH_M } from './lane';
+import { PROP_SCALE } from './scale';
 
 /** Neighbouring lanes on each side of the playing surface (rule 6). */
 export const NEIGHBOUR_LANES_PER_SIDE = 2;
@@ -45,3 +46,11 @@ export const NEON_LINE_HEIGHT_M = 0.08;
 /** The mural: one disc every 2.5 m along each wall, radii cycling through these values (design). */
 export const MURAL_DISC_SPACING_M = 2.5;
 export const MURAL_DISC_RADII_M = [0.75, 0.5, 0.9, 0.6] as const;
+
+/**
+ * The end of the room (rule 6): over the dark pinsetter openings hangs a masking unit, the painted
+ * panel real alleys put above the pins. Its bottom edge is 0.7 m above the deck at regulation size
+ * (design), × PROP_SCALE like the pins it clears; it runs to the ceiling, its top band as deep as
+ * the side walls' (from MURAL_TOP_M up).
+ */
+export const MASKING_UNIT_BOTTOM_M = 0.7 * PROP_SCALE;

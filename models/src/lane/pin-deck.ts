@@ -17,6 +17,7 @@ import {
   PIN_DECK_END_M,
   PIN_DECK_FRONT_M,
   PIT_DEPTH_M,
+  MASKING_WALL_Z_M,
   PIT_DROP_M,
   PLAYING_SURFACE_WIDTH_M,
 } from '../measures/lane';
@@ -103,7 +104,7 @@ export const createPinDeck: ModelFactory<PinDeckOptions> = (scene: Scene): Model
   pit.position.set(0, -PIT_DROP_M, deckEnd + PIT_DEPTH_M / 2);
   pit.material = darkMaterial(scene);
   const wall = CreatePlane('pin-deck-wall', { width: WALL_WIDTH_M, height: WALL_HEIGHT_M }, scene);
-  wall.position.set(0, WALL_HEIGHT_M / 2 - PIT_DROP_M, deckEnd + PIT_DEPTH_M);
+  wall.position.set(0, WALL_HEIGHT_M / 2 - PIT_DROP_M, MASKING_WALL_Z_M);
   wall.material = darkMaterial(scene);
 
   const light = new SpotLight(

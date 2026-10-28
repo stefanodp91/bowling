@@ -29,7 +29,7 @@ export function App() {
   const [attempt, setAttempt] = useState(0);
   const [skill, setSkill] = useState<Skill>(query.skill ?? DEFAULT_SKILL);
   const state = useGameSession(query, attempt, t, { skill, waitForStart: menuOpen });
-  const sound = useSound(state.status === 'running' ? state.session : null);
+  const sound = useSound(state.status === 'running' ? state.session : null, paused);
   const retry = () => setAttempt((n) => n + 1);
   const session = state.status === 'running' ? state.session : null;
   const chooseSkill = useCallback(

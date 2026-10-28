@@ -11,6 +11,8 @@ export type { LaneSegmentHandle, LaneSegmentOptions } from './lane/lane-segment'
 export { createPinDeck } from './lane/pin-deck';
 export { createAlleySegment } from './alley/alley-segment';
 export type { AlleySegmentOptions } from './alley/alley-segment';
+export { createAlleyEndWall } from './alley/alley-end-wall';
+export type { AlleyEndWallOptions } from './alley/alley-end-wall';
 export { SCENERIES, SCENERY_THEMES } from './alley/scenery-themes';
 export type { MuralMotif, Scenery, SceneryTheme } from './alley/scenery-themes';
 export * from './measures/alley';

@@ -1,8 +1,10 @@
 import { NullEngine } from '@babylonjs/core/Engines/nullEngine';
 import { Scene } from '@babylonjs/core/scene';
 import { describe, expect, it } from 'vitest';
-import { ALLEY_HALF_WIDTH_M, ALLEY_INNER_X_M, CAPPING_WIDTH_M, CEILING_HEIGHT_M, NEIGHBOUR_LANE_WIDTH_M, neighbourLaneCentreX } from '../measures/alley';
+import { ALLEY_HALF_WIDTH_M, ALLEY_INNER_X_M, MASKING_UNIT_BOTTOM_M, CAPPING_WIDTH_M, CEILING_HEIGHT_M, NEIGHBOUR_LANE_WIDTH_M, neighbourLaneCentreX } from '../measures/alley';
 import { PLAYING_SURFACE_WIDTH_M, SEGMENT_LENGTH_M } from '../measures/lane';
+import { PIN_HEIGHT_M } from '../measures/pins';
+import { createAlleyEndWall } from './alley-end-wall';
 import { createAlleySegment } from './alley-segment';
 import { SCENERIES } from './scenery-themes';
 
@@ -38,5 +40,19 @@ describe('alley segment', () => {
     expect(colours.length).toBeGreaterThan(0);
     const other = createAlleySegment(scene, { scenery: scenery === 'retro' ? 'neon' : 'retro' }).root.getChildMeshes().find((m) => m.name === 'alley-decor');
     expect(Array.from(colours)).not.toEqual(Array.from(other?.getVerticesData('color') ?? []));
+  });
+
+  it.each(SCENERIES)('closes the %s room with an end wall across its whole width, floor to ceiling, facing the ball', (scenery) => {
+    const scene = new Scene(new NullEngine());
+    const wall = createAlleyEndWall(scene, { scenery }).root;
+    wall.computeWorldMatrix(true);
+    const { min, max } = wall.getHierarchyBoundingVectors();
+    expect(min.x).toBeCloseTo(-ALLEY_HALF_WIDTH_M, 6);
+    expect(max.x).toBeCloseTo(ALLEY_HALF_WIDTH_M, 6);
+    expect(max.y).toBeCloseTo(CEILING_HEIGHT_M, 6);
+    // Every painted layer stands on the ball's side of the wall, within a few centimetres of it.
+    expect(max.z).toBeCloseTo(0, 6);
+    expect(min.z).toBeGreaterThan(-0.1);
+    expect(MASKING_UNIT_BOTTOM_M).toBeGreaterThan(PIN_HEIGHT_M);
   });
 });

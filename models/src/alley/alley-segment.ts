@@ -1,5 +1,3 @@
-import { Color3 } from '@babylonjs/core/Maths/math.color';
-import { PBRMaterial } from '@babylonjs/core/Materials/PBR/pbrMaterial';
 import { Mesh } from '@babylonjs/core/Meshes/mesh';
 import { VertexData } from '@babylonjs/core/Meshes/mesh.vertexData';
 // Side effect: Mesh.createInstance lives in this module (Babylon tree-shaking, AGENTS.md traps).
@@ -10,24 +8,13 @@ import { boardMaterial } from '../lane/lane-materials';
 import type { LaneSegmentHandle } from '../lane/lane-segment';
 import { NEIGHBOUR_LANES_PER_SIDE, neighbourLaneCentreX } from '../measures/alley';
 import { SEGMENT_LENGTH_M, TRAVEL_LANE_WIDTH_M, TRAVEL_LANES } from '../measures/lane';
-import { perScene } from '../materials/scene-cache';
 import type { ModelFactory } from '../model-handle';
 import { addCeiling, addFloor, addWall } from './alley-decor';
+import { decorMaterial } from './alley-material';
 import { alleyPalette } from './alley-palette';
 import { ColourMeshBuilder } from './colour-mesh';
 import type { Scenery } from './scenery-themes';
 
-/**
- * The scenery is unlit: its colours are painted into the vertices, so the room reads the same
- * everywhere along the 300 m without lights of its own, and costs one draw call (rule 6).
- */
-const decorMaterial = perScene((scene: Scene) => {
-  const material = new PBRMaterial('alley-decor', scene);
-  material.unlit = true;
-  material.albedoColor = Color3.White();
-  material.backFaceCulling = false;
-  return material;
-});
 
 /** One neighbouring lane uses one lane's width of the three-lane board texture. */
 const BOARD_U_SPAN = 1 / TRAVEL_LANES;

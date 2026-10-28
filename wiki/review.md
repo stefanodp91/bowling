@@ -14,6 +14,9 @@ with the date.
 
 ## Where to resume
 
+- 2026-10-28, late — Two reports fixed: the pause now silences the music too
+  ([sounds](audio/sounds.md) rule 4), and every room ends in a painted masking unit in its theme
+  instead of a grey rectangle ([lane](models/lane.md) rule 6, `models-alley-end-wall`).
 - 2026-10-28, night — Each track now has a room of its own ([lane](models/lane.md) rule 6, five
   themes, one story each in the catalogue), the sound toggle lives in the start menu and the pause
   screen, and «Pause» (or Escape) holds the run ([HUD](game/hud.md) rule 9). No criterion changed;

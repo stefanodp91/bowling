@@ -33,7 +33,8 @@ comes from a committed script, so an open-source audience gets the source of eve
    `strike` on a score of ten.
 4. **Muted until the first gesture**, as browsers require: a sound toggle in the start menu and on
    the pause screen ([HUD](../game/hud.md), rules 2 and 9; a human moved it there on 2026-10-28),
-   localised and accessible; any click on the page also unlocks audio through the engine. Once unlocked, sound
+   localised and accessible; while the game is paused the music falls silent (the engine's music
+   has no pause: its level goes to 0 and back) and the rumble stops, like the rest of the game; any click on the page also unlocks audio through the engine. Once unlocked, sound
    stays as the listener left it across runs — a new run never asks for another gesture — and the
    toggle alone decides on or off (the first click on the toggle turns sound on).
 5. Values in `game/src/config/audio.ts`.
@@ -124,6 +125,11 @@ comes from a committed script, so an open-source audience gets the source of eve
 - 2026-10-28 · round 6 · The sound toggle moved from the HUD to the start menu and the pause
   screen (rule 4, the human's request). A headless walk: a press on a track unlocks sound, the
   toggle then turns it off, and the run plays on.
+- 2026-10-28 · round 7 · Reported by the human: in pause the music went on while the effects
+  stopped. Rule 4: a paused game holds the music at level 0 and releases the rumble; going on gives
+  the level back (`setPaused` on the player, driven by the pause screen). Unit test with the fake
+  engine: pause sets level 0 and releases holds, sound turned back on during the pause stays
+  silent, resuming restores `MUSIC_LEVEL`.
 
 ## Canonical files
 

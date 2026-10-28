@@ -13,6 +13,8 @@ export interface SoundPlayer {
   toggle(): boolean;
   /** Sound is on: unlocked and not muted. */
   isOn(): boolean;
+  /** The game is paused: the music falls silent and the rumble stops, until it goes on (rule 4). */
+  setPaused(paused: boolean): void;
   /** What the engine reports: running, muted, the music playing. */
   status(): AudioStatus;
   dispose(): void;
@@ -29,6 +31,9 @@ export const createGameAudioEngine = (): AudioEngine =>
 export function createSoundPlayer(engine: AudioEngine = createGameAudioEngine()): SoundPlayer {
   let unlocked = false;
   let muted = false;
+  let paused = false;
+  // The engine's music has no pause: a paused game holds it at level 0 and gives the level back.
+  const musicLevel = (): number => (paused ? 0 : MUSIC_LEVEL);
   // The engine decodes only once its audio context runs, i.e. after the first gesture; nothing
   // plays before the files are decoded (a held voice that was never warmed is an error).
   let warmed = false;
@@ -43,7 +48,7 @@ export function createSoundPlayer(engine: AudioEngine = createGameAudioEngine())
   // The engine starts music only if it is audible when the file is ready, and on Web Audio it does
   // not restart it on unmute: so the music is (re)started every time sound becomes audible (rule 6).
   const startMusic = (): void => {
-    engine.music.setLevel(MUSIC_LEVEL);
+    engine.music.setLevel(musicLevel());
     void engine.music
       .stop()
       .then(() => engine.music.play(MUSIC_ID, path(MUSIC_ID), { crossfadeMs: 0 }))
@@ -84,6 +89,12 @@ export function createSoundPlayer(engine: AudioEngine = createGameAudioEngine())
       return unlocked && !muted;
     },
     isOn: () => unlocked && !muted,
+    setPaused: (next) => {
+      if (next === paused) return;
+      paused = next;
+      engine.music.setLevel(musicLevel());
+      if (paused) engine.cues.releaseHolds();
+    },
     status: () => engine.status(),
     dispose: () => {
       engine.cues.releaseHolds();

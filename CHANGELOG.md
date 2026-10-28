@@ -5,6 +5,13 @@ this file keeps what was done and when. Every page was built and closed inside o
 handoff was opened ([`handoffs/`](handoffs/README.md)); each entry points to the page whose
 «Rounds» section holds the details.
 
+## Fixes after a look on a real browser — 2026-10-28
+
+- **The end of the room** ([lane](wiki/models/lane.md), rule 6) — a painted masking unit in the
+  room's theme replaces the grey rectangle over the pins; a story per theme.
+- **A silent pause** ([sounds](wiki/audio/sounds.md), rule 4) — the music falls silent with the
+  effects while the game is paused.
+
 ## A room per track, pause — 2026-10-28
 
 - **Five rooms** ([lane](wiki/models/lane.md), rule 6) — retro, neon, space, tropical and diner,

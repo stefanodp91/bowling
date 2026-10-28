@@ -75,3 +75,5 @@ export const PIN_DECK_END_M = PIN_ROWS_DEPTH_M + PIN_DECK_BACK_MARGIN_M;
 export const PIT_DEPTH_M = 0.8 * PROP_SCALE;
 export const PIT_DROP_M = 0.25 * PROP_SCALE;
 export const MASKING_WALL_HEIGHT_M = 1.6 * PROP_SCALE;
+/** Where the masking wall stands, from the head pin spot along z: at the back of the pit. */
+export const MASKING_WALL_Z_M = PIN_DECK_END_M + PIT_DEPTH_M;

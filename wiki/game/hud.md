@@ -50,7 +50,7 @@ change how well the autopilot drives, live, with one click.
 8. **Accessibility:** buttons are real `<button>`s with accessible names; text contrast at least
    4.5:1 over the scene (a translucent backing panel); nothing conveys state by colour alone.
 9. **Pause** (a human's request of 2026-10-28): the «Pause» button, or Escape, holds the run where
-   it is (`hold()` on the session; physics and pins stand still too) and shows a pause screen with
+   it is (`hold()` on the session; physics and pins stand still too, the music falls silent) and shows a pause screen with
    «Resume», which goes on from there, «Main menu», which leaves the run for the start menu, and
    the sound toggle. There is no pause once the result is shown.
 

@@ -76,7 +76,7 @@ export function addWall(builder: ColourMeshBuilder, side: Side, palette: AlleyPa
     [[inward, MURAL_TOP_M - NEON_LINE_HEIGHT_M, 0], [inward, MURAL_TOP_M, 0], [inward, MURAL_TOP_M, L], [inward, MURAL_TOP_M - NEON_LINE_HEIGHT_M, L]],
     palette.surfaces.neon,
   );
-  addMural(builder, { side, x: inward, bottomM: WAINSCOT_TOP_M + STRIPE_HEIGHT_M, topM: MURAL_TOP_M - NEON_LINE_HEIGHT_M }, palette);
+  addMural(builder, { side, x: inward, lengthM: L, bottomM: WAINSCOT_TOP_M + STRIPE_HEIGHT_M, topM: MURAL_TOP_M - NEON_LINE_HEIGHT_M }, palette);
 }
 
 /** The x of every lane's centre, the three travel lanes and the neighbouring ones on both sides. */

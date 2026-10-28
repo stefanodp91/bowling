@@ -9,8 +9,9 @@ import { SOUND_TOGGLE_SELECTOR } from './menu/SoundToggle';
  * The page's sound (wiki/audio/sounds.md, rule 4): one player for the whole page, so a new run
  * keeps what the audience hears. The first press anywhere turns sound on; the toggle alone switches
  * it afterwards — a press on the toggle itself is left to the toggle, or the two would undo each other.
+ * While the game is paused the music is silent and the rumble stops.
  */
-export function useSound(session: Session | null): { on: boolean; toggle: () => void } {
+export function useSound(session: Session | null, paused: boolean): { on: boolean; toggle: () => void } {
   const [player, setPlayer] = useState<SoundPlayer | null>(null);
   const [on, setOn] = useState(false);
   useEffect(() => {
@@ -30,6 +31,8 @@ export function useSound(session: Session | null): { on: boolean; toggle: () => 
     };
   }, []);
   useEffect(() => (player === null || session === null ? undefined : connectSound(session, player)), [player, session]);
+  // The pause screen silences the music and the rumble (wiki/audio/sounds.md, rule 4).
+  useEffect(() => player?.setPaused(paused), [player, paused]);
   const toggle = useCallback(() => {
     if (player !== null) setOn(player.toggle());
   }, [player]);
