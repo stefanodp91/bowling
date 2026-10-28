@@ -91,19 +91,19 @@ git checkout 547be39
 
 ## Numbers
 
-From `npm run stats -- --md`, as of the release commit (run it yourself for the current values):
+From `npm run stats -- --md`, as of the commit that last updated this table (run it yourself for the current values):
 
 <!-- stats:start -->
 | Measure | Value |
 |---|---|
 | Spec pages planned / built / approved | 0 / 24 / 0 |
 | Built by the agent, not yet approved by a human | 24 |
-| Review: to judge / approved | 3 / 0 |
-| Self-approval rounds recorded | 42 |
-| Pages that needed more than one round | 15 (audio/sounds.md, game/camera.md, game/hud.md, game/impacts.md, game/pins.md, game/run.md, models/lane.md, models/obstacles/rental-shoes.md, models/obstacles/sweep-bar.md, models/pins.md, pilot/headless-runs.md, release/open-source.md, storybook/catalog.md, tools/shot.md, track/track-format.md) |
-| Commits in total / by a human | 31 / 0 |
-| Commits by Claude Opus 5.5 | 31 |
-| Longest agent streak (no gap over 30 min) | 31 commits in 130 min |
+| Review: to judge / approved | 6 / 0 |
+| Self-approval rounds recorded | 83 |
+| Pages that needed more than one round | 17 (audio/sounds.md, game/camera.md, game/hud.md, game/impacts.md, game/pins.md, game/run.md, models/ball.md, models/lane.md, models/obstacles/rental-shoes.md, models/pins.md, pilot/autopilot.md, pilot/headless-runs.md, release/open-source.md, storybook/catalog.md, tools/shot.md, track/track-format.md, workspace/monorepo.md) |
+| Commits in total / by a human | 51 / 0 |
+| Commits by Claude Opus 5.5 | 51 |
+| Longest agent streak (no gap over 30 min) | 33 commits in 139 min |
 | Gates | 10 |
 | check-audio | added in 38e47b0 2026-10-27 |
 | check-boundaries | added in 2196bb1 2026-10-26 |
@@ -115,7 +115,7 @@ From `npm run stats -- --md`, as of the release commit (run it yourself for the 
 | check-pilot | added in c33fca9 2026-10-27 |
 | check-tracks | added in 2541fb4 2026-10-27 |
 | check-webgl | added in ded72fe 2026-10-27 |
-| Shots taken | 129 (local, not in git) |
+| Shots taken | 259 (local, not in git) |
 <!-- stats:end -->
 
 ## Licence

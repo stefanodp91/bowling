@@ -175,8 +175,9 @@ losing speed like a real ball, changing lane and jumping when the autopilot says
   each step, publishes `GameSnapshot` to a `Store`), `store.ts`.
 - `CommandSource` is the port the [autopilot](../pilot/autopilot.md) plugs into; until then the
   session uses `stayOnly`.
-- The scene is `scene/mountGame.ts` plus `scene/views/` (lane, ball, obstacles) and
-  `scene/camera/chase-rig.ts`; the frame loop runs in `onBeforeRenderObservable`, the ready signal
+- The scene is `scene/mountGame.ts` plus `scene/views/` (lane, alley with its end wall and ball
+  return, ball and the bowler's swing, obstacles, pins, scoreboard) and `scene/camera/rig.ts`; the
+  frame loop runs in `onBeforeRenderObservable`, the ready signal
   after the first frame rendered with `scene.isReady()`.
 - `?at=` starts rolling at that metre at its target speed; `?pause=1` freezes after the first
   frame; `?speedup=k` runs exactly k fixed steps per rendered frame.

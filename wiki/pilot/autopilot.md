@@ -17,8 +17,8 @@ verified: 2026-10-28
 
 Nobody plays this demo: the autopilot does, and it really plays — it reads the same track file as
 the scene and decides from it, so what it proves about the game is true for the game. It plays a
-perfect game, or a beginner's, switched on stage with one click, so the audience sees mistakes turn
-into a slower ball and fewer pins.
+perfect game, or a beginner's, chosen in the start menu, so the audience sees mistakes turn into
+obstacles knocked away and fewer pins.
 
 ## Rules
 

@@ -34,7 +34,7 @@ to render for its whole length.
    the pins, so they grow with them ([conventions](conventions.md), twice life size); the masking
    wall runs the whole width of the alley.
 4. Built in segments (`SEGMENT_LENGTH_M`, 20 m) that the scene instances and recycles: the factory
-   creates one segment, not 300 m of geometry. The pin deck is a separate factory.
+   creates one segment, not 200 m of geometry. The pin deck is a separate factory.
 5. Fog or a fade hides where the lane ends in the distance (the distance is a tunable owned by
    [camera](../game/camera.md)). The fog is the colour of the alley's own haze, so the far end
    fades into the room, never into black.

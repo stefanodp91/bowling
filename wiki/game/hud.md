@@ -16,7 +16,8 @@ verified: 2026-10-28
 ## Purpose
 
 The audience must understand what is happening without explanation, and the speaker must be able to
-change how well the autopilot drives, live, with one click.
+choose, in one menu before the run, who the autopilot plays like and on which track — and stop the
+run, or leave it, at any moment.
 
 ## Rules
 
@@ -126,8 +127,11 @@ change how well the autopilot drives, live, with one click.
 
 ## Canonical files
 
+- `ui/App.tsx` shows, over the scene, the start menu (`ui/menu/StartMenu.tsx`, with
+  `SoundToggle`), the pause screen (`ui/menu/PauseScreen.tsx`) or the HUD; it holds the menu's
+  choices and drives the session (`start`, `hold`, `setSkill`).
 - `ui/hud/Hud.tsx` composes `RunInfo`, `Countdown`, `EndScreen` (with `PinDiagram`) and
-  `SkillButtons`; components read `GameSnapshot` through `useSnapshot(session.store)` and change
-  only the skill (`session.setSkill`).
+  `PauseButton`; components read `GameSnapshot` through `useSnapshot(session.store)`.
 - The snapshot carries `resultSkill`, the skill active when the ball was handed to the deck.
-- `ui/next-run.ts` builds the next run's query; `ui/ui-rules.test.ts` enforces criterion 2.
+- `ui/use-game-session.ts` loads a track and creates a session, held for the menu when asked;
+  `ui/ui-rules.test.ts` enforces criterion 2.
