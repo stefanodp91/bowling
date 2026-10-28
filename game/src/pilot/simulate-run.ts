@@ -41,7 +41,7 @@ export function simulateRun(track: Track, skill: Skill, seed: number): RunSummar
     impacts: world.impacts.count,
     speedAtHandOffMps: world.run.speedMps,
     lane: world.run.lane,
-    handOffX: handOffX(world),
+    handOffX: handOffX(world, skill, track.seed),
     aimErrorM: world.impacts.aimErrorM,
     rollingS: world.run.runS,
   };

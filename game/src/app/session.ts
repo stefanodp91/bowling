@@ -103,7 +103,7 @@ export function createSession({ track, skill: initialSkill, startAtZ, speedup, c
         if (ports !== null) {
           ports.physics.step();
           const wasJudged = world.deck.pinsDown !== null;
-          world = deckStep(world, ports.deck, SIM_STEP_S);
+          world = deckStep(world, ports.deck, SIM_STEP_S, { skill, trackSeed: track.seed });
           for (const speedMps of ports.deck.drainContacts()) events.push({ kind: 'pin-contact', speedMps, atS });
           if (!wasJudged && world.deck.pinsDown !== null) events.push({ kind: 'result', score: world.deck.pinsDown.length, atS });
         }

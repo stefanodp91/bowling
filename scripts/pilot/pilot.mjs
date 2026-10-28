@@ -1,4 +1,4 @@
-// npm run pilot -- [--tracks all|<ids>] [--skill perfect|good|sloppy] [--runs <n>] [--speedup <k>] [--blind]
+// npm run pilot -- [--tracks all|<ids>] [--skill perfect|dummy] [--runs <n>] [--speedup <k>] [--blind]
 // Runs the real game headlessly, driven by the autopilot (or the blind baseline), one JSON line per
 // run and a summary table at the end (wiki/pilot/headless-runs.md, rule 1).
 import { launchBrowser } from '../headless/browser.mjs';

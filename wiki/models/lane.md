@@ -1,10 +1,10 @@
 ---
-title: Lane — 300 m of maple, three travel lanes, gutters and pin deck
+title: Lane — 200 m of maple, three travel lanes, gutters and pin deck
 type: spec
 status: built
 depends_on: [storybook/catalog.md, tools/shot.md]
 canonical: [models/src/measures/lane.ts, models/src/measures/alley.ts, models/src/lane/, models/src/alley/, storybook/src/stories/alley-segment.stories.tsx, storybook/src/stories/lane-segment.stories.tsx, storybook/src/stories/pin-deck.stories.tsx, storybook/src/scenes/pin-deck-scene.ts]
-verified: 2026-10-27
+verified: 2026-10-28
 ---
 
 # Lane
@@ -15,15 +15,15 @@ verified: 2026-10-27
 
 ## Purpose
 
-The stage of the whole run. It must look like a real bowling lane stretched to 300 m, and stay cheap
+The stage of the whole run. It must look like a real bowling lane stretched to 200 m, and stay cheap
 to render for its whole length.
 
 ## Rules
 
 1. Measures (`models/src/measures/lane.ts`): one travel lane is 1.054 m wide (the regulation lane
    width, 41.5 in) made of 39 boards; the playing surface is three travel lanes side by side, centred
-   on `x = 0` (travel-lane centres at −1.054, 0, +1.054 m), 300 m long (a human's decision of
-   2026-10-27; it was 500 m). Gutters 0.235 m wide run
+   on `x = 0` (travel-lane centres at −1.054, 0, +1.054 m), 200 m long (a human's decision of
+   2026-10-28; it was 500 m, then 300 m). Gutters 0.235 m wide run
    along the two outer edges only, so the ball can move between travel lanes.
 2. Look: light maple boards with visible grain and seams, glossy oil sheen near the camera;
    the three travel lanes separated by a subtle darker board line. Regulation markings repeated
@@ -102,6 +102,9 @@ to render for its whole length.
   Story `models-alley-segment` reaches ready; unit tests: wall to wall, floor to ceiling, two
   meshes, instancing shares geometry. Rule 6 has no acceptance criterion yet: a proposal is in
   [review](../review.md) «To judge».
+- 2026-10-28 · round 5 · `LANE_LENGTH_M` 300 → 200 (a human's decision): ten 20 m segments; the
+  alley, the deck and the HUD follow from the constant. Unit tests unchanged and green; shots at
+  150 m and 195 m show the lane, the alley and the deck.
 
 ## Canonical files
 

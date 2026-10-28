@@ -65,3 +65,7 @@ investigations goes here, never in the pages (prompt 3, step 3).
   pilot/autopilot.md, audio/sounds.md, records/skills-20261027.md, review.md · twice-life-size
   props, the alley, the 126 BPM music and the new impact cost built; impacts now push the aim to one
   side per run (three campaigns recorded); every changed page back to `built`.
+- 2026-10-28 · models/lane.md, game/run.md, game/impacts.md, game/pins.md, game/camera.md,
+  game/hud.md, pilot/autopilot.md, pilot/headless-runs.md, track/track-format.md · the human's
+  third round: a 200 m lane, a run that is a throw then a drag (the «slow» profile), two skills
+  `perfect` and `dummy`; criteria rewritten and re-locked on the human's authorization; built.

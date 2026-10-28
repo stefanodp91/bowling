@@ -1,10 +1,10 @@
 ---
-title: Run — the ball's 300 m, from foul line to pin deck
+title: Run — the ball's 200 m, from foul line to pin deck
 type: spec
 status: built
 depends_on: [track/track-format.md, models/ball.md, models/lane.md]
 canonical: [game/src/config/run.ts, game/src/config/loop.ts, game/src/config/scene.ts, game/src/domain/run/, game/src/app/, game/src/dev/test-hook.ts, game/src/scene/, game/src/ui/App.tsx, game/src/ui/ErrorScreen.tsx, game/src/ui/use-game-session.ts, game/src/i18n/]
-verified: 2026-10-27
+verified: 2026-10-28
 ---
 
 # Run
@@ -15,8 +15,8 @@ verified: 2026-10-27
 
 ## Purpose
 
-The heart of the demo: a ball rolling by itself for forty seconds, faster and faster, changing lane
-and jumping when the autopilot says so.
+The heart of the demo: a ball thrown by itself, rolling for about twenty-five seconds and slowly
+losing speed like a real ball, changing lane and jumping when the autopilot says so.
 
 ## Rules
 
@@ -26,13 +26,20 @@ and jumping when the autopilot says so.
 2. **Pure step.** `step(state, command, dtS) → state` in `game/src/domain/run/`, with the command
    from the autopilot (`stay | left | right | jump`). The simulation runs at a fixed step
    (`SIM_STEP_S`, 1/120 s); rendering interpolates. No `Date.now`, no `Math.random` in the domain.
-3. **Target speed** grows linearly with distance from `START_SPEED_MPS` (3.7 m/s) at `z = 0` to
-   `MAX_SPEED_MPS` (12 m/s) at the start of the approach zone, then stays there. Actual speed moves
-   towards the target with at most `ACCEL_MPS2` (0.5 m/s²: above the ≈ 0.38 m/s² a clean run needs
-   at 12 m/s, low enough that a ball slowed by an impact is still slow at the pins — a human's
-   decision of 2026-10-27, so the skills differ visibly; it was 1.5 m/s²). A clean run lasts 40 s: the start
-   speed is chosen for that on the 300 m lane (a human's decision of 2026-10-27), while the
-   speed at the pins stays 12 m/s.
+3. **Speed: a throw, then the lane's drag** (a human asked on 2026-10-28 for a natural run instead
+   of a ball that kept speeding up; the «slow» profile). The ball waits at rest during `ready`.
+   - **The throw:** in the first `LAUNCH_S` (0.8 s) of `rolling` the speed rises from 0 to
+     `RELEASE_SPEED_MPS` (10 m/s, 36 km/h), eased out like an arm swing; it covers ≈ 5.3 m.
+   - **The drag:** from there the ball loses the share `ROLL_DRAG_PER_M` of its speed for every
+     metre it rolls (dv/dz = −k·v, so dv/dt = −k·v²: hard on a fast ball, gentle on a slow one).
+     `k` is derived so a clean ball reaches the hand-over at `PIN_SPEED_MPS` (6 m/s, 22 km/h).
+   - **Target speed** is that clean curve: the release speed, then `v₀·e^(−k·d)` past the throw. It
+     never increases with `z`, and the actual speed never exceeds it: nothing gives speed back,
+     an impact's loss is for good ([impacts](impacts.md)).
+   - The drag stops at `MIN_ROLL_SPEED_MPS` (3 m/s), so a ball slowed by impacts still reaches the
+     pins.
+   A clean run lasts ≈ 26 s on the 200 m lane (a human's decision of 2026-10-28; it was 300 m and
+   40 s).
 4. **Lane change:** to an adjacent travel lane in `LANE_CHANGE_S` (0.25 s), eased. A command for a
    lane that does not exist is ignored. A second change can start only when the first has ended.
 5. **Jump:** a parabola lasting `JUMP_AIRTIME_S` (0.6 s) whose apex lifts the ball's lowest point to
@@ -40,7 +47,7 @@ and jumping when the autopilot says so.
    size — [conventions](../models/conventions.md)). No lane change while airborne.
 6. **Rolling:** the ball's rotation follows its speed (`ω = v / r`, radius from the ball measures).
 7. **Query parameters** (parsed and validated in one module): `track`, `skill` (initial skill),
-   `at` (start already at that metre, for shots), `pause=1` (freeze after the first rendered frame,
+   `at` (start already at that metre, with the speed and clock a clean run has there, for shots), `pause=1` (freeze after the first rendered frame,
    for shots), `speedup` (simulation steps per rendered frame, for headless runs: it multiplies the
    number of fixed steps, never their length).
 8. **Test hook** (`game/src/dev/`): `window.__bowling` exposes a read-only snapshot (state, `z`,
@@ -54,10 +61,11 @@ and jumping when the autopilot says so.
    command sequence from the same state gives a bit-identical state sequence; a lane change ends
    exactly in the centre of the adjacent lane after `LANE_CHANGE_S`; a jump returns to `y = 0`
    after `JUMP_AIRTIME_S`.
-2. [auto] With the command `stay` only, on an empty track, `rolling` lasts between 38 and 42 s of
-   simulated time (≈ 40 s expected: 260 m with speed linear in distance from 3.7 to 12 m/s is
-   `260 / 8.3 · ln(12 / 3.7)` ≈ 36.9 s, plus 38 m at 12 m/s ≈ 3.2 s).
-3. [auto] `npm run shot -- game:track=lane-01&at=250&pause=1` shows the ball on the lane (the
+2. [auto] With the command `stay` only, on an empty track, `rolling` lasts between 24 and 27 s of
+   simulated time (≈ 26 s expected: the 0.8 s throw covers 5.3 m, then speed decaying
+   exponentially in distance from 10 to 6 m/s over the remaining 192.7 m takes
+   `(10 / 6 − 1) / (k · 10)` with `k = ln(10 / 6) / 192.7`, ≈ 25.1 s).
+3. [auto] `npm run shot -- game:track=lane-01&at=150&pause=1` shows the ball on the lane (the
    centre region of the image is not background).
 4. [human] Watching a run, the ball's acceleration, lane changes and jumps feel smooth and readable.
 
@@ -65,8 +73,10 @@ and jumping when the autopilot says so.
 
 - Real release speeds: under 17 mph slow, 17–19 mph average, over 19 mph fast (7.6–8.5 m/s
   average); a ball loses about 3–3½ mph before the pins
-  (https://www.topendsports.com/sport/tenpin/physics-speed.htm). This run's 6 → 12 m/s
-  (13 → 27 mph) is deliberately faster than a real throw: it is a 500 m lane.
+  (https://www.topendsports.com/sport/tenpin/physics-speed.htm). This run's 10 → 6 m/s
+  (22 → 13 mph) is a little faster than a real throw and loses more: it is a 200 m lane.
+- Drag proportional to the square of speed, dv/dt = −k·v², whose speed decays exponentially with
+  distance (https://en.wikipedia.org/wiki/Drag_(physics)).
 - Fixed-step simulation with an accumulator and render interpolation («Fix your timestep»,
   https://gafferongames.com/post/fix_your_timestep/).
 
@@ -110,6 +120,18 @@ and jumping when the autopilot says so.
   the jump clears the twice-life-size shoes (0.24 m) and sweep bar (≈ 0.61 m). The scene draws the
   alley around the lane (`views/alley-view.ts`, `views/segment-window.ts`). Unit tests green;
   shots at 0, 140, 250 and 295 m show the ball, the obstacles, the alley and the deck.
+- 2026-10-28 · round 6 · The human asked for a 200 m lane and a natural run: «acceleration in the
+  throw, deceleration as the ball rolls», and chose the «slow» profile. Rule 3 rewritten: a 0.8 s
+  eased throw from rest to 10 m/s, then a drag of `ROLL_DRAG_PER_M` per metre (dv/dz = −k·v, k
+  derived so a clean ball reaches 6 m/s at the hand-over), stopping at 3 m/s. A first try lost a
+  fixed m/s per metre: a ball slowed by three impacts crawled at the floor and a beginner's run
+  lasted 56 s, so the drag became proportional to speed. `?at=` now starts with the clean run's
+  speed and clock (`cleanRunTimeTo`), so returning balls stand where a clean run meets them.
+  Criteria 2 and 3 rewritten (24–27 s; shot at 150 m) and re-locked on the human's authorization.
+  Unit tests: speed ≤ target at every step (the throw is clamped to the target where the step
+  ends: a discrete throw overshot by 1 mm/s); target never increasing; the throw reaches 10 m/s in
+  0.8 s and a clean run ends at 6.0 m/s; a slowed ball stops slowing at 3 m/s; «stay» rolls 25.9 s.
+  Shots at 3, 150 and 195 m.
 
 ## Canonical files
 

@@ -9,7 +9,7 @@ export interface SkillButtonsProps {
   readonly onSelect: (skill: Skill) => void;
 }
 
-/** Perfect, Good, Sloppy: one click or key 1–3 switches the autopilot's skill, even mid-run (rule 2). */
+/** Perfect, Dummy: one click or key 1–2 switches the autopilot's skill, even mid-run (rule 2). */
 export function SkillButtons({ active, onSelect }: SkillButtonsProps) {
   const { t } = useTranslation();
   useEffect(() => {

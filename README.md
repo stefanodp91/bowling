@@ -1,10 +1,12 @@
 # Bowling
 
-A bowling ball rolls by itself down a 300 m lane full of obstacles and ends against ten pins. Nobody
-plays: an autopilot reads the lane and drives the ball — it changes lane, jumps the sweep bar,
-dodges a house ball rolling back towards it — and you can only tell it how well to drive. Lower its
-skill and it starts hitting things, and the pins show it; at the end they fall in slow motion and
-the score appears. A run lasts forty seconds, in a retro alley built from code, over a cheerful
+A bowling ball is thrown by itself down a 200 m lane full of obstacles and ends against ten pins.
+Nobody plays: an autopilot reads the lane and drives the ball — it changes lane, jumps the sweep
+bar, dodges a house ball rolling back towards it — and you can only choose who it plays like: a
+perfect player, who dodges everything and strikes, or a dummy, a beginner who stares at obstacles
+until it hits them, slows down and leaves pins standing. The ball leaves the hand fast and loses
+speed as it rolls; at the end the pins fall in slow motion and the score appears. A clean run lasts
+about twenty-five seconds, in a retro alley built from code, over a cheerful
 groove generated, like every sound here, from numbers. The ball, the pins and the obstacles are
 twice life size, so they read from the back of a room.
 
@@ -30,11 +32,10 @@ npm run dev
 ```
 
 Open <http://localhost:3000>. The run starts by itself after a countdown. Click a skill button —
-**Perfect**, **Good**, **Sloppy** — or press `1`, `2`, `3` to change how well the autopilot drives,
-even mid-run. The first click anywhere switches the sound on; the button at the top right mutes it.
+**Perfect** or **Dummy** — or press `1`, `2` to change how the autopilot plays, even mid-run. The first click anywhere switches the sound on; the button at the top right mutes it.
 When the run ends, **Run again** plays the next track (it also starts by itself after 10 s).
 
-Useful addresses: `?track=lane-03` picks a track (`lane-01` … `lane-05`), `?skill=sloppy` sets the
+Useful addresses: `?track=lane-03` picks a track (`lane-01` … `lane-05`), `?skill=dummy` sets the
 starting skill.
 
 Other commands:
@@ -45,7 +46,7 @@ Other commands:
 | `npm test` | Unit and component tests, and the type check, in every workspace |
 | `npm run check` | Everything the pre-commit hook runs: tests, gates and their self-tests, wiki lint |
 | `npm run check:full` | `check` plus the headless gate that plays every track in a real browser |
-| `npm run pilot -- --tracks all --skill sloppy` | Plays tracks headlessly; one JSON line per run |
+| `npm run pilot -- --tracks all --skill dummy` | Plays tracks headlessly; one JSON line per run |
 | `npm run build` / `npm run preview` | The static build in `game/dist/`, and a local server for it |
 
 The headless commands (`shot`, `pilot`, `check:full`) use Playwright's Chromium; if it is missing,

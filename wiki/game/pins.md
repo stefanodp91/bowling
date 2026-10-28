@@ -4,7 +4,7 @@ type: spec
 status: built
 depends_on: [game/impacts.md, models/pins.md]
 canonical: [game/src/config/pins.ts, game/src/config/physics.ts, game/src/domain/scoring/, game/src/domain/deck/, game/src/app/deck-port.ts, game/src/app/deck-step.ts, game/src/scene/physics/, game/src/scene/views/pins-view.ts, models/src/measures/lane.ts]
-verified: 2026-10-27
+verified: 2026-10-28
 ---
 
 # Pins physics
@@ -44,7 +44,8 @@ Havok decides how many pins fall.
 1. [auto] Unit tests on the knocked-down rule: upright pin on its spot → standing; tilted 50° →
    down; upright but moved 0.2 m × `PROP_SCALE` → down.
 2. [auto] A deck simulation test (Babylon `NullEngine` + Havok WASM inside Vitest, no browser): a
-   ball at the pocket (head pin centre + `POCKET_OFFSET_M`) at 12 m/s with no aim error knocks down
+   ball at the pocket (head pin centre + `POCKET_OFFSET_M`) at `PIN_SPEED_MPS` (6 m/s, a clean
+   ball's speed at the hand-over) with no aim error knocks down
    at least 8 pins (the exact count goes in a verification record).
 3. [auto] Same test harness: a ball aimed 0.5 m to the side of the head pin knocks down fewer pins
    than the pocket ball.
@@ -106,6 +107,12 @@ Havok decides how many pins fall.
   side 5, deterministic; slow motion neutral. A sweep of the hand-over offset is in the
   [skills record](../records/skills-20261027.md): strikes from 0.3 m left to 0.1 m right of the
   pocket, speed hardly matters.
+- 2026-10-28 · round 5 · The ball now reaches the deck at `PIN_SPEED_MPS` (6 m/s) when clean, as
+  slow as 3 m/s after impacts. Criterion 2 rewritten for 6 m/s and re-locked on the human's
+  authorization. Deck tests: the pocket ball at 6 m/s knocks down 10; 0.5 m to the side, 6;
+  identical twice. A sweep of the offset from the pocket at 2.5, 4 and 6 m/s found the strike
+  plateau from 0.3 m left to 0.1 m right at every speed, and 3–8 pins from 0.3 to 0.8 m right and
+  0.5 to 0.9 m left: the dummy's miss is drawn there.
 
 ## Canonical files
 

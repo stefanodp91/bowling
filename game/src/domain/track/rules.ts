@@ -1,5 +1,5 @@
 import { LANE_INDICES } from '@models/measures/lane';
-import { LONGEST_MANOEUVRE_S, MAX_SPEED_MPS } from '../../config/run';
+import { LONGEST_MANOEUVRE_S, RELEASE_SPEED_MPS } from '../../config/run';
 import {
   APPROACH_START_Z_M,
   GAP_END_M,
@@ -29,8 +29,8 @@ export function expectedGap(z: number): number {
   return GAP_START_M + (GAP_END_M - GAP_START_M) * fraction;
 }
 
-/** The shortest gap that still leaves time to act at full speed (rule 6, «time to act»). */
-export const MIN_ACTION_GAP_M = (LONGEST_MANOEUVRE_S + MIN_REACTION_S) * MAX_SPEED_MPS;
+/** The shortest gap that still leaves time to act at the release speed, the fastest a ball goes (rule 6, «time to act»). */
+export const MIN_ACTION_GAP_M = (LONGEST_MANOEUVRE_S + MIN_REACTION_S) * RELEASE_SPEED_MPS;
 
 interface Placed {
   readonly index: number;
@@ -58,7 +58,7 @@ function spacing(placed: readonly Placed[]): Violation[] {
       problems.push({ index: current.index, rule: 'spacing', message: `gap ${gap.toFixed(1)} m after obstacle ${previous.index}, expected ${expected.toFixed(1)} ± ${GAP_JITTER_M} m` });
     }
     if (gap < MIN_ACTION_GAP_M - EPSILON_M) {
-      problems.push({ index: current.index, rule: 'time-to-act', message: `gap ${gap.toFixed(1)} m gives ${(gap / MAX_SPEED_MPS).toFixed(2)} s at ${MAX_SPEED_MPS} m/s, less than ${(MIN_ACTION_GAP_M / MAX_SPEED_MPS).toFixed(2)} s` });
+      problems.push({ index: current.index, rule: 'time-to-act', message: `gap ${gap.toFixed(1)} m gives ${(gap / RELEASE_SPEED_MPS).toFixed(2)} s at ${RELEASE_SPEED_MPS} m/s, less than ${(MIN_ACTION_GAP_M / RELEASE_SPEED_MPS).toFixed(2)} s` });
     }
     return problems;
   });

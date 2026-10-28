@@ -1,10 +1,10 @@
 ---
-title: Autopilot — the only player, and its three skill profiles
+title: Autopilot — the only player, and its two skill profiles
 type: spec
 status: built
 depends_on: [game/impacts.md, game/pins.md]
 canonical: [game/src/config/pilot.ts, game/src/pilot/, game/src/domain/deck/hand-off.ts]
-verified: 2026-10-27
+verified: 2026-10-28
 ---
 
 # Autopilot
@@ -16,8 +16,9 @@ verified: 2026-10-27
 ## Purpose
 
 Nobody plays this demo: the autopilot does, and it really plays — it reads the same track file as
-the scene and decides from it, so what it proves about the game is true for the game. Its skill can
-be lowered on stage, so the audience sees impacts turn into fewer pins.
+the scene and decides from it, so what it proves about the game is true for the game. It plays a
+perfect game, or a beginner's, switched on stage with one click, so the audience sees mistakes turn
+into a slower ball and fewer pins.
 
 ## Rules
 
@@ -39,24 +40,31 @@ be lowered on stage, so the audience sees impacts turn into fewer pins.
    clears every obstacle of the group. A jump starts when the time to meet makes the ball's lowest
    point clear the obstacle's height at the moment of crossing (derived from the jump parabola, not
    a hand-tuned number).
-5. **Skill profiles** (`game/src/config/pilot.ts`, an `as const` record):
+5. **Skill profiles** (`game/src/config/pilot.ts`, an `as const` record; a human's decision of
+   2026-10-28: «perfect» and «dummy», there were three):
 
-   | Profile | Notices an obstacle at a time to meet of | Chance to ignore a noticed obstacle |
-   |---|---|---|
-   | `perfect` | 1.0 s | 0 |
-   | `good` | 0.6 s | 0.25 |
-   | `sloppy` | 0.35 s | 0.70 |
+   | Profile | Notices an obstacle at a time to meet of | Chance to ignore a noticed obstacle | Target fixation | Miss at the pins |
+   |---|---|---|---|---|
+   | `perfect` | 1.0 s | 0 | no | 0 |
+   | `dummy` | 0.6 s | 0.40 | yes | 0.45–0.6 m |
 
-   The chances to ignore were 0.10 and 0.30; a human asked on 2026-10-27 that the skills differ
-   visibly, so `good` now ignores about one obstacle in four and `sloppy` more than two in three.
+   - `perfect` dodges everything and delivers the ball at the pocket: the perfect game, a strike.
+   - `dummy` simulates a beginner. It ignores some obstacles, and **fixates** on what it ignores:
+     it steers, one lane at a time, towards the lane of an ignored obstacle it meets before any
+     obstacle it handles — a beginner steers towards what they stare at. Its ball reaches the pins
+     **off the pocket** by a miss drawn once per run, on the side the impacts push to: the band
+     where the deck, at every speed a dummy arrives with, leaves 3 to 8 pins down
+     (the deck sweep of round 5). So it never strikes, and it knocks
+     down some pins.
 
    The ignore draw happens once per obstacle, when it is first noticed, from the seeded source
    keyed by the obstacle's index: same track, seed and skill changes → same run. Changing skill
-   mid-run affects only obstacles noticed afterwards.
+   mid-run affects only obstacles noticed afterwards; the miss at the pins is the skill's in charge
+   at the hand-over.
 6. **The approach.** After the last obstacle the pilot moves to the centre lane and aims at the
    pocket: `x = POCKET_OFFSET_M` to the right of the head pin (owned by
-   [pins physics](../game/pins.md), imported, not redefined). That aim target is what pins physics
-   receives, plus the aim error from impacts.
+   [pins physics](../game/pins.md), imported, not redefined). That aim target, plus the skill's miss
+   and the aim error from impacts, is what pins physics receives.
 7. **Simulated runs.** `simulateRun(track, skill, seed) → RunSummary` runs the domain (run,
    impacts, pilot) without a browser up to the pin-deck hand-over and returns impacts, speed and
    aim at the hand-over. Tests and tools use it.
@@ -67,12 +75,13 @@ be lowered on stage, so the audience sees impacts turn into fewer pins.
    constant), so tracks and pilot cannot drift apart.
 2. [auto] `simulateRun` with `perfect` on every committed track: zero impacts, centre lane at the
    hand-over.
-3. [auto] `simulateRun` with `sloppy` on every committed track: at least one impact in total across
-   the five tracks, and the same summary when run twice.
+3. [auto] `simulateRun` with `dummy` on every committed track (the track's seed): at least one
+   impact on each track, and the same summary when run twice; a deck simulation of each of those
+   hand-overs (its `x` and speed) knocks down between 1 and 9 pins — never a strike, never nothing.
 4. [auto] Unit tests on constructed cases: a returning ball is avoided even when a still obstacle is
    nearer in distance but later in time; two obstacles in two lanes at the same `z` lead to the third
    lane; a sweep bar leads to a jump that clears it; a widening gutter is left before it starts.
-5. [human] Watching `Good` and `Sloppy` runs, the pilot's mistakes look like mistakes, not glitches.
+5. [human] Watching `Dummy` runs, the pilot's mistakes look like a beginner's, not glitches.
 
 ## References
 
@@ -106,6 +115,15 @@ be lowered on stage, so the audience sees impacts turn into fewer pins.
   run, the same summary twice; tests green. Browser campaign: good 1.0 impacts and 7.3 pins, sloppy
   2.7 and 2.5 ([skills record](../records/skills-20261027.md)). For the human (criterion 5): sloppy
   now misses often enough to look careless rather than unlucky.
+- 2026-10-28 · round 5 · Two profiles, `perfect` and `dummy` (a human's decision). Ignoring was
+  not enough for a beginner: a dummy that ignored obstacles stayed in the centre lane and hit none
+  on lane-03, so it also fixates — it steers towards the lane of an obstacle it ignores — and
+  notices at 0.6 s, time enough for two lane changes. Ignore chance tried at 0.3–0.9 with
+  `simulateRun`: 0.4 gives 1–4 impacts per track with the track's seed. The dummy's miss
+  (0.45–0.6 m, the side of its impacts) comes from the deck sweep of [pins physics](../game/pins.md)
+  round 5. Criteria 3 and 5 rewritten and re-locked on the human's authorization. Tests: perfect 0
+  impacts and the centre lane on every track; dummy 4, 4, 2, 1, 2 impacts on lane-01…05, the same
+  twice; the deck knocks down 3, 5, 7, 7, 7 pins from those hand-overs.
 
 ## Canonical files
 

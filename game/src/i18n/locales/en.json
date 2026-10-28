@@ -20,9 +20,8 @@
   "skill": {
     "label": "Autopilot skill",
     "perfect": "Perfect",
-    "good": "Good",
-    "sloppy": "Sloppy",
-    "hint": "Keys 1, 2, 3"
+    "dummy": "Dummy",
+    "hint": "Keys 1, 2"
   },
   "countdown": {
     "roll": "Roll"

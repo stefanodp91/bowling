@@ -4,7 +4,7 @@ type: spec
 status: built
 depends_on: [game/run.md, models/obstacles/stray-pins.md, models/obstacles/returning-ball.md, models/obstacles/rental-shoes.md, models/obstacles/sweep-bar.md, models/obstacles/widening-gutter.md]
 canonical: [game/src/config/impacts.ts, game/src/domain/impacts/, game/src/domain/simulation.ts, game/src/scene/views/knock-away.ts, game/src/scene/views/obstacle-view.ts, game/src/scene/physics/]
-verified: 2026-10-27
+verified: 2026-10-28
 ---
 
 # Impacts
@@ -25,15 +25,15 @@ pins, because it costs speed and aim.
    that moment (`z(t) = z0 − speedMps · t`, from when the run started). An airborne ball clears an
    obstacle if its lowest point is above the obstacle's height.
 2. **Each obstacle can be hit once.** On impact:
-   - speed is multiplied by `1 − IMPACT_SPEED_LOSS` (0.4), then recovers at the run's `ACCEL_MPS2`
-     (0.5 m/s², [run](run.md)), slowly enough that an impact in the last ≈ 100 m still reaches the
-     pins slower;
+   - speed is multiplied by `1 − IMPACT_SPEED_LOSS` (0.2), never below the run's
+     `MIN_ROLL_SPEED_MPS`, and **never recovered**: afterwards only the lane's drag acts on it
+     ([run](run.md), rule 3 — a human's decision of 2026-10-28; it recovered before);
    - the aim error grows by a seeded value between `IMPACT_AIM_ERROR_MIN_M` and `IMPACT_AIM_ERROR_M`
-     (0.3–0.6 m: 0.15–0.3 m at regulation size × `PROP_SCALE`), always to the same side within a
+     (0.02–0.04 m: 1–2 cm at regulation size × `PROP_SCALE`), always to the same side within a
      run (the side drawn once from the track seed), so impacts add up instead of cancelling; it is
-     applied to the ball's `x` when it reaches the pin deck. At this scale a ball strikes from
-     0.3 m left to 0.1 m right of the pocket ([skills record](../records/skills-20261027.md)), so one
-     impact leaves a split or a few pins, two or three leave little or a gutter;
+     applied to the ball's `x` when it reaches the pin deck. It is small on purpose: where a
+     beginner meets the pins is the dummy's own miss ([autopilot](../pilot/autopilot.md), rule 5),
+     and a few impacts must not push it past the pins into the gutter;
    - the impact count grows by one, and an impact event is emitted (for the scene and the audio).
 3. **Widening gutter:** a ball inside its lane and range counts one impact and is steered to the
    nearest free adjacent lane by a forced lane change.
@@ -46,8 +46,8 @@ pins, because it costs speed and aim.
 1. [auto] Unit tests, one per obstacle kind: a ball in the obstacle's lane at its `z` registers one
    impact; a ball in another lane registers none; for rental shoes and sweep bar, a ball at jump
    apex registers none; a returning ball is hit where it is at that time, not where it started.
-2. [auto] Unit test: after an impact at 12 m/s the speed is 7.2 m/s and recovers to the target at
-   0.5 m/s².
+2. [auto] Unit test: after an impact at 8 m/s the speed is 6.4 m/s and is never recovered: one
+   second later it is what the lane's drag alone leaves of 6.4 m/s over the metres rolled.
 3. [auto] Unit test: the same track, seed and command sequence produce the same aim error.
 4. [human] An impact is visible and readable: the obstacle flies, the ball visibly slows.
 
@@ -93,6 +93,12 @@ pins, because it costs speed and aim.
   sloppy 2.5, blind 1.7 over 60 browser runs. Unit tests: criterion 2 as rewritten (12 → 7.2 m/s,
   +0.5 m/s in one second, back to the target), the same side and bounds for every impact of a run,
   criterion 3 unchanged. Left for the human: sloppy is close to blind in pins.
+- 2026-10-28 · round 5 · Rule 2: `IMPACT_SPEED_LOSS` 0.4 → 0.2, never below `MIN_ROLL_SPEED_MPS`,
+  and never recovered (the run has no target to recover to: a thrown ball only slows). 0.25 made a
+  beginner's run of four impacts last 58 s; 0.2 keeps it near 30–50 s. The aim error per impact
+  shrinks to 0.02–0.04 m: the beginner's miss at the pins is now the dummy's own
+  ([autopilot](../pilot/autopilot.md), rule 5). Criterion 2 rewritten (8 → 6.4 m/s, then the
+  lane's drag only) and re-locked on the human's authorization; its test and criteria 1 and 3 green.
 
 ## Canonical files
 

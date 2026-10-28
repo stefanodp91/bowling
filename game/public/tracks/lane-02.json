@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "trackId": "lane-02",
   "seed": 1002,
-  "lengthM": 300,
+  "lengthM": 200,
   "lanes": 3,
   "obstacles": [
     {
@@ -13,55 +13,31 @@
     {
       "kind": "rental-shoes",
       "lane": 1,
-      "z": 54.89
+      "z": 54.88
     },
     {
       "kind": "stray-pins",
       "lane": 2,
-      "z": 78.21
+      "z": 77.37
     },
     {
       "kind": "sweep-bar",
-      "z": 99.5
+      "z": 97.11
     },
     {
       "kind": "stray-pins",
       "lane": 2,
-      "z": 121.17
+      "z": 116.64
     },
     {
       "kind": "rental-shoes",
       "lane": 0,
-      "z": 141.49
+      "z": 134.26
     },
     {
       "kind": "rental-shoes",
       "lane": 0,
-      "z": 159.78
-    },
-    {
-      "kind": "sweep-bar",
-      "z": 178.57
-    },
-    {
-      "kind": "returning-ball",
-      "lane": 1,
-      "z": 289.62,
-      "speedMps": 2.94
-    },
-    {
-      "kind": "stray-pins",
-      "lane": 1,
-      "z": 214.3
-    },
-    {
-      "kind": "sweep-bar",
-      "z": 230.4
-    },
-    {
-      "kind": "rental-shoes",
-      "lane": 1,
-      "z": 246.15
+      "z": 149.38
     }
   ]
 }

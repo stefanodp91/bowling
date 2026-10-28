@@ -14,4 +14,4 @@ export const AUTO_RESTART_S = 10;
 /** Speed is shown in km/h, which a room reads at a glance: 1 m/s = 3.6 km/h. */
 export const KMH_PER_MPS = 3.6;
 /** Keys that switch skill, in the order of the buttons (rule 2). */
-export const SKILL_KEYS = ['1', '2', '3'] as const;
+export const SKILL_KEYS = ['1', '2'] as const;

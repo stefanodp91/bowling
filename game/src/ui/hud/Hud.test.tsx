@@ -13,12 +13,12 @@ const rolling: GameSnapshot = {
   trackId: 'lane-01',
   phase: 'rolling',
   phaseS: 20,
-  z: 250,
+  z: 150,
   x: 0,
   speedMps: 9,
   lane: 1,
   impacts: 1,
-  skill: 'good',
+  skill: 'perfect',
   score: null,
   pinsDown: null,
   resultSkill: null,
@@ -41,18 +41,17 @@ function renderHud() {
 }
 
 describe('HUD', () => {
-  it('clicking Sloppy mid-run dispatches the skill change and marks it pressed', () => {
+  it('clicking Dummy mid-run dispatches the skill change and marks it pressed', () => {
     const { setSkill } = renderHud();
-    fireEvent.click(screen.getByRole('button', { name: 'Sloppy' }));
-    expect(setSkill).toHaveBeenCalledWith('sloppy');
-    expect(screen.getByRole('button', { name: 'Sloppy' }).getAttribute('aria-pressed')).toBe('true');
-    expect(screen.getByRole('button', { name: 'Good' }).getAttribute('aria-pressed')).toBe('false');
+    fireEvent.click(screen.getByRole('button', { name: 'Dummy' }));
+    expect(setSkill).toHaveBeenCalledWith('dummy');
+    expect(screen.getByRole('button', { name: 'Dummy' }).getAttribute('aria-pressed')).toBe('true');
+    expect(screen.getByRole('button', { name: 'Perfect' }).getAttribute('aria-pressed')).toBe('false');
   });
 
   it.each([
+    ['2', 'dummy', 'Dummy'],
     ['1', 'perfect', 'Perfect'],
-    ['2', 'good', 'Good'],
-    ['3', 'sloppy', 'Sloppy'],
   ] as const)('key %s selects %s', (key, skill, label) => {
     const { setSkill } = renderHud();
     fireEvent.keyDown(window, { key });
@@ -62,7 +61,7 @@ describe('HUD', () => {
 
   it('shows the distance as a progress bar', () => {
     renderHud();
-    expect(screen.getByRole('progressbar').getAttribute('value')).toBe('250');
+    expect(screen.getByRole('progressbar').getAttribute('value')).toBe('150');
   });
 });
 
@@ -74,7 +73,7 @@ describe('end screen', () => {
   });
 
   it('does not show STRIKE! for nine', () => {
-    render(<EndScreen pinsDown={[1, 2, 3, 4, 5, 6, 7, 9, 10]} impacts={2} skill="sloppy" onRunAgain={() => {}} />);
+    render(<EndScreen pinsDown={[1, 2, 3, 4, 5, 6, 7, 9, 10]} impacts={2} skill="dummy" onRunAgain={() => {}} />);
     expect(screen.queryByText('STRIKE!')).toBeNull();
     expect(screen.queryByText('9 / 10')).not.toBeNull();
   });

@@ -1,5 +1,6 @@
 import { laneCentreX, LANE_INDICES, type LaneIndex } from '@models/measures/lane';
 import { AIM_ERROR_SALT, AIM_SIDE_SALT, IMPACT_AIM_ERROR_M, IMPACT_AIM_ERROR_MIN_M, IMPACT_SPEED_LOSS } from '../../config/impacts';
+import { MIN_ROLL_SPEED_MPS } from '../../config/run';
 import { PASSABLE_WINDOW_M } from '../../config/track';
 import { seededRandom, uniform } from '../random';
 import type { RunState } from '../run/state';
@@ -77,7 +78,9 @@ export function applyImpacts(run: RunState, impacts: ImpactState, track: Track):
       count: next.count + 1,
       aimErrorM: next.aimErrorM + aimErrorOf(track.seed, index),
     };
-    nextRun = { ...nextRun, speedMps: nextRun.speedMps * (1 - IMPACT_SPEED_LOSS) };
+    // Never below the speed the lane's drag stops at (wiki/game/run.md, rule 3): a ball always reaches the pins.
+    const slowed = Math.max(Math.min(nextRun.speedMps, MIN_ROLL_SPEED_MPS), nextRun.speedMps * (1 - IMPACT_SPEED_LOSS));
+    nextRun = { ...nextRun, speedMps: slowed };
     if (obstacle.kind === 'widening-gutter') nextRun = forceLaneChange(nextRun, escapeLane(track, obstacle, nextRun));
   });
   return { run: nextRun, impacts: next, events };

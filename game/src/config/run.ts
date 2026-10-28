@@ -5,25 +5,26 @@
 import { BALL_RADIUS_M } from '@models/measures/ball';
 import { LANE_LENGTH_M } from '@models/measures/lane';
 import { PROP_SCALE } from '@models/measures/scale';
-import { APPROACH_START_Z_M } from './track';
 
 /** The countdown before rolling starts by itself (rule 1). */
 export const READY_S = 1.5;
 /**
- * Speed at the foul line (rule 3): 3.7 m/s makes a clean run on the 300 m lane last 40 s —
- * 260 / (12 − 3.7) · ln(12 / 3.7) ≈ 36.9 s of acceleration plus 38 m at 12 m/s.
+ * The throw (rule 3): the ball leaves the hand at 10 m/s, 36 km/h — the «slow» profile a human
+ * chose on 2026-10-28, near a real bowler's 7.6–8.5 m/s release (see the page's references).
  */
-export const START_SPEED_MPS = 3.7;
-/** Speed from the start of the approach zone on (rule 3). */
-export const MAX_SPEED_MPS = 12;
-/** Target speed grows linearly with distance up to here: the start of the approach zone. */
-export const MAX_SPEED_AT_Z_M = APPROACH_START_Z_M;
+export const RELEASE_SPEED_MPS = 10;
+/** The arm swing: from rest to the release speed in 0.8 s, eased out (rule 3; design). */
+export const LAUNCH_S = 0.8;
 /**
- * The most the actual speed can change towards the target, m/s² (rule 3): above the ≈ 0.38 m/s² a
- * clean run needs at 12 m/s (12 · 8.3 / 260), low enough that a ball slowed by an impact in the
- * last ≈ 100 m is still slow at the pins (a human's decision of 2026-10-27; it was 1.5).
+ * A clean ball reaches the pin deck at 6 m/s, 22 km/h (rule 3, the human's «slow» profile): the
+ * lane's drag takes 4 m/s over the run, as a real ball loses a few mph before the pins.
  */
-export const ACCEL_MPS2 = 0.5;
+export const PIN_SPEED_MPS = 6;
+/**
+ * The lane's drag stops slowing a ball below 3 m/s, so a ball slowed by impacts still reaches the
+ * pins instead of stopping on the lane (rule 3; design).
+ */
+export const MIN_ROLL_SPEED_MPS = 3;
 /** A lane change to the adjacent travel lane takes 0.25 s, eased (rule 4). */
 export const LANE_CHANGE_S = 0.25;
 /** A jump lasts 0.6 s (rule 5)… */

@@ -4,7 +4,7 @@ type: spec
 status: built
 depends_on: [workspace/monorepo.md, method/gates.md]
 canonical: [game/src/config/track.ts, game/src/domain/track/, game/src/domain/random.ts, game/src/domain/run/speed.ts, game/public/tracks/, scripts/tracks/, scripts/gates/check-tracks.mjs]
-verified: 2026-10-27
+verified: 2026-10-28
 ---
 
 # Track format
@@ -31,7 +31,7 @@ scene draws, the run collides with and the autopilot reads. Same file, same run.
      "schemaVersion": 1,
      "trackId": "lane-01",
      "seed": 1001,
-     "lengthM": 300,
+     "lengthM": 200,
      "lanes": 3,
      "obstacles": [
        { "kind": "stray-pins",      "lane": 0, "z": 42 },
@@ -65,8 +65,8 @@ scene draws, the run collides with and the autopilot reads. Same file, same run.
      `PASSABLE_WINDOW_M` (8 m), and a widening gutter's lane counts as blocked over its whole length;
    - a `sweep-bar` has no other obstacle within `SWEEP_BAR_CLEAR_M` (8 m) before or after it, so a
      jump has room to take off and land;
-   - there is time to act at the maximum speed: the gap to the previous obstacle, divided by
-     `MAX_SPEED_MPS`, is at least the longest manoeuvre time (lane change or jump) plus
+   - there is time to act at the highest speed: the gap to the previous obstacle, divided by
+     `RELEASE_SPEED_MPS`, is at least the longest manoeuvre time (lane change or jump) plus
      `MIN_REACTION_S` (`config/track.ts`). The [autopilot](../pilot/autopilot.md) page adds a test
      that every skill profile reacts at least `MIN_REACTION_S` ahead, so the track and the pilot
      cannot drift apart.
@@ -120,6 +120,10 @@ scene draws, the run collides with and the autopilot reads. Same file, same run.
   test found seed 58 placing a returning ball's meeting point 0.002 m inside the 30 m clear zone: its
   start is rounded to the centimetre, and the first gap had no slack. The first obstacle now keeps
   `ROUNDING_SLACK_M` from the zone, as every later gap does from its rule.
+- 2026-10-28 · round 4 · The lane is 200 m (a human's decision): `lengthM` 200, re-baked: 7, 7,
+  4, 6, 6 obstacles. The time-to-act rule now divides by `RELEASE_SPEED_MPS` (10 m/s), the fastest
+  a ball goes, instead of the old 12 m/s; returning balls are placed with the new clean-run clock,
+  so the tracks were baked again after the speed changed. `check-tracks` and its selftest pass.
 
 ## Canonical files
 

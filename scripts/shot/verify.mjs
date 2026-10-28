@@ -46,8 +46,10 @@ try {
 
 /** The game's fog and background colour, from game/src/config/camera.ts (FOG_HEX). */
 const FOG = readFileSync(join(REPO_ROOT, 'game/src/config/camera.ts'), 'utf8').match(/FOG_HEX = '#([0-9A-F]{6})'/i)[1];
-/** wiki/game/run.md criterion 3: the ball on the lane at 250 m. */
-const GAME_AT_250 = 'game:track=lane-01&at=250&pause=1';
+/** wiki/game/run.md criterion 3: the ball on the lane at 150 m. */
+const GAME_AT_150 = 'game:track=lane-01&at=150&pause=1';
+/** wiki/game/hud.md criterion 3: one button per skill, perfect and dummy. */
+const SKILL_BUTTONS = 2;
 
 const run = parseFrontMatter(readFileSync(join(REPO_ROOT, 'wiki/game/run.md'), 'utf8')).frontMatter;
 const runIsBuilt = run.status !== 'planned' || process.argv.includes('--game');
@@ -57,25 +59,25 @@ if (!runIsBuilt) {
   try {
     const { file } = await takeShot({ target: 'game:pause=1' });
     record('game:pause=1 writes a PNG', statSync(file).size > 0, file);
-    const shot = await takeShot({ target: GAME_AT_250 });
-    await checkNotBackground(`${GAME_AT_250}: centre region is not background`, shot.png, FOG);
+    const shot = await takeShot({ target: GAME_AT_150 });
+    await checkNotBackground(`${GAME_AT_150}: centre region is not background`, shot.png, FOG);
     await checkHud();
   } catch (error) {
     record('game shots', false, error.message);
   }
 }
 
-/** wiki/game/hud.md criterion 3: the 250 m view shows the progress bar and the three skill buttons. */
+/** wiki/game/hud.md criterion 3: the 150 m view shows the progress bar and the two skill buttons. */
 async function checkHud() {
   const server = await ensureServer('game');
   const browser = await launchBrowser();
   try {
     const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
-    await page.goto(`${server.base}/?${GAME_AT_250.replace(/^game:/, '')}`);
+    await page.goto(`${server.base}/?${GAME_AT_150.replace(/^game:/, '')}`);
     await page.waitForFunction(() => window.__bowling?.ready === true, undefined, { timeout: 20_000 });
     const bar = await page.locator('progress').isVisible();
     const buttons = await page.getByRole('navigation', { name: 'Autopilot skill' }).locator('button[aria-pressed]').evaluateAll((all) => all.filter((b) => b.getBoundingClientRect().height > 0).length);
-    record(`${GAME_AT_250}: progress bar and three skill buttons visible`, bar && buttons === 3, `progress ${bar ? 'visible' : 'missing'}, ${buttons} skill buttons`);
+    record(`${GAME_AT_150}: progress bar and two skill buttons visible`, bar && buttons === SKILL_BUTTONS, `progress ${bar ? 'visible' : 'missing'}, ${buttons} skill buttons`);
   } finally {
     await browser.close();
     server.stop();

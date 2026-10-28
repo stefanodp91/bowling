@@ -4,7 +4,7 @@ type: spec
 status: built
 depends_on: [game/run.md]
 canonical: [game/src/config/camera.ts, game/src/scene/camera/, game/src/scene/mountGame.ts, game/src/app/frame-steps.ts]
-verified: 2026-10-27
+verified: 2026-10-28
 ---
 
 # Camera
@@ -35,9 +35,9 @@ Make a one-minute run that nobody plays watchable from a projector at the back o
 ## Acceptance criteria
 
 1. [auto] Unit test: the camera rig is a pure function of the run snapshot (same snapshot, same
-   pose), tested at `z` 0, 250 and in the impact zone.
+   pose), tested at `z` 0, 150 and in the impact zone.
 2. [auto] A deck simulation with and without slow motion gives the same pins down.
-3. [auto] `npm run shot -- game:track=lane-01&at=295&pause=1` frames the pin deck from the side.
+3. [auto] `npm run shot -- game:track=lane-01&at=195&pause=1` frames the pin deck from the side.
 4. [human] From a projector, the ball, the next obstacles and the pins are always readable.
 
 ## References
@@ -72,3 +72,6 @@ Make a one-minute run that nobody plays watchable from a projector at the back o
   offsets × `PROP_SCALE`. The fog is now the room's haze (`#3B2D4A`), not black. Shots: 140 m and
   0 m show the ball, the next obstacles and the alley; 295 m frames the deck from the side
   (criterion 3); slow-motion test green (10 and 10).
+- 2026-10-28 · round 5 · Criteria 1 and 3 moved with the 200 m lane (z 150 and a shot at 195 m),
+  rewritten and re-locked on the human's authorization. The rig test runs at 0, 150 and 195 m; the
+  shot at 195 m frames the deck from the side, ten pins and the alley wall.

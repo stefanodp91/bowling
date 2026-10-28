@@ -1,6 +1,6 @@
 // npm run shot -- <target> [--size 1280x720] [--angle <name>] (wiki/tools/shot.md).
 //   story:<story-id>  a catalogue story, e.g. story:models-ball (its «default» story)
-//   game:<query>      the running game at /?<query>, e.g. game:track=lane-01&at=250&pause=1
+//   game:<query>      the running game at /?<query>, e.g. game:track=lane-01&at=150&pause=1
 import { appendFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { REPO_ROOT } from '../lib/gate.mjs';

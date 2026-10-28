@@ -4,12 +4,12 @@ type: spec
 status: built
 depends_on: [game/pins.md, pilot/autopilot.md]
 canonical: [game/src/config/hud.ts, game/src/ui/, game/src/i18n/, game/src/app/snapshot.ts]
-verified: 2026-10-27
+verified: 2026-10-28
 ---
 
 # HUD
 
-> Boundary: everything drawn over the 3D scene: run information, the three skill buttons, the
+> Boundary: everything drawn over the 3D scene: run information, the two skill buttons, the
 > countdown, the end screen, errors, localisation. NOT covered: what the skill profiles do
 > ([autopilot](../pilot/autopilot.md)).
 
@@ -20,12 +20,13 @@ change how well the autopilot drives, live, with one click.
 
 ## Rules
 
-1. **Run information** (top): distance `0–300 m` as a progress bar with the number, current speed,
+1. **Run information** (top): distance `0–200 m` as a progress bar with the number, current speed,
    impacts so far, current track id.
-2. **Skill buttons** (always visible, bottom): `Perfect`, `Good`, `Sloppy`. One is active (default
-   `Good`, or `?skill=`). Clicking one switches the autopilot's skill immediately, even mid-run;
+2. **Skill buttons** (always visible, bottom): `Perfect`, `Dummy` (a human's decision of
+   2026-10-28: a perfect game against a beginner; there were three). One is active (default
+   `Perfect`, or `?skill=`). Clicking one switches the autopilot's skill immediately, even mid-run;
    the active one is highlighted by more than colour (a marker and `aria-pressed`). Keyboard: `1`,
-   `2`, `3`. The skill active at the hand-over to the pin deck is the one reported at the end.
+   `2`. The skill active at the hand-over to the pin deck is the one reported at the end.
 3. **Countdown** during `ready`: 3-2-1, then «Roll».
 4. **End screen** in `result`: the ten-pin diagram (down pins dimmed, standing pins solid, numbered),
    the score `n / 10`, «STRIKE!» when ten, impacts and skill of the run, and «Run again», which
@@ -44,12 +45,12 @@ change how well the autopilot drives, live, with one click.
 
 ## Acceptance criteria
 
-1. [auto] Component tests (Vitest + Testing Library): clicking `Sloppy` mid-run dispatches the
-   skill change and marks it pressed; keys `1`–`3` do the same; the end screen shows «STRIKE!»
+1. [auto] Component tests (Vitest + Testing Library): clicking `Dummy` mid-run dispatches the
+   skill change and marks it pressed; keys `1`–`2` do the same; the end screen shows «STRIKE!»
    only for 10.
 2. [auto] A test fails if any `.tsx` under `game/src/ui/` contains a string literal rendered as
    text or a `style=` prop (i18n and styles rules).
-3. [auto] `npm run shot -- game:track=lane-01&at=250&pause=1` shows the progress bar and the three
+3. [auto] `npm run shot -- game:track=lane-01&at=150&pause=1` shows the progress bar and the two
    buttons.
 4. [human] From the back of a room, the score and the active skill are readable.
 
@@ -90,6 +91,9 @@ change how well the autopilot drives, live, with one click.
   `history.replaceState` — instead of reloading it, which had silenced the sound (rule 4, reported
   by the human). Havok is loaded once per page. Checked headlessly: after «Run again» the page is
   the same, lane-02 runs, sound stays on.
+- 2026-10-28 · round 4 · Two skill buttons, `Perfect` and `Dummy`, keys 1–2, default `Perfect`
+  (a human's decision); criteria 1 and 3 rewritten and re-locked on the human's authorization. The
+  bar reads 0–200 m. Component tests green; `shot:verify` counts two buttons at 150 m.
 
 ## Canonical files
 

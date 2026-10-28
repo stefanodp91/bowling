@@ -21,7 +21,7 @@ and only them, from `@models`.
 ## Props are twice life size
 
 The ball, the pins, the obstacles and the pin deck are built at `PROP_SCALE` (2) times their
-regulation size, while the lane — boards, gutters, markings, its 300 m — stays at regulation size (a
+regulation size, while the lane — boards, gutters, markings, its 200 m — stays at regulation size (a
 human's decision of 2026-10-27: at true size the props looked tiny on a three-lane, 300 m lane seen
 from the chase camera). `models/src/measures/scale.ts` holds the factor. Each measures file keeps
 the regulation number with its source and exports the in-game measure, regulation × `PROP_SCALE`;

@@ -4,7 +4,7 @@ type: spec
 status: built
 depends_on: [workspace/monorepo.md, storybook/catalog.md]
 canonical: [scripts/shot/, scripts/headless/]
-verified: 2026-10-26
+verified: 2026-10-28
 ---
 
 # Shot tool
@@ -64,6 +64,8 @@ saves an image the agent then opens.
   `game:pause=1` writes a PNG — and `shot:verify` also checks the run page's 250 m shot (centre
   pixels against the fog colour). First game shot failed with «504 (Outdated Optimize Dep)»: Vite
   re-optimised new dependencies on first load; the retry passed (no change needed).
+- 2026-10-28 · round 3 · `shot:verify` checks the run page's shot at 150 m and two skill
+  buttons, following the 200 m lane and the two skills.
 
 ## Canonical files
 

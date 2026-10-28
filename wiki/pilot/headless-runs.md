@@ -4,7 +4,7 @@ type: spec
 status: built
 depends_on: [pilot/autopilot.md, game/hud.md, game/camera.md, tools/shot.md]
 canonical: [scripts/pilot/, scripts/gates/check-pilot.mjs, scripts/headless/, game/src/config/render.ts, game/src/dev/, game/src/pilot/blind.ts]
-verified: 2026-10-26
+verified: 2026-10-28
 ---
 
 # Headless runs
@@ -19,7 +19,7 @@ browser, driven by the autopilot, many times, and writes down numbers instead of
 
 ## Rules
 
-1. `npm run pilot -- [--tracks all|<ids>] [--skill perfect|good|sloppy] [--runs <n>] [--speedup <k>] [--blind]`
+1. `npm run pilot -- [--tracks all|<ids>] [--skill perfect|dummy] [--runs <n>] [--speedup <k>] [--blind]`
    starts (or reuses) the dev server, opens the game headlessly (same browser setup as the
    [shot tool](../tools/shot.md), shared code), and for every run reads `window.__bowling` until
    `result`. Output: one JSON line per run (track, skill, seed, simulated duration, wall duration,
@@ -41,7 +41,7 @@ browser, driven by the autopilot, many times, and writes down numbers instead of
 2. [auto] The browser runs agree with `simulateRun` on impacts for every committed track and every
    profile.
 3. [auto] A record `wiki/records/pilot-vs-blind-<date>.md` exists with, for the same commit, 5
-   tracks × (`perfect`, `good`, `sloppy`, blind): average impacts and average pins down, and the
+   tracks × (`perfect`, `dummy`, blind): average impacts and average pins down, and the
    commit it measured.
 4. [auto] A record of the deck tests of [pins physics](../game/pins.md) (pocket and off-pocket pins
    down) exists and is linked from that page.

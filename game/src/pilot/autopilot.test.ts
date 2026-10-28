@@ -46,10 +46,11 @@ describe('simulateRun on the committed tracks', { timeout: 120_000 }, () => {
     }
   });
 
-  it('sloppy: at least one impact across the five tracks, and the same summary twice', () => {
-    const summaries = committedTracks().map((track) => simulateRun(track, 'sloppy', SEED));
-    expect(summaries.reduce((sum, s) => sum + s.impacts, 0)).toBeGreaterThanOrEqual(1);
-    expect(committedTracks().map((track) => simulateRun(track, 'sloppy', SEED))).toEqual(summaries);
+  it('dummy: at least one impact on every track, and the same summary twice', () => {
+    // The game's run seed is the track's own: the runs the audience sees.
+    const summaries = committedTracks().map((track) => simulateRun(track, 'dummy', track.seed));
+    for (const s of summaries) expect({ track: s.trackId, hit: s.impacts >= 1 }).toEqual({ track: s.trackId, hit: true });
+    expect(committedTracks().map((track) => simulateRun(track, 'dummy', track.seed))).toEqual(summaries);
   });
 });
 

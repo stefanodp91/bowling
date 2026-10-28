@@ -1,19 +1,10 @@
 import { CENTRE_LANE, laneCentreX, LANE_INDICES, type LaneIndex } from '@models/measures/lane';
-import {
-  ACCEL_MPS2,
-  BALL_ROLL_RADIUS_M,
-  DECK_HANDOFF_Z,
-  JUMP_AIRTIME_S,
-  JUMP_APEX_M,
-  LANE_CHANGE_S,
-  READY_S,
-  START_SPEED_MPS,
-} from '../../config/run';
+import { BALL_ROLL_RADIUS_M, DECK_HANDOFF_Z, JUMP_AIRTIME_S, JUMP_APEX_M, LANE_CHANGE_S, LAUNCH_S, MIN_ROLL_SPEED_MPS, READY_S } from '../../config/run';
 import { smoothstep } from '../math/ease';
-import { targetSpeed } from './speed';
+import { cleanRunTimeTo, launchSpeed, ROLL_DRAG_PER_M, targetSpeed } from './speed';
 import type { Command, Jump, LaneChange, RunState } from './state';
 
-/** A fresh run on the foul line, counting down (rule 1). */
+/** A fresh run on the foul line, the ball at rest in the hand, counting down (rule 1). */
 export function initialRunState(): RunState {
   return {
     phase: 'ready',
@@ -22,7 +13,7 @@ export function initialRunState(): RunState {
     z: 0,
     x: laneCentreX(CENTRE_LANE),
     y: 0,
-    speedMps: START_SPEED_MPS,
+    speedMps: 0,
     lane: CENTRE_LANE,
     laneChange: null,
     lastLaneChange: null,
@@ -31,9 +22,13 @@ export function initialRunState(): RunState {
   };
 }
 
-/** A run already rolling at `z` in the centre lane at its target speed (the `at` query parameter). */
+/**
+ * A run already rolling at `z` in the centre lane, as a clean run would be there: its speed and its
+ * clock (the `at` query parameter), so returning balls stand where they would.
+ */
 export function runStateAt(z: number): RunState {
-  return { ...initialRunState(), phase: 'rolling', z, speedMps: targetSpeed(z) };
+  const runS = cleanRunTimeTo(z);
+  return { ...initialRunState(), phase: 'rolling', z, runS, speedMps: runS < LAUNCH_S ? launchSpeed(runS) : targetSpeed(z) };
 }
 
 /** A lane change starts and stops with zero lateral speed. */
@@ -77,18 +72,26 @@ function advanceJump(jump: Jump | null, dtS: number): { y: number; jump: Jump | 
   return elapsedS >= JUMP_AIRTIME_S ? { y: 0, jump: null } : { y: jumpHeight(elapsedS), jump: { elapsedS } };
 }
 
-/** Speed moves towards the target by at most ACCEL_MPS2 · dt (rule 3). */
-export function nextSpeed(speedMps: number, z: number, dtS: number): number {
-  const target = targetSpeed(z);
-  const maxChange = ACCEL_MPS2 * dtS;
-  return speedMps + Math.max(-maxChange, Math.min(maxChange, target - speedMps));
+/**
+ * Speed after one step (rule 3): the throw's eased curve for LAUNCH_S, then the lane's drag, which
+ * takes the share ROLL_DRAG_PER_M of the speed for every metre rolled (v · dt of them) and stops at
+ * MIN_ROLL_SPEED_MPS. Nothing gives speed back: an impact's loss is for good (wiki/game/impacts.md).
+ */
+export function nextSpeed(state: RunState, dtS: number): number {
+  if (state.runS < LAUNCH_S) {
+    // The throw never outruns the curve the drag takes over from, wherever this step ends.
+    const thrown = launchSpeed(state.runS + dtS);
+    return Math.min(thrown, targetSpeed(state.z + thrown * dtS));
+  }
+  const dragged = state.speedMps * (1 - ROLL_DRAG_PER_M * state.speedMps * dtS);
+  return Math.max(Math.min(state.speedMps, MIN_ROLL_SPEED_MPS), dragged);
 }
 
 function stepRolling(state: RunState, command: Command, dtS: number): RunState {
   const commanded = applyCommand(state, command);
   const lateral = advanceLaneChange(commanded.laneChange, commanded.lane, dtS);
   const vertical = advanceJump(commanded.jump, dtS);
-  const speedMps = nextSpeed(state.speedMps, state.z, dtS);
+  const speedMps = nextSpeed(state, dtS);
   const z = state.z + speedMps * dtS;
   const startedChange = commanded.laneChange !== null && state.laneChange === null;
   const lastLaneChange = startedChange

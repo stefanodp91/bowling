@@ -4,7 +4,7 @@ type: spec
 status: built
 depends_on: [game/pins.md, game/hud.md]
 canonical: [scripts/audio/, scripts/gates/check-audio.mjs, game/public/audio/, game/src/config/audio.ts, game/src/audio/, game/src/app/events.ts, game/src/ui/use-sound.ts, game/src/ui/hud/SoundToggle.tsx]
-verified: 2026-10-27
+verified: 2026-10-28
 ---
 
 # Sounds
@@ -117,6 +117,9 @@ comes from a committed script, so an open-source audience gets the source of eve
   tempo from the onset autocorrelation 126.0 BPM, the jump at the loop point (0.0076) below the
   signal's own sample-to-sample step (0.019). `audio:check` passes. Not judged: how it sounds —
   that is criterion 3's human, with speakers.
+- 2026-10-28 · round 5 · The rumble's speed bands now crossfade from `MIN_ROLL_SPEED_MPS` (3 m/s)
+  to `RELEASE_SPEED_MPS` (10 m/s), the slowest and fastest a ball goes since the run became a throw
+  that slows down. No sound file changed.
 
 ## Canonical files
 

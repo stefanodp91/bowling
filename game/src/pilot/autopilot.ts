@@ -45,6 +45,12 @@ export function decide({ track, run, skill, seed, memory }: PilotInput): { comma
   const nextMemory: PilotMemory = { ignored };
   const problems = ahead.filter((o) => ignored.get(o.index) === false);
   const first = problems[0];
+  const stared = profile.fixates ? ahead.find((o) => ignored.get(o.index) === true && 'lane' in o.obstacle) : undefined;
+  if (stared !== undefined && 'lane' in stared.obstacle && (first === undefined || stared.ttm < first.ttm)) {
+    // Target fixation (rule 5): one lane at a time towards the obstacle it stares at.
+    const towards: Command = stared.obstacle.lane === run.lane ? 'stay' : stared.obstacle.lane < run.lane ? 'left' : 'right';
+    return { command: towards, memory: nextMemory };
+  }
   if (first === undefined) {
     // Nothing to dodge: once no obstacle is left ahead, the approach is the centre lane (rule 6).
     const approach: Command = ahead.length > 0 || run.lane === CENTRE_LANE ? 'stay' : run.lane > CENTRE_LANE ? 'left' : 'right';
