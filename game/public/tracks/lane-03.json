@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "trackId": "lane-03",
+  "seed": 1003,
+  "lengthM": 200,
+  "lanes": 3,
+  "obstacles": [
+    {
+      "kind": "wet-floor-sign",
+      "lane": 2,
+      "z": 30.7
+    },
+    {
+      "kind": "rental-shoes",
+      "lane": 2,
+      "z": 57.38
+    },
+    {
+      "kind": "widening-gutter",
+      "lane": 0,
+      "z": 79.98,
+      "lengthM": 17.87
+    },
+    {
+      "kind": "widening-gutter",
+      "lane": 0,
+      "z": 116.93,
+      "lengthM": 13.05
+    }
+  ]
+}

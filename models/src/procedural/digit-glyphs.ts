@@ -1,0 +1,24 @@
+/**
+ * Digits as 5×7 bitmaps, drawn by hand for this project: models print numbers (a ball's weight, a
+ * shoe size) into generated textures without a font file or a canvas.
+ */
+export const GLYPH_WIDTH = 5;
+export const GLYPH_HEIGHT = 7;
+
+const GLYPHS: Readonly<Record<string, readonly string[]>> = {
+  '0': ['01110', '10001', '10011', '10101', '11001', '10001', '01110'],
+  '1': ['00100', '01100', '00100', '00100', '00100', '00100', '01110'],
+  '2': ['01110', '10001', '00001', '00010', '00100', '01000', '11111'],
+  '3': ['11110', '00001', '00001', '01110', '00001', '00001', '11110'],
+  '4': ['00010', '00110', '01010', '10010', '11111', '00010', '00010'],
+  '5': ['11111', '10000', '11110', '00001', '00001', '10001', '01110'],
+  '6': ['00110', '01000', '10000', '11110', '10001', '10001', '01110'],
+  '7': ['11111', '00001', '00010', '00100', '01000', '01000', '01000'],
+  '8': ['01110', '10001', '10001', '01110', '10001', '10001', '01110'],
+  '9': ['01110', '10001', '10001', '01111', '00001', '00010', '01100'],
+};
+
+/** Whether the glyph cell (column, row) of `digit` is inked; unknown characters are blank. */
+export function glyphInk(digit: string, column: number, row: number): boolean {
+  return GLYPHS[digit]?.[row]?.[column] === '1';
+}

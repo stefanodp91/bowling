@@ -1,0 +1,57 @@
+.screen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.6rem 2.6rem;
+  border-radius: 1rem;
+  background: rgba(10, 10, 14, 0.86);
+  color: #f5f2ea;
+  font-family: system-ui, sans-serif;
+  text-align: center;
+}
+
+.score {
+  margin: 0;
+  font-size: 4.5rem;
+  font-weight: 800;
+}
+
+.strike {
+  margin: 0;
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #e8b21a;
+}
+
+.details {
+  display: flex;
+  gap: 2rem;
+  font-size: 1.5rem;
+}
+
+.again {
+  padding: 0.8rem 2.4rem;
+  border: 3px solid #e8b21a;
+  border-radius: 0.5rem;
+  background: #e8b21a;
+  color: #121218;
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.again:focus-visible {
+  outline: 3px solid #f5f2ea;
+  outline-offset: 3px;
+}
+
+.auto {
+  font-size: 1.1rem;
+  opacity: 0.85;
+}

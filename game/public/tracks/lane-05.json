@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "trackId": "lane-05",
+  "seed": 1005,
+  "lengthM": 200,
+  "lanes": 3,
+  "obstacles": [
+    {
+      "kind": "returning-ball",
+      "lane": 1,
+      "z": 40.13,
+      "speedMps": 3.09
+    },
+    {
+      "kind": "wet-floor-sign",
+      "lane": 0,
+      "z": 56.1
+    },
+    {
+      "kind": "widening-gutter",
+      "lane": 2,
+      "z": 77.6,
+      "lengthM": 12.1
+    },
+    {
+      "kind": "widening-gutter",
+      "lane": 2,
+      "z": 108.73,
+      "lengthM": 12.68
+    },
+    {
+      "kind": "wet-floor-sign",
+      "lane": 1,
+      "z": 137.87
+    },
+    {
+      "kind": "returning-ball",
+      "lane": 0,
+      "z": 216.12,
+      "speedMps": 3.27
+    }
+  ]
+}

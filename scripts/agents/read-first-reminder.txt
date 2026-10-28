@@ -1,0 +1,5 @@
+READ BEFORE ACTING (AGENTS.md, rule 1). Before changing a file or explaining how something works:
+find the wiki pages that cover it (npm run wiki:context -- <files>, or wiki/index.md), read them,
+then open the code they point to. Say which pages you read. Pure operations (git, a known command)
+are exempt. The wiki is the specification: never edit an «Acceptance criteria» section, never
+write «approved».

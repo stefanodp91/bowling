@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "trackId": "lane-02",
+  "seed": 1002,
+  "lengthM": 200,
+  "lanes": 3,
+  "obstacles": [
+    {
+      "kind": "rental-shoes",
+      "lane": 1,
+      "z": 30.31
+    },
+    {
+      "kind": "rental-shoes",
+      "lane": 1,
+      "z": 54.88
+    },
+    {
+      "kind": "wet-floor-sign",
+      "lane": 2,
+      "z": 77.37
+    },
+    {
+      "kind": "soda-cans",
+      "z": 97.11
+    },
+    {
+      "kind": "wet-floor-sign",
+      "lane": 2,
+      "z": 116.64
+    },
+    {
+      "kind": "rental-shoes",
+      "lane": 0,
+      "z": 134.26
+    },
+    {
+      "kind": "rental-shoes",
+      "lane": 0,
+      "z": 149.38
+    }
+  ]
+}

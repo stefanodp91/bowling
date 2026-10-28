@@ -1,0 +1,129 @@
+import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
+import { DirectionalLight } from '@babylonjs/core/Lights/directionalLight';
+import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
+import { Color3, Color4 } from '@babylonjs/core/Maths/math.color';
+import { Vector3 } from '@babylonjs/core/Maths/math.vector';
+import { Scene } from '@babylonjs/core/scene';
+import type { TFunction } from 'i18next';
+import { applyAlleyEnvironment, SCENERY_THEMES } from '@models';
+import type { Session } from '../app/session';
+import { SIM_STEP_S } from '../config/run';
+import { recordFrame } from '../dev/render-stats';
+import { CHASE_FOV_RAD, FOG_END_M, FOG_START_M } from '../config/camera';
+import { sceneryOf } from '../config/scenery';
+import { AMBIENT_INTENSITY, KEY_LIGHT } from '../config/scene';
+import { cameraPose, timeScaleAt } from './camera/rig';
+import { createDeck } from './physics/deck';
+import { createAlleyView } from './views/alley-view';
+import { createBallView } from './views/ball-view';
+import { createLaneView } from './views/lane-view';
+import { createObstacleView } from './views/obstacle-view';
+import { createPinsView } from './views/pins-view';
+import { createScoreboardView } from './views/scoreboard-view';
+import { swingOffset } from './views/swing';
+import type { HavokInstance } from './physics/havok-loader';
+import { createPhysicsWorld } from './physics/physics-world';
+
+const MS_PER_S = 1000;
+/** Near plane: close enough for the ball 3 m away, far enough to keep depth precision over 140 m. */
+const NEAR_M = 0.05;
+/** A whole extra fog band of far plane, so the fog hides where the lane ends. */
+const FAR_M = FOG_END_M * 2;
+
+/** Creates the game camera as soon as the scene exists, before its first frame. */
+export function createGameCamera(scene: Scene): void {
+  const camera = new FreeCamera('game-camera', Vector3.Zero(), scene);
+  camera.fov = CHASE_FOV_RAD;
+  camera.minZ = NEAR_M;
+  camera.maxZ = FAR_M;
+  scene.activeCamera = camera;
+}
+
+export interface MountOptions {
+  /** Freeze after the first rendered frame (the `pause` query parameter). */
+  readonly pause: boolean;
+  readonly havok: HavokInstance;
+  /** The i18n layer's translate: the scoreboard's words come from it (AGENTS.md). */
+  readonly t: TFunction;
+}
+
+/** Mounts a session into the Reactylon scene: lights, lane, ball, obstacles, camera, the frame loop. */
+export function mountGame(scene: Scene, session: Session, options: MountOptions): () => void {
+  const camera = scene.activeCamera;
+  // Without its camera the scene shows only the haze: say so instead of drawing nothing. It happens
+  // when the page mixes two copies of Babylon (a dev server that re-bundled its dependencies under
+  // an open page): reload the page.
+  if (!(camera instanceof FreeCamera)) throw new Error('the game camera is missing: createGameCamera runs when the scene is ready');
+  // The far end of the room fades into its theme's haze (wiki/models/lane.md, rule 6).
+  const scenery = sceneryOf(session.track.trackId);
+  const fog = Color3.FromHexString(SCENERY_THEMES[scenery].haze);
+  scene.clearColor = new Color4(fog.r, fog.g, fog.b, 1);
+  scene.fogMode = Scene.FOGMODE_LINEAR;
+  scene.fogColor = fog;
+  scene.fogStart = FOG_START_M;
+  scene.fogEnd = FOG_END_M;
+  const environment = applyAlleyEnvironment(scene);
+  const ambient = new HemisphericLight('game-ambient', Vector3.Up(), scene);
+  ambient.intensity = AMBIENT_INTENSITY;
+  const key = new DirectionalLight('game-key', new Vector3(...KEY_LIGHT.direction), scene);
+  key.intensity = KEY_LIGHT.intensity;
+
+  const physics = createPhysicsWorld(scene, options.havok);
+  const lane = createLaneView(scene);
+  const alley = createAlleyView(scene, scenery);
+  const disposeScoreboard = createScoreboardView(scene, session, scenery, options.t);
+  const ball = createBallView(scene);
+  const pins = createPinsView(scene);
+  const deck = createDeck(scene, { ball: ball.root, pins: pins.pins, pinMesh: pins.pinMesh });
+  const detach = session.attach({ physics, deck });
+  const obstacles = createObstacleView(scene, session.track);
+
+  let frames = 0;
+  const render = (frameS: number): void => {
+    const timeScale = timeScaleAt(session.world().deck.sinceContactS);
+    const { previous, current, alpha } = session.frame(frameS, timeScale, (_world, events) => {
+      for (const event of events) obstacles.knock(event.obstacleIndex, event.runS, event.speedMps);
+      obstacles.age(SIM_STEP_S);
+    });
+    const lerp = (a: number, b: number): number => a + (b - a) * alpha;
+    const pose = { x: lerp(previous.x, current.x), y: lerp(previous.y, current.y), z: lerp(previous.z, current.z) };
+    // During the countdown the bowler's arm swings the ball; from the hand-over on, Havok moves it.
+    const swing = current.phase === 'ready' ? swingOffset(lerp(previous.phaseS, current.phaseS)) : null;
+    const held = swing === null ? pose : { ...pose, y: pose.y + swing.liftM, z: pose.z - swing.backM };
+    if (!session.world().deck.handedOff) ball.update(held, lerp(previous.rollRad, current.rollRad));
+    const { position, target } = cameraPose({ ...pose, lastLaneChange: current.lastLaneChange });
+    camera.position.set(...position);
+    camera.setTarget(new Vector3(...target));
+    lane.update(Math.min(position[2], pose.z));
+    alley.update(Math.min(position[2], pose.z));
+    obstacles.update(Math.min(position[2], pose.z), lerp(previous.runS, current.runS));
+  };
+  render(0);
+  const beforeRender = scene.onBeforeRenderObservable.add(() => {
+    if (options.pause && frames > 0) return;
+    render(scene.getEngine().getDeltaTime() / MS_PER_S);
+  });
+  const afterRender = scene.onAfterRenderObservable.add(() => {
+    recordFrame(scene.getEngine().getDeltaTime(), scene.getActiveMeshes().length);
+    if (!scene.isReady()) return;
+    frames += 1;
+    if (frames === 1) session.markReady();
+  });
+
+  return () => {
+    beforeRender.remove();
+    afterRender.remove();
+    detach();
+    deck.dispose();
+    obstacles.dispose();
+    pins.dispose();
+    ball.dispose();
+    alley.dispose();
+    disposeScoreboard();
+    lane.dispose();
+    physics.dispose();
+    key.dispose();
+    ambient.dispose();
+    environment.dispose();
+  };
+}

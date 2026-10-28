@@ -1,0 +1,123 @@
+---
+title: Pins physics — the strike, and the score
+type: spec
+status: approved
+approved_on: 2026-10-28
+depends_on: [game/impacts.md, models/pins.md]
+canonical: [game/src/config/pins.ts, game/src/config/physics.ts, game/src/domain/scoring/, game/src/domain/deck/, game/src/app/deck-port.ts, game/src/app/deck-step.ts, game/src/scene/physics/, game/src/scene/views/pins-view.ts, models/src/measures/lane.ts]
+verified: 2026-10-28
+---
+
+# Pins physics
+
+> Boundary: the hand-over of the ball to Havok, the ten pins as rigid bodies, the knocked-down rule
+> and the score. NOT covered: the camera and slow motion around the impact ([camera](camera.md)),
+> the end screen ([HUD](hud.md)).
+
+## Purpose
+
+The only moment of real physics: whatever happened on the lane decides how the ball arrives, and
+Havok decides how many pins fall.
+
+## Rules
+
+1. At `DECK_HANDOFF_Z` the ball becomes a Havok dynamic sphere (ball measures: radius, mass) with
+   its current linear velocity along `z`, angular velocity consistent with rolling, and
+   `x = aim target + aim error`. The aim target is the pocket, `POCKET_OFFSET_M` to the right of the
+   head pin (2.5 boards at regulation size, × `PROP_SCALE` like the pins), defined in
+   `game/src/config/pins.ts` with its source; the
+   [autopilot](../pilot/autopilot.md) steers towards it once that page is built.
+2. The ten pins are Havok dynamic bodies placed on their spots (pins layout), mass from the pin
+   measures, collider derived from the pin profile (the choice — convex hull or compound — and its
+   reason go in «Rounds»). Friction and restitution values for lane, ball and pins are tunables in
+   `game/src/config/physics.ts`, each with the source it was chosen from.
+3. Physics uses the graphic engine's Havok adapter and a fixed step; the step and the substeps are
+   named constants.
+4. **Knocked down:** `SETTLE_S` (3 s) after the first ball–pin contact, a pin counts as down if it
+   is tilted more than `DOWN_TILT_DEG` (45°) from vertical or its base moved more than
+   `DOWN_SHIFT_M` (half the pin spacing) from its spot. The rule is a pure function in
+   `game/src/domain/scoring/`.
+5. **Score:** pins down, 0–10. Ten is a strike. One ball per run: no second throw.
+6. If no ball–pin contact happens within `SETTLE_S` of the hand-over (a gutter ball), the score is 0.
+
+## Acceptance criteria
+
+1. [auto] Unit tests on the knocked-down rule: upright pin on its spot → standing; tilted 50° →
+   down; upright but moved 0.2 m × `PROP_SCALE` → down.
+2. [auto] A deck simulation test (Babylon `NullEngine` + Havok WASM inside Vitest, no browser): a
+   ball at the pocket (head pin centre + `POCKET_OFFSET_M`) at `PIN_SPEED_MPS` (6 m/s, a clean
+   ball's speed at the hand-over) with no aim error knocks down
+   at least 8 pins (the exact count goes in a verification record).
+3. [auto] Same test harness: a ball aimed 0.5 m to the side of the head pin knocks down fewer pins
+   than the pocket ball.
+4. [auto] Same test harness: two simulations with the same inputs give the same pins down
+   (determinism of the fixed step).
+5. [human] In slow motion the pins tumble like real pins: they spin, bounce off each other and off
+   the deck, nothing passes through anything.
+
+## References
+
+- The pocket: for a right-hander the ideal entry is board 17½ at the pins, the head pin standing on
+  board 20 (counted from the right), i.e. between pins 1 and 3 (bowling coaching references,
+  e.g. https://www.bowlingball.com/BowlVersity/the-perfect-strike-pocket; lane geometry from
+  https://en.wikipedia.org/wiki/Tenpin_bowling).
+- Ball–pin collision models: 2D impulse models with a restitution term (UC Davis BioSport,
+  https://research.engineering.ucdavis.edu/biosport/2d-bowling-pin-collisions); rigid-body
+  simulations in Blender/Bullet, where the higher friction and lower restitution of the two
+  bodies apply (https://research.engineering.ucdavis.edu/biosport/bowling-collision-simulation-using-blender);
+  LS-Dyna simulations of ball, ten pins and floor (https://meetings-archive.aps.org/oss/2011/p1/3);
+  a 2025 ball-motion model with oil-dependent friction (https://www.bowlinglife.eu/bowling-strike-physics-model).
+  None of them gave numeric friction or restitution values to copy: the values in
+  `config/physics.ts` are design choices inside the ranges those models use.
+- USBC measures lane friction by dragging a ball on a dry lane (patent 8088017,
+  https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/8088017).
+
+## Rounds
+
+- 2026-10-27 · round 1 · Built the knocked-down rule and deck clock (pure, `domain/scoring/`,
+  `domain/deck/`), the hand-over (`handOffX`: the pocket from the centre lane, straight on from
+  another lane, plus the impacts' aim error), the session's deck step through a `DeckPort`, and
+  the Havok deck (`scene/physics/deck.ts`). Collider: one convex hull of the pin's own lathe mesh,
+  shared by the ten bodies — it fills the neck, which never meets the ball or another pin's belly,
+  and it is one cheap shape where a compound would need tuning segment by segment. Centre of mass
+  0.145 m up. Wrong on the way, found with the Vitest deck harness (NullEngine + Havok WASM read
+  from the package): (a) pins created asleep stayed immovable when hit — the ball bounced off them
+  → bodies start awake; (b) every pin read as standing because `getAbsolutePosition` returned the
+  cached world matrix while physics had moved the nodes → recompute before reading. Then: pocket
+  ball at 12 m/s, 10 down; 0.5 m to the side, 1 down; identical twice. In the browser: frames of a
+  strike from 488 m (pins scatter and tumble, one stands; score 9) — and pins flew through the
+  masking wall and landed on an invisible floor 6 m wide → the colliders now follow what is drawn
+  (lane to the deck's end, pit floor, masking wall; nothing beside the lane), the pit measures
+  moved into `models/src/measures/lane.ts` so model and colliders share them. After that: pocket
+  9 down (a pin rebounds from the wall), side 1, identical twice. 6 shots. The exact counts are in
+  the record [deck tests 2026-10-27](../records/deck-tests-20261027.md).
+
+- 2026-10-27 · round 2 · From the headless campaign: every perfect run ends with 9 pins, pin 8
+  standing — a straight ball (no entry angle) on the pocket. Varying the surface values (pin
+  friction 0.3–0.5, restitution 0.5–0.75, ball restitution 0.4–0.6) left the outcome unchanged,
+  so the leave comes from the geometry of the hit, not the materials. Criteria still pass; the
+  consequence for the demo is in [review](../review.md).
+
+- 2026-10-27 · round 3 · Lane at 300 m: deck tests unchanged and green — pocket 9, off-pocket 2 —
+  [deck tests, 300 m](../records/deck-tests-300m-20261027.md). In the browser the same pocket hit
+  now strikes (the hand-over lands a fraction of a step later), which shows how sensitive one hit is.
+- 2026-10-27 · round 4 · Props twice life size: ball 58 kg, pins 12 kg and 0.76 m, the pocket
+  2.5 boards × `PROP_SCALE` off the head pin, the centre of mass at 38 % of the pin's height, the
+  deck, pit and wall grown with them. Criterion 1 rewritten on the human's authorisation (moved
+  0.2 m × `PROP_SCALE` → down); test green. Deck tests: pocket **10** down (was 9), 0.5 m to the
+  side 5, deterministic; slow motion neutral. A sweep of the hand-over offset is in the
+  [skills record](../records/skills-20261027.md): strikes from 0.3 m left to 0.1 m right of the
+  pocket, speed hardly matters.
+- 2026-10-28 · round 5 · The ball now reaches the deck at `PIN_SPEED_MPS` (6 m/s) when clean, as
+  slow as 3 m/s after impacts. Criterion 2 rewritten for 6 m/s and re-locked on the human's
+  authorization. Deck tests: the pocket ball at 6 m/s knocks down 10; 0.5 m to the side, 6;
+  identical twice. A sweep of the offset from the pocket at 2.5, 4 and 6 m/s found the strike
+  plateau from 0.3 m left to 0.1 m right at every speed, and 3–8 pins from 0.3 to 0.8 m right and
+  0.5 to 0.9 m left: the dummy's miss is drawn there.
+
+## Canonical files
+
+- The session calls `physics.step()` and `deckStep()` after every world step; the deck's verdict
+  turns the run's phase from `deck` to `settling` (first contact) to `result` (judged), and the
+  snapshot's `score` is the number of pins down.
+- From the hand-over the ball's root belongs to Havok; the ball view stops following the run.
