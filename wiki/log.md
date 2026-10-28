@@ -93,3 +93,4 @@ investigations goes here, never in the pages (prompt 3, step 3).
   shader stores); Babylon is no longer pre-bundled by the game's dev server.
 - 2026-10-28 · release/open-source.md, AGENTS.md · the README screenshot regenerated for the current game; AGENTS.md says 200 m.
 - 2026-10-28 · game/hud.md, game/run.md, models/lane.md, pilot/autopilot.md, README.md · six passages brought in line with the current game (menu, pause, file names, 200 m, the numbers table).
+- 2026-10-28 · storybook/catalog.md · the catalogue's camera follows the mouse: orbit, zoom, pan.

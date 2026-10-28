@@ -15,6 +15,9 @@ import {
   STAGE_FOV_RAD,
   STAGE_NEAR_M,
   STAGE_POSES,
+  PAN_PIXELS_PER_TWO_RADII,
+  WHEEL_ZOOM_SHARE,
+  ZOOM_LIMITS,
   type StageAngle,
 } from './stage-config';
 
@@ -37,11 +40,14 @@ export interface StageFrame {
   readonly inside?: { readonly alpha: number; readonly beta: number; readonly distanceM: number };
 }
 
-/** Creates the stage camera; the mount then frames it on the model. */
+/** Creates the stage camera and hands it to the mouse; the mount then frames it on the model. */
 export function createStageCamera(scene: Scene): void {
   const camera = new ArcRotateCamera('stage-camera', 0, 0, 1, Vector3.Zero(), scene);
   camera.fov = STAGE_FOV_RAD;
   camera.minZ = STAGE_NEAR_M;
+  camera.wheelDeltaPercentage = WHEEL_ZOOM_SHARE;
+  // The canvas keeps the wheel and the drags to itself: the page does not scroll under the model.
+  camera.attachControl(false);
   scene.activeCamera = camera;
 }
 
@@ -92,10 +98,14 @@ function frameCamera(scene: Scene, centre: Vector3, radius: number, angle: Stage
     camera.alpha = inside.alpha;
     camera.beta = inside.beta;
     camera.radius = inside.distanceM;
-    return;
+  } else {
+    const pose = STAGE_POSES[angle];
+    camera.alpha = pose.alpha;
+    camera.beta = pose.beta;
+    camera.radius = (radius / Math.sin(STAGE_FOV_RAD / 2)) * pose.distanceFactor;
   }
-  const pose = STAGE_POSES[angle];
-  camera.alpha = pose.alpha;
-  camera.beta = pose.beta;
-  camera.radius = (radius / Math.sin(STAGE_FOV_RAD / 2)) * pose.distanceFactor;
+  // The mouse moves the camera within reach of the model, whatever its size.
+  camera.lowerRadiusLimit = camera.radius * ZOOM_LIMITS.nearest;
+  camera.upperRadiusLimit = camera.radius * ZOOM_LIMITS.farthest;
+  camera.panningSensibility = PAN_PIXELS_PER_TWO_RADII / (2 * radius);
 }

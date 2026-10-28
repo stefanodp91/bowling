@@ -31,3 +31,15 @@ export const READY_AFTER_FRAMES = 2;
 
 /** Near clipping plane, metres: close enough for a 0.1 m model at close-up. */
 export const STAGE_NEAR_M = 0.01;
+
+/**
+ * The stage camera follows the mouse (a human asked on 2026-10-28 to turn the models round): drag
+ * to orbit, wheel to zoom, right-drag or Ctrl-drag to pan. The pose a story opens with is still the
+ * fixed one above, so shots never change.
+ */
+/** Each wheel notch moves the camera this share of its distance: the same feel at every size. */
+export const WHEEL_ZOOM_SHARE = 0.01;
+/** Zoom stops this close and this far, as multiples of the opening distance. */
+export const ZOOM_LIMITS = { nearest: 0.15, farthest: 4 } as const;
+/** Dragging across this many pixels pans the camera by twice the framing radius. */
+export const PAN_PIXELS_PER_TWO_RADII = 1000;

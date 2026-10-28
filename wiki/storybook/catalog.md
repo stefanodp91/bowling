@@ -22,7 +22,9 @@ the visual source of truth: the game must show a model exactly as its story does
 
 1. Minimal Storybook: no addons beyond what `@storybook/react-vite` needs, no docs pages.
 2. One shared `ModelStage` component (Reactylon scene, neutral grey floor, one key light + ambient,
-   orbit camera with a fixed default pose framing the model's bounding box) renders any model
+   orbit camera with a fixed default pose framing the model's bounding box, which the mouse then
+   turns — drag to orbit, wheel to zoom, right-drag or Ctrl-drag to pan, within limits sized to the
+   model; a human's request of 2026-10-28) renders any model
    factory from `@models`. Stories differ only in which factory they pass and its parameters; a
    model seen from inside, like a room, may give a fixed `inside` view instead of the orbit pose.
 3. Story ids are stable: `models-<name>` (for example `models-ball`, `models-pins`,
@@ -72,6 +74,12 @@ the visual source of truth: the game must show a model exactly as its story does
 - 2026-10-28 · round 4 · The alley segment has one story per theme (`Default`, `Neon`, `Space`,
   `Tropical`, `Diner`), seen from inside down the lanes: the orbit pose framed the room from
   outside and showed only its roof. All reach ready (5 shots).
+- 2026-10-28 · round 5 · The human expected to turn the models round: the orbit camera was never
+  attached to the canvas. `createStageCamera` attaches it; the wheel zooms by a share of the
+  distance (the same feel for a can and a 13 m room), zoom stops at 0.15–4 times the opening
+  distance and panning is sized to the framing radius (`stage-config.ts`). The opening pose is
+  unchanged, so shots are too. A headless walk on `models-ball` and `models-alley-segment`: a drag
+  turns the view, the wheel zooms in, 0 page errors; `shot:verify` passes.
 
 ## Canonical files
 
