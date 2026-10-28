@@ -13,7 +13,9 @@ import { SEGMENT_LENGTH_M, TRAVEL_LANE_WIDTH_M, TRAVEL_LANES } from '../measures
 import { perScene } from '../materials/scene-cache';
 import type { ModelFactory } from '../model-handle';
 import { addCeiling, addFloor, addWall } from './alley-decor';
+import { alleyPalette } from './alley-palette';
 import { ColourMeshBuilder } from './colour-mesh';
+import type { Scenery } from './scenery-themes';
 
 /**
  * The scenery is unlit: its colours are painted into the vertices, so the room reads the same
@@ -58,7 +60,10 @@ function createNeighbourBoards(scene: Scene): Mesh {
   return mesh;
 }
 
-export type AlleySegmentOptions = Readonly<Record<string, never>>;
+export interface AlleySegmentOptions {
+  /** The room's theme: each track has its own (wiki/models/lane.md, rule 6). */
+  readonly scenery: Scenery;
+}
 
 /**
  * One 20 m segment of the room around the playing surface (wiki/models/lane.md, rule 6): cappings,
@@ -66,14 +71,15 @@ export type AlleySegmentOptions = Readonly<Record<string, never>>;
  * the scene recycles instances of it with the lane segments. Root at the segment start on the
  * centre line, floor at y = 0, segment along +z.
  */
-export const createAlleySegment: ModelFactory<AlleySegmentOptions, LaneSegmentHandle> = (scene: Scene): LaneSegmentHandle => {
+export const createAlleySegment: ModelFactory<AlleySegmentOptions, LaneSegmentHandle> = (scene: Scene, { scenery }): LaneSegmentHandle => {
   const root = new TransformNode('alley-segment', scene);
+  const palette = alleyPalette(scenery);
   const builder = new ColourMeshBuilder();
   for (const side of [-1, 1] as const) {
-    addFloor(builder, side);
-    addWall(builder, side);
+    addFloor(builder, side, palette);
+    addWall(builder, side, palette);
   }
-  addCeiling(builder);
+  addCeiling(builder, palette);
   const decor = builder.build('alley-decor', scene);
   decor.material = decorMaterial(scene);
   const meshes = [decor, createNeighbourBoards(scene)];

@@ -49,8 +49,10 @@ export interface Session {
   /** The scene's physics and pin deck, stepped with the simulation; returns the detach. */
   attach(ports: { readonly physics: PhysicsPort; readonly deck: DeckPort }): () => void;
   setSkill(skill: Skill): void;
-  /** Lets a held run begin its countdown; does nothing on a run that is not held. */
+  /** Lets a held run begin its countdown, or a paused one go on; does nothing on a run that is not held. */
   start(): void;
+  /** Holds the run where it is: the pause screen is open (wiki/game/hud.md, rule 9). */
+  hold(): void;
   markReady(): void;
 }
 
@@ -151,6 +153,11 @@ export function createSession({ track, skill: initialSkill, startAtZ, speedup, c
     start: () => {
       if (!waiting) return;
       waiting = false;
+      publish();
+    },
+    hold: () => {
+      if (waiting) return;
+      waiting = true;
       publish();
     },
     markReady: () => {

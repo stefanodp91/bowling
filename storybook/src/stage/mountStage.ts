@@ -30,6 +30,11 @@ export interface StageRequest<Options> {
 export interface StageFrame {
   readonly centre: readonly [number, number, number];
   readonly radiusM: number;
+  /**
+   * A fixed view for a model seen from inside, like a room: the camera looks at `centre` from this
+   * orbit and distance whatever the angle asked for.
+   */
+  readonly inside?: { readonly alpha: number; readonly beta: number; readonly distanceM: number };
 }
 
 /** Creates the stage camera; the mount then frames it on the model. */
@@ -57,7 +62,7 @@ export function mountStage<Options>(scene: Scene, request: StageRequest<Options>
   const floor = createStageFloor(scene, { sizeM: Math.max(FLOOR_MIN_SIZE_M, extent * FLOOR_SIZE_FACTOR) });
   // The floor goes under the model's lowest point: gutters and pits reach below the lane surface.
   floor.root.position.set(centre.x, Math.min(0, min.y), centre.z);
-  frameCamera(scene, centre, radius, request.angle);
+  frameCamera(scene, centre, radius, request.angle, request.frame?.inside);
 
   const startMs = performance.now();
   const animate = scene.onBeforeRenderObservable.add(() => model.animate?.((performance.now() - startMs) / 1000));
@@ -79,11 +84,17 @@ export function mountStage<Options>(scene: Scene, request: StageRequest<Options>
   };
 }
 
-function frameCamera(scene: Scene, centre: Vector3, radius: number, angle: StageAngle): void {
+function frameCamera(scene: Scene, centre: Vector3, radius: number, angle: StageAngle, inside: StageFrame['inside']): void {
   const camera = scene.activeCamera;
   if (!(camera instanceof ArcRotateCamera)) throw new Error('stage camera missing: createStageCamera runs on scene ready');
-  const pose = STAGE_POSES[angle];
   camera.setTarget(centre);
+  if (inside !== undefined) {
+    camera.alpha = inside.alpha;
+    camera.beta = inside.beta;
+    camera.radius = inside.distanceM;
+    return;
+  }
+  const pose = STAGE_POSES[angle];
   camera.alpha = pose.alpha;
   camera.beta = pose.beta;
   camera.radius = (radius / Math.sin(STAGE_FOV_RAD / 2)) * pose.distanceFactor;

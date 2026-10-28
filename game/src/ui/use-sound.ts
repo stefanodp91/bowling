@@ -3,7 +3,7 @@ import { connectSound } from '../audio/connect-sound';
 import { createSoundPlayer, type SoundPlayer } from '../audio/sound-player';
 import { registerSoundStatus } from '../dev/sound-status';
 import type { Session } from '../app/session';
-import { SOUND_TOGGLE_SELECTOR } from './hud/SoundToggle';
+import { SOUND_TOGGLE_SELECTOR } from './menu/SoundToggle';
 
 /**
  * The page's sound (wiki/audio/sounds.md, rule 4): one player for the whole page, so a new run

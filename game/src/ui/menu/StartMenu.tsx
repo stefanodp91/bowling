@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { SKILLS, type Skill } from '../../config/pilot';
+import { SoundToggle } from './SoundToggle';
 import styles from './StartMenu.module.css';
 
 export interface StartMenuProps {
@@ -10,13 +11,14 @@ export interface StartMenuProps {
   readonly onTrack: (track: string) => void;
   readonly onSkill: (skill: Skill) => void;
   readonly onStart: () => void;
+  readonly sound: { readonly on: boolean; readonly toggle: () => void };
 }
 
 /**
- * The start menu (wiki/game/hud.md, rule 2): who the autopilot plays like, which track, «Start».
- * Drawn over the chosen track, the ball already in the bowler's hand.
+ * The start menu (wiki/game/hud.md, rule 2): who the autopilot plays like, which track, sound on or
+ * off, «Start». Drawn over the chosen track, the ball already in the bowler's hand.
  */
-export function StartMenu({ tracks, track, skill, onTrack, onSkill, onStart }: StartMenuProps) {
+export function StartMenu({ tracks, track, skill, onTrack, onSkill, onStart, sound }: StartMenuProps) {
   const { t } = useTranslation();
   return (
     <section className={styles.menu} aria-label={t('menu.label')}>
@@ -42,6 +44,7 @@ export function StartMenu({ tracks, track, skill, onTrack, onSkill, onStart }: S
           ))}
         </div>
       </fieldset>
+      <SoundToggle on={sound.on} onToggle={sound.toggle} />
       {/* The start is also the gesture that lets the browser play sound. */}
       <button type="button" className={styles.start} onClick={onStart} autoFocus>
         {t('menu.start')}

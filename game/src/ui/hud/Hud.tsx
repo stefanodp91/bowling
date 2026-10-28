@@ -3,17 +3,17 @@ import { Countdown } from './Countdown';
 import { EndScreen } from './EndScreen';
 import styles from './Hud.module.css';
 import { RunInfo } from './RunInfo';
-import { SoundToggle } from './SoundToggle';
+import { PauseButton } from './PauseButton';
 import { useSnapshot } from './use-snapshot';
 
 export interface HudProps {
   readonly session: Pick<Session, 'store'>;
   readonly onMenu: () => void;
-  readonly sound: { readonly on: boolean; readonly toggle: () => void };
+  readonly onPause: () => void;
 }
 
 /** Everything drawn over the scene (wiki/game/hud.md). Reads only the session's store. */
-export function Hud({ session, onMenu, sound }: HudProps) {
+export function Hud({ session, onMenu, onPause }: HudProps) {
   const snapshot = useSnapshot(session.store);
   return (
     <div className={styles.hud}>
@@ -22,7 +22,7 @@ export function Hud({ session, onMenu, sound }: HudProps) {
       {snapshot.phase === 'result' && snapshot.pinsDown !== null ? (
         <EndScreen pinsDown={snapshot.pinsDown} impacts={snapshot.impacts} skill={snapshot.resultSkill ?? snapshot.skill} onMenu={onMenu} />
       ) : null}
-      <SoundToggle on={sound.on} onToggle={sound.toggle} />
+      {snapshot.phase === 'result' ? null : <PauseButton onPause={onPause} />}
     </div>
   );
 }

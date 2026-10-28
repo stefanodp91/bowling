@@ -30,4 +30,16 @@ describe('a session held by the start menu', () => {
     expect(session.store.get()).toMatchObject({ waiting: false });
     expect(session.store.get().phaseS).toBeGreaterThan(0);
   });
+
+  it('holds a running run where it is, and lets it go on', () => {
+    const session = createSession({ track: EMPTY_TRACK, skill: 'perfect' });
+    for (let i = 0; i < FRAMES * 2; i += 1) session.frame(FRAME_S);
+    session.hold();
+    const held = session.store.get();
+    for (let i = 0; i < FRAMES; i += 1) session.frame(FRAME_S);
+    expect(session.store.get()).toEqual(held);
+    session.start();
+    session.frame(FRAME_S);
+    expect(session.store.get().z).toBeGreaterThan(held.z);
+  });
 });

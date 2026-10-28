@@ -3,7 +3,7 @@ title: Lane — 200 m of maple, three travel lanes, gutters and pin deck
 type: spec
 status: built
 depends_on: [storybook/catalog.md, tools/shot.md]
-canonical: [models/src/measures/lane.ts, models/src/measures/alley.ts, models/src/lane/, models/src/alley/, storybook/src/stories/alley-segment.stories.tsx, storybook/src/stories/lane-segment.stories.tsx, storybook/src/stories/pin-deck.stories.tsx, storybook/src/scenes/pin-deck-scene.ts]
+canonical: [models/src/measures/lane.ts, models/src/measures/alley.ts, game/src/config/scenery.ts, game/src/config/scenery.test.ts, models/src/lane/, models/src/alley/, storybook/src/stories/alley-segment.stories.tsx, storybook/src/stories/lane-segment.stories.tsx, storybook/src/stories/pin-deck.stories.tsx, storybook/src/scenes/pin-deck-scene.ts]
 verified: 2026-10-28
 ---
 
@@ -40,14 +40,21 @@ to render for its whole length.
    fades into the room, never into black.
 6. **The alley around the lane** (a human's request of 2026-10-27: the game showed a black void
    around the lane). On each side, beyond the outer gutter: a raised capping, then two neighbouring
-   regulation lanes with their gutters, separated by cappings; then a side wall. The walls carry a
-   cheerful retro decor generated from numbers (wide bands of saturated colour, a repeating pattern
-   of circles and stripes, a darker wainscot); a ceiling closes the room, with rows of light strips
-   along the lanes and cross beams every few metres, so the sense of speed comes from the room too.
-   Built like the lane: `createAlleySegment` makes one `SEGMENT_LENGTH_M` segment that the scene
-   recycles with the lane segments, in at most three meshes (decor, light strips, neighbouring
-   boards), so the draw budget of [headless runs](../pilot/headless-runs.md) holds. Measures in
-   `models/src/measures/alley.ts`. Story `models-alley-segment`.
+   regulation lanes with their gutters, separated by cappings; then a side wall: a darker wainscot,
+   a stripe, a mural band with a pattern generated from numbers, a neon line and a top band. A
+   ceiling closes the room, with rows of light strips along the lanes and cross beams every few
+   metres, so the sense of speed comes from the room too.
+   **Themes:** each track is played in a room of its own (a human's request of 2026-10-28):
+   `retro` (teal and cream, coloured discs), `neon` (a dark room, pink and cyan zigzags), `space`
+   (night blue, planets and stars), `tropical` (green and coral, sea waves), `diner` (red, cream,
+   a black and white checkerboard). A theme sets every colour of the room, the mural's pattern and
+   the haze the far end fades into (`models/src/alley/scenery-themes.ts`, plain hex data that tools
+   read too); `game/src/config/scenery.ts` gives each committed track its theme.
+   Built like the lane: `createAlleySegment(scene, { scenery })` makes one `SEGMENT_LENGTH_M`
+   segment that the scene recycles with the lane segments, in two meshes (the vertex-coloured
+   decor, the neighbouring boards), so the draw budget of
+   [headless runs](../pilot/headless-runs.md) holds. Measures in `models/src/measures/alley.ts`.
+   Story `models-alley-segment`, one story per theme, seen from inside down the lanes.
 
 ## Acceptance criteria
 
@@ -105,6 +112,15 @@ to render for its whole length.
 - 2026-10-28 · round 5 · `LANE_LENGTH_M` 300 → 200 (a human's decision): ten 20 m segments; the
   alley, the deck and the HUD follow from the constant. Unit tests unchanged and green; shots at
   150 m and 195 m show the lane, the alley and the deck.
+- 2026-10-28 · round 6 · The human asked that the scenery change with the track and that the
+  decorative models be in the catalogue. Rule 6: five themes, one per committed track; the palette
+  is built from a theme, the mural from one of five pattern painters (`alley-murals.ts`: discs,
+  zigzags, planets and diamond stars, three wave bands layered off the wall, a three-row
+  checkerboard), each repeating exactly within a segment so recycled segments join. The game's fog
+  and clear colour come from the theme's haze. Unit tests: every theme builds with colours of its
+  own; every committed track has a room of its own. Stories: `Default` (retro), `Neon`, `Space`,
+  `Tropical`, `Diner`, seen from inside (a stage `inside` view); 5 story shots and the game at 40 m
+  on lane-02…05 show five different rooms, the obstacles still readable against each.
 
 ## Canonical files
 

@@ -3,7 +3,7 @@ title: Sounds — generated from numbers, played by the audio engine
 type: spec
 status: built
 depends_on: [game/pins.md, game/hud.md]
-canonical: [scripts/audio/, scripts/gates/check-audio.mjs, game/public/audio/, game/src/config/audio.ts, game/src/audio/, game/src/app/events.ts, game/src/ui/use-sound.ts, game/src/ui/hud/SoundToggle.tsx]
+canonical: [scripts/audio/, scripts/gates/check-audio.mjs, game/public/audio/, game/src/config/audio.ts, game/src/audio/, game/src/app/events.ts, game/src/ui/use-sound.ts, game/src/ui/menu/SoundToggle.tsx]
 verified: 2026-10-28
 ---
 
@@ -31,8 +31,9 @@ comes from a committed script, so an open-source audience gets the source of eve
    crossfaded speed bands — the choice and why go in «Rounds»); `impact` on each impact event;
    `pin-clack` on pin contacts above a contact-speed threshold, at most `MAX_CLACKS_PER_S`;
    `strike` on a score of ten.
-4. **Muted until the first gesture**, as browsers require: a sound toggle in the HUD (localised,
-   accessible); any click on the page also unlocks audio through the engine. Once unlocked, sound
+4. **Muted until the first gesture**, as browsers require: a sound toggle in the start menu and on
+   the pause screen ([HUD](../game/hud.md), rules 2 and 9; a human moved it there on 2026-10-28),
+   localised and accessible; any click on the page also unlocks audio through the engine. Once unlocked, sound
    stays as the listener left it across runs — a new run never asks for another gesture — and the
    toggle alone decides on or off (the first click on the toggle turns sound on).
 5. Values in `game/src/config/audio.ts`.
@@ -120,6 +121,9 @@ comes from a committed script, so an open-source audience gets the source of eve
 - 2026-10-28 · round 5 · The rumble's speed bands now crossfade from `MIN_ROLL_SPEED_MPS` (3 m/s)
   to `RELEASE_SPEED_MPS` (10 m/s), the slowest and fastest a ball goes since the run became a throw
   that slows down. No sound file changed.
+- 2026-10-28 · round 6 · The sound toggle moved from the HUD to the start menu and the pause
+  screen (rule 4, the human's request). A headless walk: a press on a track unlocks sound, the
+  toggle then turns it off, and the run plays on.
 
 ## Canonical files
 

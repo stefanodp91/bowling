@@ -81,3 +81,5 @@ investigations goes here, never in the pages (prompt 3, step 3).
 - 2026-10-28 · game/hud.md, game/run.md · the start menu built: skill and track before the run,
   no in-game skill buttons, the end screen returns to the menu; HUD criteria 1 and 3 re-locked on
   authorization.
+- 2026-10-28 · models/lane.md, storybook/catalog.md, audio/sounds.md, game/hud.md · a room of its
+  own for each track (five themes, a story each), the sound toggle in the menus, the pause.

@@ -5,6 +5,14 @@ this file keeps what was done and when. Every page was built and closed inside o
 handoff was opened ([`handoffs/`](handoffs/README.md)); each entry points to the page whose
 «Rounds» section holds the details.
 
+## A room per track, pause — 2026-10-28
+
+- **Five rooms** ([lane](wiki/models/lane.md), rule 6) — retro, neon, space, tropical and diner,
+  one per track, each a story of the catalogue seen from inside.
+- **Sound in the menus, a pause button** ([HUD](wiki/game/hud.md), rule 9) — the sound toggle sits
+  in the start menu and on the pause screen; «Pause» or Escape holds the run, then «Resume» or
+  «Main menu».
+
 ## Start menu — 2026-10-28
 
 - **A start menu** ([HUD](wiki/game/hud.md), rule 2) — choose Perfect or Dummy and the track over

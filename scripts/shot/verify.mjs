@@ -9,6 +9,7 @@ import { launchBrowser, pixelOf } from '../headless/browser.mjs';
 import { ensureServer } from '../headless/servers.mjs';
 import { parseFrontMatter } from '../wiki/parse.mjs';
 import { takeShot } from './shot.mjs';
+import { SCENERY_THEMES } from '../../models/src/alley/scenery-themes.ts';
 
 /** A real shot is larger than this (wiki/tools/shot.md, criterion 1). */
 const MIN_PNG_BYTES = 10 * 1024;
@@ -44,8 +45,8 @@ try {
   server.stop();
 }
 
-/** The game's fog and background colour, from game/src/config/camera.ts (FOG_HEX). */
-const FOG = readFileSync(join(REPO_ROOT, 'game/src/config/camera.ts'), 'utf8').match(/FOG_HEX = '#([0-9A-F]{6})'/i)[1];
+/** The haze lane-01's room fades into: its theme's background colour, without the «#». */
+const FOG = SCENERY_THEMES.retro.haze.slice(1);
 /** wiki/game/run.md criterion 3: the ball on the lane at 150 m. */
 const GAME_AT_150 = 'game:track=lane-01&at=150&pause=1';
 /** wiki/game/hud.md criterion 3: a bare address opens the start menu over the lane. */

@@ -13,3 +13,5 @@ export const ROLL_BANNER_M = 5;
 export const AUTO_MENU_S = 10;
 /** Speed is shown in km/h, which a room reads at a glance: 1 m/s = 3.6 km/h. */
 export const KMH_PER_MPS = 3.6;
+/** The key that pauses the run, as the pause button does (rule 9). */
+export const PAUSE_KEY = 'Escape';

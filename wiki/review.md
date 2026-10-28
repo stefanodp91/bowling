@@ -14,6 +14,10 @@ with the date.
 
 ## Where to resume
 
+- 2026-10-28, night — Each track now has a room of its own ([lane](models/lane.md) rule 6, five
+  themes, one story each in the catalogue), the sound toggle lives in the start menu and the pause
+  screen, and «Pause» (or Escape) holds the run ([HUD](game/hud.md) rule 9). No criterion changed;
+  two are proposed in «To judge». To look at: the five rooms from the back of a room.
 - 2026-10-28, evening — The start menu is built ([HUD](game/hud.md) rule 2): skill and track are
   chosen before the run, the in-game skill buttons are gone, and the end screen goes back to the
   menu. HUD criteria 1 and 3 rewritten and re-locked on the human's authorization. To look at: the
@@ -62,6 +66,12 @@ with the date.
 Each entry: date · page · what the agent built or could not build · why it needs a human · what
 the agent recommends.
 
+- 2026-10-28 · [HUD](game/hud.md) rule 9 (pause) and [lane](models/lane.md) rule 6 (themes) · Both
+  asked for by the human and built, but no acceptance criterion covers them (only a human writes
+  criteria). Recommend: «[auto] a component test: «Pause» and Escape hold the run, «Resume» goes on
+  from the same metre, «Main menu» opens the start menu» and «[auto] every committed track has a
+  theme of its own, and story `models-alley-segment` has one story per theme that reaches ready;
+  [human] each room reads as a different bowling alley and never hides the obstacles».
 - 2026-10-28 · [run](game/run.md) criterion 2 · The criterion's explanation in parentheses
   derives ≈ 26 s from «the 0.8 s throw covers 5.3 m»; the throw is now the arm swing during the
   countdown and rolling starts at 10 m/s, so the expected value is `(10 / 6 − 1) / (k · 10)` with

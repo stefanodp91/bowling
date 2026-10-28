@@ -32,9 +32,10 @@ npm run dev
 ```
 
 Open <http://localhost:3000>. A start menu over the lane asks who the autopilot plays like —
-**Perfect** or **Dummy** — and which track; **Start** throws the ball and switches the sound on (the
-button at the top right mutes it). When the run ends, **Menu** goes back to the start menu (it also
-does so by itself after 10 s).
+**Perfect** or **Dummy** — and which track (each is played in a room of its own); the sound switch
+is there too, and **Start** throws the ball. During the run, **Pause** (or Escape) stops it, to
+resume or go back to the main menu. When the run ends, **Menu** goes back to the start menu (it
+also does so by itself after 10 s).
 
 Useful addresses: `?track=lane-03` skips the menu and plays that track (`lane-01` … `lane-05`),
 `?skill=dummy` with it sets the skill.

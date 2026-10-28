@@ -21,11 +21,13 @@ change how well the autopilot drives, live, with one click.
 ## Rules
 
 1. **Run information** (top): distance `0–200 m` as a progress bar with the number, current speed,
-   impacts so far, current track id, and the active skill («Autopilot: Perfect»).
+   impacts so far, current track id, and the active skill («Autopilot: Perfect»); a «Pause» button
+   at the top right (rule 9).
 2. **Start menu** (a human's decision of 2026-10-28; it replaces the in-game skill buttons): a page
    opened without `?track=` shows, over the chosen track with the ball in the bowler's hand, a menu
    with the autopilot's skill — `Perfect` or `Dummy`, each with one line saying what it does — the
-   committed tracks of `index.json`, and «Start». The run is held at the foul line
+   committed tracks of `index.json`, the sound toggle ([sounds](../audio/sounds.md), rule 4), and
+   «Start». The run is held at the foul line
    (`waitForStart`, `start()` on the session) until «Start», which is also the gesture that lets
    the browser play sound. Choosing a track loads it under the menu; choosing a skill changes the
    held session in place. The chosen option of each group is highlighted by more than colour (a
@@ -47,6 +49,10 @@ change how well the autopilot drives, live, with one click.
    language is adding a file.
 8. **Accessibility:** buttons are real `<button>`s with accessible names; text contrast at least
    4.5:1 over the scene (a translucent backing panel); nothing conveys state by colour alone.
+9. **Pause** (a human's request of 2026-10-28): the «Pause» button, or Escape, holds the run where
+   it is (`hold()` on the session; physics and pins stand still too) and shows a pause screen with
+   «Resume», which goes on from there, «Main menu», which leaves the run for the start menu, and
+   the sound toggle. There is no pause once the result is shown.
 
 ## Acceptance criteria
 
@@ -110,6 +116,13 @@ change how well the autopilot drives, live, with one click.
   no menu; `game:pause=1` shows the menu over the lane. A headless walk through the page: Dummy and
   lane-02 chosen, held, Start, 4 impacts and 6 pins in 26.2 s, «Menu» back to a held lane-02 with
   Dummy still chosen, 0 console errors.
+- 2026-10-28 · round 6 · The sound toggle moved into the start menu and the pause screen; the
+  HUD's top right now holds «Pause» (rule 9; Escape too), which holds the session where it is.
+  Tests: the pause button and Escape call pause; the pause screen resumes, goes to the main menu
+  and toggles sound; a held running session does not move and goes on after `start()`. A headless
+  walk on lane-03: Start, Pause at 25.55 m with the ball still 1.5 s later, Resume, Escape, Main
+  menu back to a held lane-03; 0 console errors. Criteria unchanged: a criterion for the pause is
+  proposed in «To judge».
 
 ## Canonical files
 

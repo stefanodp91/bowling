@@ -6,6 +6,7 @@ import type { GameSnapshot } from '../../app/snapshot';
 import { createStore } from '../../app/store';
 import type { Skill } from '../../config/pilot';
 import { initI18n } from '../../i18n';
+import { PauseScreen } from '../menu/PauseScreen';
 import { StartMenu } from '../menu/StartMenu';
 import { EndScreen } from './EndScreen';
 import { Hud } from './Hud';
@@ -38,16 +39,16 @@ beforeAll(() => {
 });
 afterEach(cleanup);
 
-function renderHud() {
+function renderHud(onPause: () => void = () => {}) {
   const store = createStore(rolling);
-  render(<Hud session={{ store }} onMenu={() => {}} sound={{ on: false, toggle: () => {} }} />);
+  render(<Hud session={{ store }} onMenu={() => {}} onPause={onPause} />);
 }
 
 /** The start menu with its own state, as the App holds it. */
 function MenuHarness({ onStart }: { readonly onStart: (track: string, skill: Skill) => void }) {
   const [track, setTrack] = useState('lane-01');
   const [skill, setSkill] = useState<Skill>('perfect');
-  return <StartMenu tracks={TRACKS} track={track} skill={skill} onTrack={setTrack} onSkill={setSkill} onStart={() => onStart(track, skill)} />;
+  return <StartMenu tracks={TRACKS} track={track} skill={skill} onTrack={setTrack} onSkill={setSkill} onStart={() => onStart(track, skill)} sound={{ on: false, toggle: () => {} }} />;
 }
 
 describe('start menu', () => {
@@ -64,11 +65,30 @@ describe('start menu', () => {
   });
 });
 
+describe('pause screen', () => {
+  it('resumes, or goes to the main menu, and switches sound', () => {
+    const [onResume, onMainMenu, toggle] = [vi.fn(), vi.fn(), vi.fn()];
+    render(<PauseScreen sound={{ on: true, toggle }} onResume={onResume} onMainMenu={onMainMenu} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Resume' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Main menu' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Sound on' }));
+    expect([onResume, onMainMenu, toggle].map((f) => f.mock.calls.length)).toEqual([1, 1, 1]);
+  });
+});
+
 describe('HUD', () => {
   it('has no skill buttons during the run, and names the active skill', () => {
     renderHud();
     expect(screen.queryByRole('button', { name: /Perfect|Dummy/ })).toBeNull();
     expect(screen.queryByText('Autopilot: Perfect')).not.toBeNull();
+  });
+
+  it('pauses with its button and with Escape', () => {
+    const onPause = vi.fn();
+    renderHud(onPause);
+    fireEvent.click(screen.getByRole('button', { name: 'Pause' }));
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(onPause).toHaveBeenCalledTimes(2);
   });
 
   it('shows the distance as a progress bar', () => {

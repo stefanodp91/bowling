@@ -4,11 +4,12 @@ import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { Color3, Color4 } from '@babylonjs/core/Maths/math.color';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { Scene } from '@babylonjs/core/scene';
-import { applyAlleyEnvironment } from '@models';
+import { applyAlleyEnvironment, SCENERY_THEMES } from '@models';
 import type { Session } from '../app/session';
 import { SIM_STEP_S } from '../config/run';
 import { recordFrame } from '../dev/render-stats';
-import { CHASE_FOV_RAD, FOG_END_M, FOG_HEX, FOG_START_M } from '../config/camera';
+import { CHASE_FOV_RAD, FOG_END_M, FOG_START_M } from '../config/camera';
+import { sceneryOf } from '../config/scenery';
 import { AMBIENT_INTENSITY, KEY_LIGHT } from '../config/scene';
 import { cameraPose, timeScaleAt } from './camera/rig';
 import { createDeck } from './physics/deck';
@@ -44,7 +45,9 @@ export interface MountOptions {
 
 /** Mounts a session into the Reactylon scene: lights, lane, ball, obstacles, camera, the frame loop. */
 export function mountGame(scene: Scene, session: Session, options: MountOptions): () => void {
-  const fog = Color3.FromHexString(FOG_HEX);
+  // The far end of the room fades into its theme's haze (wiki/models/lane.md, rule 6).
+  const scenery = sceneryOf(session.track.trackId);
+  const fog = Color3.FromHexString(SCENERY_THEMES[scenery].haze);
   scene.clearColor = new Color4(fog.r, fog.g, fog.b, 1);
   scene.fogMode = Scene.FOGMODE_LINEAR;
   scene.fogColor = fog;
@@ -58,7 +61,7 @@ export function mountGame(scene: Scene, session: Session, options: MountOptions)
 
   const physics = createPhysicsWorld(scene, options.havok);
   const lane = createLaneView(scene);
-  const alley = createAlleyView(scene);
+  const alley = createAlleyView(scene, scenery);
   const ball = createBallView(scene);
   const pins = createPinsView(scene);
   const deck = createDeck(scene, { ball: ball.root, pins: pins.pins, pinMesh: pins.pinMesh });

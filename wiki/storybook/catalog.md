@@ -23,7 +23,8 @@ the visual source of truth: the game must show a model exactly as its story does
 1. Minimal Storybook: no addons beyond what `@storybook/react-vite` needs, no docs pages.
 2. One shared `ModelStage` component (Reactylon scene, neutral grey floor, one key light + ambient,
    orbit camera with a fixed default pose framing the model's bounding box) renders any model
-   factory from `@models`. Stories differ only in which factory they pass and its parameters.
+   factory from `@models`. Stories differ only in which factory they pass and its parameters; a
+   model seen from inside, like a room, may give a fixed `inside` view instead of the orbit pose.
 3. Story ids are stable: `models-<name>` (for example `models-ball`, `models-pins`,
    `models-obstacle-soda-cans`), plus `scenes-pin-deck` (lane end + ten pins).
 4. A story signals readiness for screenshots by setting `data-ready="true"` on its root element after
@@ -68,6 +69,9 @@ the visual source of truth: the game must show a model exactly as its story does
   renders lane-02 with the HUD (1 shot).
 - 2026-10-28 · round 3 · Stories `models-obstacle-wet-floor-sign` and `models-obstacle-soda-cans`
   replace the stray pins and the sweep bar; both reach ready (2 shots each).
+- 2026-10-28 · round 4 · The alley segment has one story per theme (`Default`, `Neon`, `Space`,
+  `Tropical`, `Diner`), seen from inside down the lanes: the orbit pose framed the room from
+  outside and showed only its roof. All reach ready (5 shots).
 
 ## Canonical files
 
