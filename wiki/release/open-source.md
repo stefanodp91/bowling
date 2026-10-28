@@ -4,7 +4,7 @@ type: spec
 status: built
 depends_on: [pilot/headless-runs.md, audio/sounds.md, method/stats.md]
 canonical: [README.md, THIRD_PARTY_NOTICES.md, CHANGELOG.md, docs/screenshot.png, scripts/release/, scripts/gates/check-notices.mjs, scripts/tests/readme-links.test.mjs, package.json]
-verified: 2026-10-26
+verified: 2026-10-28
 ---
 
 # Open-source release
@@ -70,3 +70,7 @@ demo, understand how it was built, and rebuild it with their own agent.
   tests, script tests, the nine gates and their selftests, wiki lint and selftests, and
   `check-pilot` playing the five tracks with `perfect` in headless Chromium). The README's stats
   table was filled from `npm run stats -- --md` just before the closing commit.
+- 2026-10-28 · round 4 · The human found the README's screenshot out of date (three skill buttons,
+  the sound toggle in the HUD, no scoreboard). Regenerated with the shot tool,
+  `game:track=lane-01&at=176&pause=1`: the retro room, the pins under the scoreboard with its live
+  screen, the HUD with the active skill and «Pause»; alt text rewritten to match.

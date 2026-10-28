@@ -91,3 +91,4 @@ investigations goes here, never in the pages (prompt 3, step 3).
   missing camera is now an error, and the trap is recorded.
 - 2026-10-28 · game/run.md, AGENTS.md · the blank scene's real cause (a pre-bundled Babylon with two
   shader stores); Babylon is no longer pre-bundled by the game's dev server.
+- 2026-10-28 · release/open-source.md, AGENTS.md · the README screenshot regenerated for the current game; AGENTS.md says 200 m.

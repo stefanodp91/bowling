@@ -5,7 +5,7 @@ other). `CLAUDE.md` only imports this file. Keep it under 32 KiB: `npm run agent
 
 ## What this repository is
 
-**Bowling** is a small open-source web demo: a bowling ball rolls by itself down a 300 m lane full of
+**Bowling** is a small open-source web demo: a bowling ball rolls by itself down a 200 m lane full of
 obstacles and ends against ten pins. Nobody plays it: an autopilot drives the ball. The point of the
 project is not the game but **how it is built**: by AI agents that read a wiki before acting, build
 one item at a time, check and judge their own work, and leave written records for whoever comes next.

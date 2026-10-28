@@ -11,9 +11,9 @@ from code â€” one of five rooms, each with its ball return and its scoreboard â€
 groove generated, like every sound here, from numbers. The ball, the pins and the obstacles are
 twice life size, so they read from the back of a room.
 
-![The ball rolling down lane-01 between neighbouring lanes and mural walls under a lit ceiling, a
-pair of rental shoes and a returning house ball ahead, the run information at the top and the three
-skill buttons at the bottom](docs/screenshot.png)
+![The ball near the end of lane-01 in the retro room, between neighbouring lanes and mural walls
+under a lit ceiling; ahead, the ten pins under the scoreboard, whose middle screen follows the run;
+the run information and the active skill at the top, the pause button at the top right](docs/screenshot.png)
 
 **The game is the excuse.** This repository shows a way of building software with AI agents: a wiki
 that is the specification and that the agent must read before acting, a loop in which the agent
