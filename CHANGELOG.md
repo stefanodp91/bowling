@@ -5,6 +5,19 @@ this file keeps what was done and when. Every page was built and closed inside o
 handoff was opened ([`handoffs/`](handoffs/README.md)); each entry points to the page whose
 «Rounds» section holds the details.
 
+## Third round of human requests — 2026-10-28
+
+The human found the run forced and long, and wanted a perfect game against a beginner:
+
+- **A 200 m lane** ([lane](wiki/models/lane.md)) — tracks re-baked: 7, 7, 4, 6, 6 obstacles.
+- **A natural run** ([run](wiki/game/run.md), rule 3) — a 0.8 s throw from rest to 10 m/s, then a
+  drag that takes a share of the speed per metre, down to 6 m/s at the pins: ≈ 26 s clean. An
+  impact costs 20 % of the speed for good ([impacts](wiki/game/impacts.md)).
+- **Two skills** ([autopilot](wiki/pilot/autopilot.md), [HUD](wiki/game/hud.md)) — `perfect`
+  strikes; `dummy` ignores obstacles, steers towards what it ignores and misses the pocket, so it
+  never strikes and always leaves some pins down. Measured in the
+  [200 m campaign](wiki/records/pilot-vs-blind-200m-20261028.md).
+
 ## Second round of human requests — 2026-10-27
 
 The human found the props tiny on the long lane, the scene a black void, the music too slow and the

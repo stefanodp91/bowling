@@ -72,6 +72,11 @@ browser, driven by the autopilot, many times, and writes down numbers instead of
 - 2026-10-27 · round 2 · New campaign on the 300 m lane, same commands:
   [pilot vs blind, 300 m](../records/pilot-vs-blind-300m-20261027.md) — 20 runs, all reach the
   result, 15 of 15 agree with `simulateRun`; perfect strikes on all five tracks.
+- 2026-10-28 · round 3 · Two skills now, `perfect` and `dummy`; criterion 3 rewritten (perfect,
+  dummy, blind) and re-locked on the human's authorization. Campaign on the 200 m lane, three seeds
+  per track: [pilot vs blind, 200 m](../records/pilot-vs-blind-200m-20261028.md) — perfect 0.0
+  impacts and 10.0 pins (15 strikes in 15), dummy 2.7 and 5.5 (no strike, never zero), blind 2.6
+  and 3.9; 30 of 30 pilot runs agree with `simulateRun`; 0 console errors. `check:full` passes.
 
 ## Canonical files
 

@@ -124,6 +124,11 @@ into a slower ball and fewer pins.
   round 5. Criteria 3 and 5 rewritten and re-locked on the human's authorization. Tests: perfect 0
   impacts and the centre lane on every track; dummy 4, 4, 2, 1, 2 impacts on lane-01…05, the same
   twice; the deck knocks down 3, 5, 7, 7, 7 pins from those hand-overs.
+- 2026-10-28 · round 6 · In the browser, three seeds per track: perfect strikes 15 of 15, dummy
+  2.7 impacts and 3–7 pins, no strike and no zero
+  ([pilot vs blind, 200 m](../records/pilot-vs-blind-200m-20261028.md)). For the human
+  (criterion 5): whether target fixation reads as a beginner, and whether a 48 s dummy run on
+  lane-01 is too long on stage.
 
 ## Canonical files
 

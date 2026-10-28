@@ -69,3 +69,6 @@ investigations goes here, never in the pages (prompt 3, step 3).
   game/hud.md, pilot/autopilot.md, pilot/headless-runs.md, track/track-format.md · the human's
   third round: a 200 m lane, a run that is a throw then a drag (the «slow» profile), two skills
   `perfect` and `dummy`; criteria rewritten and re-locked on the human's authorization; built.
+- 2026-10-28 · records/pilot-vs-blind-200m-20261028.md, pilot/headless-runs.md,
+  pilot/autopilot.md, review.md · the 200 m campaign recorded: perfect 10.0 pins, dummy 5.5 with
+  no strike and no zero, blind 3.9.

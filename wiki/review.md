@@ -14,6 +14,14 @@ with the date.
 
 ## Where to resume
 
+- 2026-10-28 — The human's third round is built: a 200 m lane ([lane](models/lane.md)), a run
+  that is a throw then a drag ([run](game/run.md) rule 3), impacts that cost speed for good
+  ([impacts](game/impacts.md)), and two skills, `perfect` and `dummy`
+  ([autopilot](pilot/autopilot.md), [HUD](game/hud.md)); the criteria of seven pages were
+  rewritten and re-locked on the human's authorization. Measured in
+  [pilot vs blind, 200 m](records/pilot-vs-blind-200m-20261028.md): perfect strikes every time in
+  25.9 s, dummy leaves 3–7 pins in 29–48 s. `npm run check:full` passes; every page is `built`.
+  To look at with eyes: a dummy run from the back of a room (autopilot criterion 5).
 - 2026-10-27, third pass — The human's second round of requests is built: props at twice life
   size ([conventions](models/conventions.md)), the alley around the lane ([lane](models/lane.md)
   rule 6), happier music ([sounds](audio/sounds.md) rule 6) and skills that show
@@ -72,6 +80,9 @@ the agent recommends.
   impacts criterion 2. The spec now carries the speed loss to the pins (0.4 loss, recovery at
   0.5 m/s²), a larger aim error (0.25 m at regulation size) and more ignored obstacles for `good`
   and `sloppy`; the next record measures whether the pins show it. A human closes this entry.
+  Update of 2026-10-28: the human replaced the three skills with `perfect` and `dummy`; the dummy
+  never strikes and always leaves some pins down
+  ([pilot vs blind, 200 m](records/pilot-vs-blind-200m-20261028.md)). A human closes this entry.
 - 2026-10-27 · [sounds](audio/sounds.md) rule 6 (music) · The human asked for background music;
   it is built as rule 6, but no acceptance criterion covers it (only a human writes criteria).
   Recommend adding: «[auto] the music loop is produced by `npm run audio:build` and checked by

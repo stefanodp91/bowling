@@ -43,6 +43,7 @@ once the script exists.
 
 - [records/deck-tests-20261027.md](records/deck-tests-20261027.md) — Deck tests — pocket and off-pocket pins down in Havok
 - [records/deck-tests-300m-20261027.md](records/deck-tests-300m-20261027.md) — Deck tests on the 300 m lane — pocket and off-pocket pins down in Havok
+- [records/pilot-vs-blind-200m-20261028.md](records/pilot-vs-blind-200m-20261028.md) — Pilot vs blind on the 200 m lane — perfect, dummy and the blind baseline in the browser
 - [records/pilot-vs-blind-20261027.md](records/pilot-vs-blind-20261027.md) — Pilot vs blind — 5 tracks, three skills and the blind baseline in the browser
 - [records/pilot-vs-blind-300m-20261027.md](records/pilot-vs-blind-300m-20261027.md) — Pilot vs blind on the 300 m lane — three skills and the blind baseline in the browser
 - [records/skills-20261027.md](records/skills-20261027.md) — Skills that show — what an impact costs at twice life size, and three campaigns to tune it
