@@ -77,6 +77,10 @@ browser, driven by the autopilot, many times, and writes down numbers instead of
   per track: [pilot vs blind, 200 m](../records/pilot-vs-blind-200m-20261028.md) — perfect 0.0
   impacts and 10.0 pins (15 strikes in 15), dummy 2.7 and 5.5 (no strike, never zero), blind 2.6
   and 3.9; 30 of 30 pilot runs agree with `simulateRun`; 0 console errors. `check:full` passes.
+- 2026-10-28 · round 4 · Campaign after the swing, the recovering impacts and the new obstacles:
+  [pilot vs blind, swing](../records/pilot-vs-blind-swing-20261028.md) — perfect 0.0 impacts and
+  10.0 pins, dummy 2.7 and 5.9 (no strike, no zero), blind 2.2 and 1.7; every run 25.8–26.2 s;
+  30 of 30 pilot runs agree with `simulateRun`; `check:full` passes.
 
 ## Canonical files
 

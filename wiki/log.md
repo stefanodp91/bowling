@@ -76,3 +76,5 @@ investigations goes here, never in the pages (prompt 3, step 3).
   models/obstacles/wet-floor-sign.md, models/obstacles/soda-cans.md, storybook/catalog.md · the
   human's fourth round: the throw is an arm swing, impacts dip and recover, the wet floor sign and
   the soda cans replace the stray pins and the sweep bar; criteria re-locked on authorization.
+- 2026-10-28 · records/pilot-vs-blind-swing-20261028.md, pilot/headless-runs.md · the fourth
+  round's campaign recorded: perfect 10.0 pins, dummy 5.9, every run 25.8–26.2 s.
