@@ -157,6 +157,16 @@ losing speed like a real ball, changing lane and jumping when the autopilot says
   was false and the camera was silently never placed — only the haze showed. The mount now throws
   «the game camera is missing» at once instead of drawing nothing; the trap is in AGENTS.md. The dev
   server was restarted with `--force`; a headed Chrome on Metal renders lane-01, 0 console errors.
+- 2026-10-28 · round 9 · The purple screen came back on the human's Chrome after a reload; round 8's
+  reading was incomplete. Read in that Chrome (with the human's leave): Babylon fetched
+  `src/Shaders/postprocess.vertex.fx` and `rgbdDecode.fragment.fx`, got the page's HTML and failed
+  to compile; the same shared Babylon chunk was loaded under two version hashes, so the shaders
+  Babylon imports lazily registered into a second shader store. A clean Chrome did not show it: the
+  stale copies lived in that browser's cache and in the server. Statically importing the two
+  shaders only moved the failure to the PBR includes. Fixed at the root: the game's Vite config no
+  longer pre-bundles `@babylonjs/core` (served as its own ES modules, one copy each; the menu still
+  appears in ≈ 0.3 s). In the human's Chrome the alley renders under the menu with no shader error;
+  `check:full` passes. AGENTS.md's trap now says the real cause.
 
 ## Canonical files
 

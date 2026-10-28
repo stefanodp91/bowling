@@ -4,7 +4,7 @@ type: spec
 status: built
 depends_on: []
 canonical: [package.json, package-lock.json, tsconfig.base.json, .githooks/pre-commit, scripts/not-built.mjs, models/package.json, models/tsconfig.json, models/vitest.config.ts, models/src/index.ts, models/src/model-handle.ts, game/package.json, game/tsconfig.json, game/vite.config.ts, game/vitest.config.ts, game/index.html, game/src/main.tsx, game/src/ui/App.tsx, game/src/ui/global.css, game/src/scene/GameCanvas.tsx, storybook/package.json, storybook/tsconfig.json, storybook/vitest.config.ts, storybook/.storybook/main.ts]
-verified: 2026-10-26
+verified: 2026-10-28
 ---
 
 # Workspace
@@ -106,6 +106,9 @@ storybook/   the catalogue: one story per model; the visual source of truth for 
   workspaces; (3) and (4) checked headlessly as above; (5) `npm ls @babylonjs/core` shows 9.32.0
   once, deduped; (6) in the clean copy a commit with a failing test was refused by the hook
   («pre-commit: npm run check failed; commit refused.»).
+- 2026-10-28 · round 4 · `game/vite.config.ts` excludes `@babylonjs/core` from `optimizeDeps`: a
+  pre-bundled Babylon could hold two shader stores after a re-bundle and draw nothing (the run
+  page's round 9, AGENTS.md traps). Dev load stays fast (menu in ≈ 0.3 s); `check:full` passes.
 
 ## Canonical files
 

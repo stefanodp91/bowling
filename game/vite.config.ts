@@ -16,7 +16,12 @@ export default defineConfig({
     ],
     dedupe: ['@babylonjs/core', 'react', 'react-dom'],
   },
-  optimizeDeps: { exclude: ['@babylonjs/havok'] },
+  optimizeDeps: {
+    // Babylon is served as its own ES modules, never pre-bundled: a pre-bundle split it into chunks
+    // and lazily imported shaders under a version hash that changes whenever the server re-bundles,
+    // so a page could hold two copies of the shader store and draw nothing (AGENTS.md traps).
+    exclude: ['@babylonjs/havok', '@babylonjs/core'],
+  },
   server: { port: DEV_PORT, strictPort: true },
   preview: { port: DEV_PORT, strictPort: true },
 });

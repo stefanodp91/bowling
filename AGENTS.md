@@ -138,8 +138,10 @@ Traps found on the field go here, each with the symptom that reveals it.
   returns if sound is muted when the file is ready, and unmuting does not restart it. Symptom:
   `status().playing` names the track but nothing is heard. The player restarts the music whenever
   sound becomes audible; mute lives in memory, and a new run never reloads the page.
-- **A dev server that re-bundles Babylon under an open page leaves the scene blank.** Symptom: only
-  the room's haze colour, the HUD running, and «the game camera is missing» in the console; Vite's
-  log says «new dependencies optimized … reloading» (a new deep `@babylonjs/core` import, such as
-  the first `DynamicTexture`). The page mixes two copies of Babylon, so `instanceof` fails. Reload
-  the page (`npm run dev -w game -- --force` if it persists).
+- **A pre-bundled Babylon draws nothing after the dev server re-bundles.** Symptom: only the room's
+  haze colour, the HUD running, and «Unable to compile effect … SHADER ERROR: '<'» in the console
+  (Babylon fetched `src/Shaders*/…fx` and got the page's HTML). Vite's pre-bundle split Babylon into
+  chunks under a version hash that changes at every re-bundle, while the shaders Babylon imports
+  lazily kept an old one — in the server and in the browser's cache — so they registered into a
+  second copy of the shader store. A clean browser hid it. The game's Vite config excludes
+  `@babylonjs/core` from `optimizeDeps`: Babylon is served as its own ES modules, one copy each.

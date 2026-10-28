@@ -89,3 +89,5 @@ investigations goes here, never in the pages (prompt 3, step 3).
   the lanes; the approach segment before the foul line.
 - 2026-10-28 · game/run.md, AGENTS.md · a blank scene after the dev server re-bundled Babylon: the
   missing camera is now an error, and the trap is recorded.
+- 2026-10-28 · game/run.md, AGENTS.md · the blank scene's real cause (a pre-bundled Babylon with two
+  shader stores); Babylon is no longer pre-bundled by the game's dev server.
